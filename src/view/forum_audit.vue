@@ -1,0 +1,270 @@
+<template>
+    <div>
+        <el-row>
+            <el-col :span="4">
+                <div class="grid-content bg-purple">
+                    <div class="btnLeft" :class="btnIndex == item.id ? 'btnLeftShow' : 'btnLeftHide' " v-for="(item,index) in btnList" @click="benListClick(item.id)" :key="index">
+                        {{item.title}}
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="20">
+                <div class="grid-content bg-purple-light">
+                    <el-row class="content-top">
+                        <el-table
+                            :data="tableData"
+                            height="500"
+                            border
+                            style="width: 100%">
+                            <el-table-column
+                                prop="id"
+                                label="文章id"
+                                width="80">
+                            </el-table-column>
+                            <el-table-column
+                                prop="paperAbstract"
+                                label="摘要"
+                                width="80">
+                            </el-table-column>
+                            <el-table-column
+                                prop="paperTitle"
+                                label="文章标题"
+                                width="180">
+                            </el-table-column>
+                            <el-table-column
+                                prop="themeName"
+                                label="论文主题名称"
+                                width="180">
+                            </el-table-column>
+                            <el-table-column
+                                prop="submitTypeName"
+                                label="稿件提交方式"
+                                width="140">
+                            </el-table-column><el-table-column
+                                label="论文名称"
+                                width="100">
+                                <template slot-scope="scope">
+                                    <el-button @click="skip(scope.row)" type="text" size="small">预览</el-button>
+                                    <el-button @click="handleClick(scope.row)" type="text" size="small">下载</el-button>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                label="海报名称"
+                                width="100">
+                                <template slot-scope="scope">
+                                    <el-button @click="showSrc(scope.row)" type="text" size="small">预览</el-button>
+                                    <el-button @click="handleClick(scope.row)" type="text" size="small">下载</el-button>
+                                </template>
+                            </el-table-column>
+                            
+                            </el-table-column><el-table-column
+                                prop="paperKeywords"
+                                label="关键词"
+                                width="80">
+                            </el-table-column>
+                            </el-table-column><el-table-column
+                                prop="paperReference"
+                                label="参考文献"
+                                width="180">
+                            </el-table-column>
+                            <el-table-column
+                                prop="createTime"
+                                label="上传时间"
+                                width="100">
+                            </el-table-column>
+                            <el-table-column
+                                prop="isAudit"
+                                label="发布状态"
+                                width="80">
+                            </el-table-column>
+                        </el-table>
+                    </el-row>
+                    <el-row>
+                        <div class="block">
+                            <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="page"
+                            prev-text="上一页"
+                            next-text="下一页"
+                            layout="total, prev, pager, next, jumper"
+                            :total="total">
+                        </el-pagination>
+                        </div>
+                    </el-row>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row class="showBox" v-if="dialogVisible" type='flex' justify="center" align="middle">
+            <i class="el-icon-close close" @click="dialogVisible = false"></i>
+            <el-row type='flex' justify="center" align="middle" v-if='isImg' class="demo-image__placeholder">
+                <img :src="src" alt="">
+            </el-row>
+            <showPdf class="pdf-show" v-if="!isImg"></showPdf>
+        </el-row>
+        
+    </div>
+</template>
+
+<script>
+import pdf from 'vue-pdf'
+import showPdf from '../components/showPdf'
+  export default {
+    data() {
+        return {
+            btnList:[],
+            tableData: [],
+            btnIndex:1,
+            currentPage: '',
+            page:null,//页码
+            total:null,//每页大小	
+            formData:{
+                pageNum:null, 
+                pageSize:null,
+                order:null,//排序字段（值为id、paperTitle、createTime）	
+                orderType:null,//升序还是降序（值为asc或者desc）	
+                forumId:null,//论坛id （论坛树返回的id字段）	
+                query:null//查询条件	
+            },
+            formLabelWidth: '120px',
+            src: '',
+            dialogVisible:false,
+            isImg:''
+        };
+    },
+    components:{
+        pdf,
+        showPdf
+    },
+    mounted() {
+      
+    },
+    created() {
+        this.init();
+    },
+    methods: {
+        init(){
+            console.log("121");
+            this.loadListLeft();
+        },
+        showSrc(src){
+            this.isImg = true;
+            console.log(src);
+            this.src = src.posterName;
+            this.dialogVisible = true
+        },
+        loadListLeft(){
+            this.$get(`forum/tree/list`)
+            .then(res=>{
+                console.log("加载时间1111",res)
+                if(res){
+                    this.btnList = res.data;
+                }
+            })
+        },
+        loadListRight(){
+            console.log("请求接口---");
+            let params = {
+                pageNum:this.currentPage, //页码
+                pageSize:10,//每页大小	
+                order:this.formData.order,//排序字段（值为id、paperTitle、createTime）	
+                orderType:this.formData.orderType,//升序还是降序（值为asc或者desc）	
+                forumId:this.formData.forumId,//论坛id （论坛树返回的id字段）	
+                query:this.formData.query//查询条件	
+            }
+            this.$get(`paper/list`,params)
+            .then(res=>{
+                console.log("加载时间",res)
+                if(res){
+                    this.tableData = res.data.list;
+                    this.total = res.data.total;
+                    this.page = res.data.pages;
+                }
+            })
+        },
+        benListClick(id){
+            this.btnIndex = id;
+            this.formData.forumId = id;
+            this.loadListRight();
+        },
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
+        },
+       
+        skip(){
+            this.isImg = false;
+            this.dialogVisible = true;
+        }
+    }
+  };
+</script>
+
+<style scoped>
+
+.btnLeft{
+    width:80%;
+    height:50px;
+    text-align:center;
+    line-height:50px;
+    font-size:14px;
+    font-weight:600;
+    border:solid 1px #5812c4;
+    cursor:pointer;
+    margin-left:10%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.btnLeftShow{
+    color:#fff;
+    background:#5812c4;
+}
+.btnLeftHide{
+    color:#5812c4;
+    background:#fff;
+}
+
+.content-top{
+    padding:10px;
+}
+
+.demo-image__placeholder{
+    width:100%;
+    height:100%;
+}
+.demo-image__placeholder img{
+    width:500px;
+    height:500px;
+}
+.showBox{
+    position:absolute;
+    z-index:999;
+    width:100%;
+    height:100%;
+    min-height:600px;
+    background:rgba(0,0,0,0.6);
+    top:0;
+    left:0;
+
+}
+.pdf-show{
+    width:700px;
+    height:600px;
+    
+}
+
+.close{
+    cursor:pointer;
+    z-index:9999;
+    color: #fff;
+    font-size: 60px;
+    position: absolute;
+    right: 10%;
+    top: 10%;
+}
+</style>
+
