@@ -18,7 +18,7 @@ console.log("main.js",localStorage.getItem('menus'));
 console.log("router.js",router);
 let dataList = JSON.parse(localStorage.getItem('menus'));
 
-if(dataList.length){
+if(dataList){
   dataList.forEach(item=>{
     if(item.childrenList){
         item.childrenList.forEach(items => {
