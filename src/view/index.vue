@@ -7,7 +7,7 @@
                     <el-submenu v-for="(item,index) in dataList" :index="index+''" :key="index">
                         <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
                             <el-menu-item v-for="(item2,index2) in item.childrenList" :key="index2">
-                                <router-link :to='{path:item2.url}'>{{item2.name}}</router-link>
+                                <router-link :to='{path:"/"+item2.code}'>{{item2.name}}</router-link>
                             </el-menu-item>
                         </el-submenu>
                     </el-submenu>

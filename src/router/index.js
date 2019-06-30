@@ -6,6 +6,7 @@ import forum_audit from '@/view/forum_audit'
 Vue.use(Router)
 
 
+
 export default new Router({
   routes: [
     {

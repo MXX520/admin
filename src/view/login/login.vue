@@ -39,8 +39,10 @@ export default {
         return {
             logining: false,
             ruleForm2: {
-                username: '18210863073@163.com',
-                password: 'AAAaaa11',
+                // username: '18210863073@163.com',
+                username: '100369400@qq.com',
+                // password: 'AAAaaa11',
+                password: 'q3226308',
             },
             rules2: {
                 username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
@@ -56,7 +58,7 @@ export default {
                 "password":this.ruleForm2.password
             }
             let data = await this.$api.post('login',params);
-            console.log(data)
+            console.log("menus",data.data.data.menus)
             localStorage.setItem('menus',JSON.stringify(data.data.data.menus));
             localStorage.setItem('token',data.data.data.token);
             localStorage.setItem('refreshToken',data.data.data.refreshToken);
@@ -76,24 +78,23 @@ export default {
             // ]
 
             // let mmArr = [];
-            // console.log(this.$router.options.routes)
+            console.log("222",this.$router.options.routes)
             dataList.forEach(item=>{
                 if(item.childrenList){
                     item.childrenList.forEach(items => {
                         this.$router.options.routes[0].children.push({
-                            path:items.url,
-                            name:items.code,
+                            path:'/'+items.code,
+                            name:'/'+items.code,
                             component: () => import('@/view/'+items.code+'.vue')
                         })
                     })
                 }
             })
             this.$router.addRoutes(this.$router.options.routes);//调用
-            this.$router.push({path: '/'});
             // console.log(mmArr);
+            console.log("11111",this.$router.options.routes)
             // console.log(this.$router.options.routes)
-            
-            // console.log(this.$router.options.routes)
+            this.$router.push({path: '/'});
 
             // this.$router.push({path: '/'});
             // this.$refs.ruleForm2.validate((valid) => {
