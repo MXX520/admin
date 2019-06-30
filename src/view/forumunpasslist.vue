@@ -102,7 +102,7 @@
 
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="活动名称">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
@@ -329,6 +329,9 @@
 <style scoped>
 .tiem .el-dialog--small{
 	width: 38%
+}
+.el-button--small{
+	padding: 9px
 }
 el-submenu [class^=fa] {
  vertical-align: baseline;
