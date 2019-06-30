@@ -38,10 +38,10 @@
 			</el-table-column>
 		
 			<el-table-column label="操作" width="100" fixed="right">
-				<slot-scope scope="scope">
+				<template scope="scope">
 				
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">审核</el-button>
-				</slot-scope>
+				</template>
 			</el-table-column>
 		</el-table>
 

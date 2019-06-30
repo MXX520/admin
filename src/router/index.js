@@ -21,5 +21,5 @@ export default new Router({
       component: login
     }
   ],
-  mode:'history'   //去除#号
+  // mode:'history'   //去除#号
 })

@@ -1,4 +1,4 @@
-<slot-scope>
+<template>
 	<section>
         <!-- 未通过通过-->
 		<!--工具条-->
@@ -46,10 +46,10 @@
 			</el-table-column>
 		
 			<el-table-column label="操作" width="150" fixed="right">
-				<slot-scope scope="scope">
+				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">设置</el-button>
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
-				</slot-scope>
+				</template>
 			</el-table-column>
 		</el-table>
 
