@@ -12,6 +12,9 @@ export default {
     getMenus (state){
       return state.menus;
     },
+    getImg (state){
+      return state.img;
+    },
   //   pushRouter(state){
   //     if(state.menus.length){
   //       state.menus.forEach(item=>{

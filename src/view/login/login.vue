@@ -58,13 +58,15 @@ export default {
                 "password":this.ruleForm2.password
             }
             let data = await this.$api.post('login',params);
-            console.log("menus",data.data.data.menus)
+            console.log("menus",data)
             localStorage.setItem('menus',JSON.stringify(data.data.data.menus));
             localStorage.setItem('token',data.data.data.token);
             localStorage.setItem('refreshToken',data.data.data.refreshToken);
+            localStorage.setItem('homeImg',data.data.data.avatar);
             this.$store.commit('setMenus', data.data.data.menus);
             this.$store.commit('setToken', data.data.data.token);
             this.$store.commit('refreshToken', data.data.data.refreshToken);
+            this.$store.commit('homeImg',data.data.data.avatar)
             // this.$store.getters.pushRouter;
             
             let dataList = data.data.data.menus;

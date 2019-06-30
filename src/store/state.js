@@ -3,6 +3,7 @@ const state = {
     token: '',
     refreshToken:'',
     menus:[],
-    num:'header'
+    num:'header',
+    img:''
 }
 export default state;

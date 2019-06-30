@@ -14,5 +14,8 @@ export default {
     },
     setMenus(state,menus){
         state.menus = menus;
+    },
+    homeImg(state,img){
+        state.img = img;
     }
 }
