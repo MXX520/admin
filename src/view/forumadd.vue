@@ -51,39 +51,39 @@
 				if(this.form.name==""){
 					  this.$message({
 						message: '论坛标题不能为空',
-						type: 'success'
+						type: 'warning'
 						});
 					return
 				}
 				if(this.form.people==""){
 					  this.$message({
 						message: '发起人不能为空',
-						type: 'success'
+						type: 'warning'
 						});
 					return
 				}
 				if(this.form.phone==""){
 					  this.$message({
 						message: '发起人电话不能为空',
-						type: 'success'
+						type: 'warning'
 						});
 					return
 				}
 				if(this.form.email==""){
 					  this.$message({
 						message: '发起人邮箱不能为空',
-						type: 'success'
+						type: 'warning'
 						});
 					return
 				}
 				if(this.form.reson==""){
 					  this.$message({
 						message: '申请原因不能为空',
-						type: 'success'
+						type: 'warning'
 						});
 					return
 				}
-				let data = await this.$post("forum",{
+				let data = await this.$api.post("forum",{
 					title:this.form.name,
 					sponsor:this.form.people,
 					sponsorPhone:this.form.phone,
@@ -91,7 +91,13 @@
 					applyReason:this.form.reson,
 					scaleOfMark:this.form.desc
 				})
-				console.log(data)
+				if(data.data.code){
+					this.$message({
+						message: '申请成功',
+						type: 'success'
+						});
+				}
+				
 			}
 		}
 	}

@@ -39,7 +39,7 @@
 			<el-table-column label="操作" width="100" fixed="right">
 				<template scope="scope">
 				
-					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
+					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">审核</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

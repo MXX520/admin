@@ -1,7 +1,7 @@
 <template>
 	<section>
-
-		<!--工具条已通过-->
+        <!-- 未通过通过-->
+		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
@@ -19,9 +19,9 @@
 			
 			<el-table-column type="index" label="序号"  width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="论坛名称" width="280" >
+			<el-table-column prop="title" label="论坛名称" width="220" >
 			</el-table-column>
-			<el-table-column prop="facultyName" label="所属院系" width="120"  >
+			<el-table-column prop="facultyName" label="所属院系" width="120" >
 			</el-table-column>
 			<el-table-column prop="sponsor" label="发起人" width="100" >
 			</el-table-column>
@@ -34,13 +34,21 @@
 			
 			<el-table-column prop="isClosed" label="状态" min-width="120" >
 			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" min-width="180" sortable>
+			<el-table-column prop="forumOpenTime" label="开放时间" min-width="180" >
+			</el-table-column>
+			<el-table-column prop="forumCloseTime" label="关闭时间" min-width="180" >
+			</el-table-column>
+			<el-table-column prop="paperOpenTime" label="投稿起始时间" min-width="180" >
+			</el-table-column>
+			<el-table-column prop="paperCloseTime" label="投稿关闭时间" min-width="180" >
+			</el-table-column>
+			<el-table-column prop="createTime" label="创建时间" min-width="120" sortable>
 			</el-table-column>
 		
-			<el-table-column label="操作" width="100" fixed="right">
+			<el-table-column label="操作" width="150" fixed="right">
 				<template scope="scope">
-				
-					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">审核</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">设置</el-button>
+					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -58,7 +66,44 @@
 			</el-pagination>
 		</el-col>
 
-	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
+		<!--编辑界面-->
+		<el-dialog title="论坛设置" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
+			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
+				<el-form-item label="论坛开放时间设置" >
+					<el-date-picker
+					v-model="value2"
+					type="daterange"
+					align="right"
+					unlink-panels
+					range-separator="至"
+					start-placeholder="开始日期"
+					end-placeholder="结束日期"
+					format="yyyy 年 MM 月 dd 日"
+					>
+					</el-date-picker>
+				</el-form-item>
+					<el-form-item label="投稿时间设置" >
+					<el-date-picker
+					v-model="value"
+					type="daterange"
+					align="right"
+					unlink-panels
+					range-separator="至"
+					start-placeholder="开始日期"
+					end-placeholder="结束日期"
+					format="yyyy 年 MM 月 dd 日"
+					>
+					</el-date-picker>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click.native="editFormVisible = false">取消</el-button>
+				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+			</div>
+		</el-dialog>
+
+		<!--新增界面-->
+		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="活动名称">
 					<el-input v-model="title" disabled="true"></el-input>
@@ -76,24 +121,13 @@
 					<el-input v-model="email" disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" disabled="true"></el-input>
-		</el-form-item>
-			 <el-form-item label="评分标准">
-					<el-input v-model="biaozhu" disabled="true"></el-input>
-				</el-form-item>
-			
-
-				
+                    <el-input type="textarea" v-model="reson" disabled="true"></el-input>
+		        </el-form-item>
+			    <el-form-item label="评分标准">
+                    <el-input v-model="biaozhu" disabled="true"></el-input>
+                </el-form-item>
 			</el-form>
-			<div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click.native="editSubmit(1)" :loading="editLoading">审核通过</el-button>
-				<el-button @click.native="editSubmit(0)">审核不通过</el-button>
-			</div>
 		</el-dialog>
-
-
-	
-		
 	</section>
 </template>
 
@@ -111,16 +145,18 @@
 				total:10,
 				currentPage:1,
 				users: [],
-        total: 0,
-        title:"",
+				total: 0,
+				page: 1,
+				title:"",
 				school:"",
 				people:"",
 				phone:"",
 				email:"",
+				value2:"",
+				value:"",
 				reson:"",
-        biaozhu:"",
-        editId:1,
-				page: 1,
+				biaozhu:"",
+				editId:1,
 				listLoading: false,
 				sels: [],//列表选中列
 
@@ -199,17 +235,16 @@
 					list[i].isClose = "关闭"
 				}
 			}
-			
 			this.users = data.data.list;
 			this.total = data.data.total;
 			console.log(data)		
 			
 			},
-			//删除
+		//删除
 			async handleDel (index, row) {
-                console.log(index,row)
-                this.editId =row.id;
+				console.log("看看这个",index,row)
 				this.addFormVisible = true;
+				
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
 				this.school = data.data.facultyName;
@@ -223,6 +258,8 @@
 			//显示编辑界面
 			handleEdit: function (index, row) {
 				this.editFormVisible = true;
+               
+				this.editId = row.id;
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面
@@ -237,13 +274,15 @@
 				};
 			},
 			//编辑
-		async	editSubmit (id) {
-       let {data} = await this.$api.put("forum/audit/"+this.editId,{
-         is_pass:id,
-       })
-       this.addFormVisible = false;
-       this.getUsers()
-       console.log(data)
+			async editSubmit () {
+				let data = await this.$api.put("forum/"+this.editId,{
+					forumOpenTime:this.value2[1],
+					forumCloseTime:this.value2[0],
+					paperOpenTime:this.value[1],
+					paperCloseTime:this.value[0]
+				})
+				console.log(data)
+				this.editFormVisible = false;
 			},
 			//新增
 			addSubmit: function () {
@@ -303,5 +342,39 @@
 </script>
 
 <style scoped>
+.tiem .el-dialog--small{
+	width: 38%
+}
+.el-button--small{
+	padding: 9px
+}
+el-submenu [class^=fa] {
+ vertical-align: baseline;
+ margin-right: 10px;
+}
 
+.el-menu-item [class^=fa] {
+ vertical-align: baseline;
+ margin-right: 10px;
+}
+
+.toolbar {
+ background: #f2f2f2;
+ padding: 10px;
+ //border:1px solid #dfe6ec;
+ margin: 10px 0px;
+ .el-form-item {
+  margin-bottom: 10px;
+ }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+ transition: all .2s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+ opacity: 0;
+}
 </style>
