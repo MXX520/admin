@@ -206,6 +206,19 @@
 				query:this.filters.name,
 				type:"0"
 			})
+			let list  =  data.data.list;
+			for(let i in list){
+				if(list[i].scaleOfMark){
+					list[i].scaleOfMark = "评分制"
+				}else{
+					list[i].scaleOfMark = "通过制"
+				}
+				if(list[i].isClose){
+					list[i].isClose = "开放"
+				}else{
+					list[i].isClose = "关闭"
+				}
+			}
 			this.users = data.data.list;
 			this.total = data.data.total;
 			console.log(data)		

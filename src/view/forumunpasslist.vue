@@ -78,6 +78,7 @@
 					range-separator="至"
 					start-placeholder="开始日期"
 					end-placeholder="结束日期"
+					format="yyyy 年 MM 月 dd 日"
 					>
 					</el-date-picker>
 				</el-form-item>
@@ -90,6 +91,7 @@
 					range-separator="至"
 					start-placeholder="开始日期"
 					end-placeholder="结束日期"
+					format="yyyy 年 MM 月 dd 日"
 					>
 					</el-date-picker>
 				</el-form-item>
@@ -220,6 +222,19 @@
 				query:this.filters.name,
 				type:"-1"
 			})
+			let list  =  data.data.list;
+			for(let i in list){
+				if(list[i].scaleOfMark){
+					list[i].scaleOfMark = "评分制"
+				}else{
+					list[i].scaleOfMark = "通过制"
+				}
+				if(list[i].isClose){
+					list[i].isClose = "开放"
+				}else{
+					list[i].isClose = "关闭"
+				}
+			}
 			this.users = data.data.list;
 			this.total = data.data.total;
 			console.log(data)		
