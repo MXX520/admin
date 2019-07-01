@@ -1,12 +1,13 @@
 <template>
     <el-container class="container">
         <el-header class="header">
-            <el-col :span="6" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-				{{collapsed?'':sysName}}
+            <el-col :span="10" class="logo" collapse-transition @click.prevent="homePage" :style="{width: isCollapse?'65px':'200px'}">
+				{{isCollapse ? '' : sysName }}
 			</el-col>
 			<el-col :span="10">
-				<div class="tools" @click.prevent="collapse">
-					<i class="fa fa-align-justify"></i>
+				<div class="tools" @click="handleCollapse">
+					<i v-if="isCollapse" class="el-icon-s-unfold"></i>
+					<i v-else class="el-icon-s-fold"></i>
 				</div>
 			</el-col>
 			<el-col :span="4" class="userinfo">
@@ -20,23 +21,27 @@
 			</el-col>
         </el-header>
         <el-container class="container">
-            <el-aside class="aside">
-                <el-menu>
+            <el-aside class="aside" :style="{width: isCollapse?'65px':'200px'}">
+                <el-menu collapse-transition=false default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                     <el-submenu v-for="(item,index) in dataList" :index="index+''" :key="index">
-                        <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span slot="title" v-if="!isCollapse">{{item.name}}</span>
+                        </template>
+                        <el-menu-item-group>
                             <router-link v-for="(item2,index2) in item.childrenList" :key="index2":to='{path:"/"+item2.code}'>
-                            <el-menu-item >
-                                {{item2.name}}
-                            </el-menu-item>
+                                <el-menu-item >
+                                    {{item2.name}}
+                                </el-menu-item>
                             </router-link>
-                            
-                            
-                            
-                        </el-submenu>
+                        </el-menu-item-group>
                     </el-submenu>
                 </el-menu>
             </el-aside>
             <el-main class="main">
+                <el-breadcrumb separator="/" class="navigation">
+                    <el-breadcrumb-item class="navigationItem" :to="{ path: matched.path }">{{matched.name}}</el-breadcrumb-item>
+                </el-breadcrumb>
                 <router-view/>
             </el-main>
         </el-container>
@@ -47,140 +52,19 @@
 export default {
     name: 'Index',
     data () {
-        const item = {
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-        };
         return {
-            tableData: Array(20).fill(item),
             dataList : [],
             collapsed:false,
-            sysName:'VUEADMIN',
+            sysName:'清华大学博士生论坛管理系统',
             sysUserAvatar:this.$store.getters.getImg,
             sysUserName: '',
-            // dataList : [
-            //     {
-            //         "isopen": 1,
-            //         "code": "forum",
-            //         "pcode": "0",
-            //         "icon": "",
-            //         "tips": "",
-            //         "url": "#",
-            //         "pcodes": "[0],",
-            //         "name": "论坛管理",
-            //         "id": 7,
-            //         "childrenList": [
-            //             {
-            //             "isopen": 0,
-            //             "code": "forum_audit",
-            //             "pcodes": " [0],[forum],",
-            //             "pcode": "forum",
-            //             "icon": "",
-            //             "name": "论坛审核",
-            //             "id": 8,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/forum/audit",
-            //             "status": 1
-            //             }
-            //         ],
-            //         "ismenu": 1,
-            //         "levels": 1,
-            //         "status": 1
-            //         },
-            //         {
-            //         "isopen": 0,
-            //         "code": "system",
-            //         "pcode": "0",
-            //         "icon": "fa-user",
-            //         "tips": "",
-            //         "url": "#",
-            //         "pcodes": "[0],",
-            //         "name": "系统管理",
-            //         "id": 1,
-            //         "childrenList": [
-            //             {
-            //             "isopen": 0,
-            //             "code": "user",
-            //             "pcodes": "[0],[system],",
-            //             "pcode": "system",
-            //             "icon": "",
-            //             "name": "用户管理",
-            //             "id": 2,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/sys/user",
-            //             "status": 1
-            //             },
-            //             {
-            //             "isopen": 0,
-            //             "code": "faculty",
-            //             "pcodes": "[0],[system],",
-            //             "pcode": "system",
-            //             "icon": "",
-            //             "name": "院系管理",
-            //             "id": 3,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/sys/faculty",
-            //             "status": 1
-            //             },
-            //             {
-            //             "isopen": 0,
-            //             "code": "carousel",
-            //             "pcodes": "[0],[system],",
-            //             "pcode": "system",
-            //             "icon": "",
-            //             "name": "轮播管理",
-            //             "id": 4,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/sys/carousel",
-            //             "status": 1
-            //             },
-            //             {
-            //             "isopen": 0,
-            //             "code": "cooperate",
-            //             "pcodes": "[0],[system],",
-            //             "pcode": "system",
-            //             "icon": "",
-            //             "name": "合作品牌管理",
-            //             "id": 5,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/sys/cooperate",
-            //             "status": 1
-            //             },
-            //             {
-            //             "isopen": 0,
-            //             "code": "log",
-            //             "pcodes": "[0],[system],",
-            //             "pcode": "system",
-            //             "icon": "",
-            //             "name": "异常日志",
-            //             "id": 6,
-            //             "ismenu": 0,
-            //             "levels": 2,
-            //             "tips": "",
-            //             "url": "/sys/log",
-            //             "status": 1
-            //             }
-            //         ],
-            //         "ismenu": 1,
-            //         "levels": 1,
-            //         "status": 1
-            //     }
-            // ]
+            matched:'', //面包屑
+            isCollapse:true, //收缩展开
         }
     },
     created() {
         this.init();
+        this.getBreadcrumb();
         this.dataList = JSON.parse(localStorage.getItem('menus'));
         // var result = $.parseJSON(jsonData);// 转成JSON对象
         console.log('头像--',this.$store.getters.getImg);
@@ -196,16 +80,56 @@ export default {
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
             this.$router.push({path: '/login'});
+        },
+        getBreadcrumb() {
+            this.matched = this.$route;
+            console.log("this.matched====",this.matched);
+            // const first = matched[0]
+            // if (first && first.name !== '首页') {
+            //     matched = [{path: '/home', meta: { title: '首页' }}].concat(matched)
+            // }
+            // this.levelList = matched;
+        },
+        homePage(){
+            console.log("ddd");
+            this.$router.push({path: '/'});
+        },
+
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        },
+
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleCollapse(){
+            this.isCollapse = !this.isCollapse;
         }
     },
     components: {
 
+    },
+    mounted() {
+        this.getBreadcrumb();
+    },
+    watch: {
+        $route(to, from) {
+        this.getBreadcrumb();
+        }
     }
 }
 </script>
 
 <style scoped lang="scss">
-
+/deep/ a{
+    text-decoration:none;
+}
+/deep/ .el-menu-vertical-demo{
+    height:100%;
+}
+/deep/ .el-menu-item{
+    text-align:center;
+}
 .container{
     height:100%;
     width:100%;
@@ -233,18 +157,19 @@ export default {
             }
         }
         .logo {
-            width:200px !important;
+            // width:200px !important;
             height:60px;
-            font-size: 22px;
+            font-size: 16px;
             padding-left:20px;
             padding-right:20px;
             border-color: rgba(238,241,146,0.3);
             border-right-width: 1px;
             border-right-style: solid;
+            cursor:pointer;
             img {
                 width: 40px;
                 float: left;
-                margin: 10px 10px 10px 18px;
+                // margin: 10px 10px 10px 18px;
             }
             .txt {
                 color:#fff;
@@ -259,14 +184,14 @@ export default {
         .tools{
             padding: 0px 23px;
             width:14px;
+            font-size:30px;
             height: 60px;
             line-height: 60px;
             cursor: pointer;
         }
     }
     .aside{
-        width:200px !important;
-        background:#eef1f6;
+        background:#FFF;
     }
     .logo-collapse-width{
         width:60px
@@ -274,9 +199,7 @@ export default {
     .logo-width{
         width:230px;
     }
-    a{
-        text-decoration:none;
-    }
+    
     .router-link-exact-active {
         display:inline-block;
         background:tan;
@@ -285,6 +208,13 @@ export default {
             color:#fff;
         }
     }
-
+    .navigation{
+        margin-bottom:20px;
+        .navigationItem{
+            border:solid 1px #409EFF;
+            padding:5px;
+            border-radius:5px;
+        }
+    }
 }
 </style>

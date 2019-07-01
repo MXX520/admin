@@ -86,7 +86,7 @@ export default {
                     item.childrenList.forEach(items => {
                         this.$router.options.routes[0].children.push({
                             path:'/'+items.code,
-                            name:'/'+items.code,
+                            name:items.name,
                             component: () => import('@/view/'+items.code+'.vue')
                         })
                     })

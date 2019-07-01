@@ -11,13 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
+      name: '首页',
       component: index,
       children: []
     },
     {
       path: '/login',
-      name: 'login',
+      name: '登录',
       component: login
     }
   ],

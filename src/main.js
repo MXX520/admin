@@ -57,7 +57,7 @@ if(dataList){
         item.childrenList.forEach(items => {
             router.options.routes[0].children.push({
                 path:'/'+items.code,
-                name:items.code,
+                name:items.name,
                 component: () => import('@/view/'+items.code+'.vue')
             })
         })
