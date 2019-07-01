@@ -58,7 +58,6 @@ export default {
                 "password":this.ruleForm2.password
             }
             let data = await this.$api.post('login',params);
-            console.log("menus",data)
             localStorage.setItem('menus',JSON.stringify(data.data.data.menus));
             localStorage.setItem('token',data.data.data.token);
             localStorage.setItem('refreshToken',data.data.data.refreshToken);
@@ -67,72 +66,12 @@ export default {
             this.$store.commit('setToken', data.data.data.token);
             this.$store.commit('refreshToken', data.data.data.refreshToken);
             this.$store.commit('homeImg',data.data.data.avatar)
-            // this.$store.getters.pushRouter;
             
             let dataList = data.data.data.menus;
-
-            // children: [
-            //     {
-            //     path: '/forum/audit',
-            //     name: 'Form',
-            //     component: () => import('@/view/forum_audit.vue')
-            //     }
-            // ]
-
-            // let mmArr = [];
-            console.log("222",this.$router.options.routes)
-            dataList.forEach(item=>{
-                if(item.childrenList){
-                    item.childrenList.forEach(items => {
-                        this.$router.options.routes[0].children.push({
-                            path:'/'+items.code,
-                            name:items.name,
-                            component: () => import('@/view/'+items.code+'.vue')
-                        })
-                    })
-                }
-            })
-            this.$router.addRoutes(this.$router.options.routes);//调用
-            // console.log(mmArr);
-            console.log("11111",this.$router.options.routes)
-            // console.log(this.$router.options.routes)
+            this.$util.GenerateRouter(dataList);
             this.$router.push({path: '/'});
 
-            // this.$router.push({path: '/'});
-            // this.$refs.ruleForm2.validate((valid) => {
-            //     if(valid){
-            //         console.log(valid);
-            //         this.logining = true;
-            //         let params = {
-            //             "account":this.ruleForm2.username,
-            //             "password":this.ruleForm2.password
-            //         }
-            //         let data = await this.$api.post('login',params);
-            //         console.log(data)
-            //         localStorage.setItem('token',data.data.data.token);
-            //         localStorage.setItem('refreshToken',data.data.data.refreshToken);
-            //         this.$store.commit('setNum', 10);
-            //         if(this.ruleForm2.username === '' &&
-            //            this.ruleForm2.password === ''){
-            //             this.$alert('请输入用户名或密码', {
-            //                 confirmButtonText: 'ok'
-            //             })
-            //             return;
-            //         }
-
-            //         // this.logining = false;
-            //         // sessionStorage.setItem('user', this.ruleForm2.username);
-            //         // this.$router.push({path: '/'});
-            //     }else{
-            //         console.log('error submit!');
-            //         return false;
-            //     }
-            // })
         },
-        mm(val){
-            // return ()=>import ('@/view/'+val+'.vue');
-            return () => import('@/view/forum_audit.vue')
-        }
     }
 };
 </script>
