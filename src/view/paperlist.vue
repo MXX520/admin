@@ -199,8 +199,16 @@ import showPdf from '../components/showPdf'
             type:index
           }
           console.log(params);
-          let getData = this.$api.get(`paper/list`,params);
+          let getData = this.$api.get(`paper/download`,params);
           console.log("下载",getData);
+          let a;
+          getData.then((v)=>{
+            console.log(v);
+            a = v;
+          });
+          console.log(a);
+          window.open('http://39.106.77.121:8086/paper/download')
+        //   window.location.href = 'http://39.106.77.121:8086/paper/download'
         },
         benListClick(id){
             this.btnIndex = id;
