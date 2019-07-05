@@ -203,7 +203,6 @@ import showPdf from '../components/showPdf'
           console.log("下载",getData);
           let a;
           getData.then((v)=>{
-            console.log(v);
             a = v;
           });
           console.log(a);
