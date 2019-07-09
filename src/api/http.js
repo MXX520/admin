@@ -26,7 +26,7 @@ axios.interceptors.request.use(config => {
 // 添加响应拦截器
 axios.interceptors.response.use(
   response => {
-    console.log("拦截器成功");
+    console.log("拦截器成功",response.data.code);
     if(response.data.code=="401"){
       router.push({path:"/login"})
     }else if(response.data.code=="404"){
@@ -35,6 +35,13 @@ axios.interceptors.response.use(
       router.push({path:"/403"})
     }else if(response.data.code=="500"){
       router.push({path:"/500"})
+    }if(response.data.code=="06"){
+      Message({
+        message: '密码错误',
+        type: 'warning'
+      });
+      console.log("d");
+      return;
     }
     return response;
   },

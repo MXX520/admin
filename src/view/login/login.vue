@@ -39,10 +39,10 @@ export default {
         return {
             logining: false,
             ruleForm2: {
-                // username: '18210863073@163.com',
                 username: '18210863073@163.com',
-                // password: 'AAAaaa11',
+                // username: '1040803745@qq.com',
                 password: 'AAAaaa11',
+                // password: 'qq7461912',
             },
             rules2: {
                 username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
@@ -57,8 +57,8 @@ export default {
                 "account":this.ruleForm2.username,
                 "password":this.ruleForm2.password
             }
-            
             let data = await this.$api.post('login',params);
+            console.log(data);
             localStorage.setItem('menus',JSON.stringify(data.data.data.menus));
             localStorage.setItem('token',data.data.data.token);
             localStorage.setItem('refreshToken',data.data.data.refreshToken);
