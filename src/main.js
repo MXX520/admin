@@ -45,6 +45,9 @@ if(dataList){
 }
 
 
+//设置全局广播事件
+Vue.prototype.$eventHub= Vue.prototype.$eventHub || new Vue();
+
 
 /* eslint-disable no-new */
 new Vue({

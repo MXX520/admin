@@ -12,11 +12,17 @@
 </template>
 
 <script>
+import { quillEditor } from 'vue-quill-editor'
 export default {
     name: 'contactUs',
     data () {
         return {
-            msg: '联系我们'
+            msg: '联系我们',
+            content:'',
+            //富文本配置
+            editorOption: {
+
+            }
         }
     },
     created() {

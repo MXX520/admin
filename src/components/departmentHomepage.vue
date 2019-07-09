@@ -68,7 +68,7 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">预览</el-button>
+            <el-button type="primary" @click="dialogHome">预览</el-button>
         </el-form-item>
         </el-form>
     </div>  
@@ -82,9 +82,9 @@ export default {
         return {
             msg: '院系首页',
             input:'',
-            content:null,
-            imageUrl1: '', //图片1
-            imageUrl2: '', //图片2
+            content:'',
+            imageUrl: 'http://39.106.77.121:8081/files-upload/images/forum-index/1-e1414fba6ae14e298a47a7128c4b6649.png', //图片1
+            imageUrl2: 'http://39.106.77.121:8081/files-upload/images/forum-index/1-e1414fba6ae14e298a47a7128c4b6649.png', //图片2
             //富文本配置文件
             editorOption:{
                 // modules:{
@@ -135,15 +135,17 @@ export default {
         onEditorChangeUsNotice(ev){//内容改变事件
             console.log(ev);
         },
-        onSubmit(){
-
+        
+        dialogHome(){
+            //调用$emit 方法
+           this.$eventHub.$emit('mxx', '你的需要传送的数据')
         },
 
         //上传图片1方法
-        handleAvatarSuccess1(res, file) {
+        handleAvatarSuccess(res, file) {
             this.imageUrl = URL.createObjectURL(file.raw);
         },
-        beforeAvatarUpload1(file) {
+        beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
 

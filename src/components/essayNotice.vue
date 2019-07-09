@@ -16,7 +16,12 @@ export default {
     name: 'essayNotice',
     data () {
         return {
-            msg: '征文通知'
+            msg: '征文通知',
+            content:'',
+            //富文本配置规则
+            editorOption: {
+                
+            }
         }
     },
     created() {

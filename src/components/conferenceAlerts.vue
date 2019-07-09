@@ -60,16 +60,16 @@
                 <el-form-item label="活动名称">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="会议标题" :label-width="formLabelWidth">
+                <el-form-item label="会议标题">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议简介" :label-width="formLabelWidth">
+                <el-form-item label="会议简介">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议内容" :label-width="formLabelWidth">
+                <el-form-item label="会议内容">
                     <el-input type='textarea' v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议来源" :label-width="formLabelWidth">
+                <el-form-item label="会议来源">
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
