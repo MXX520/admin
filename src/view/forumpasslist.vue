@@ -104,7 +104,7 @@
 
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="活动名称">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
@@ -229,10 +229,10 @@
 				}else{
 					list[i].scaleOfMark = "通过制"
 				}
-				if(list[i].isClose){
-					list[i].isClose = "开放"
+				if(list[i].isClosed){
+					list[i].isClosed = "开放"
 				}else{
-					list[i].isClose = "关闭"
+					list[i].isClosed = "关闭"
 				}
 			}
 			this.users = data.data.list;
