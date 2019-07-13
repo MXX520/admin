@@ -40,7 +40,7 @@
             </el-aside>
             <el-main class="main">
                 <el-breadcrumb separator="/" class="navigation">
-                    <el-breadcrumb-item class="navigationItem" :to="{ path: matched.path }">{{matched.name}}</el-breadcrumb-item>
+                    <el-breadcrumb-item class="navigationItem" style="font-weight:700;" :to="{ path: matched.path }">{{matched.name}}</el-breadcrumb-item>
                 </el-breadcrumb>
                 <router-view/>
             </el-main>
@@ -59,7 +59,7 @@ export default {
             sysUserAvatar:this.$store.getters.getImg,
             sysUserName: '',
             matched:'', //面包屑
-            isCollapse:true, //收缩展开
+            isCollapse:false, //收缩展开
         }
     },
     created() {
@@ -129,6 +129,12 @@ export default {
 }
 /deep/ .el-menu-item{
     text-align:center;
+}
+/deep/ .navigationItem{
+    span{
+        font-weight:700!important;
+    }
+    
 }
 .container{
     height:100%;
@@ -208,13 +214,6 @@ export default {
             color:#fff;
         }
     }
-    .navigation{
-        margin-bottom:20px;
-        .navigationItem{
-            border:solid 1px #409EFF;
-            padding:5px;
-            border-radius:5px;
-        }
-    }
+    
 }
 </style>
