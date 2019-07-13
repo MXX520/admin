@@ -39,10 +39,10 @@ export default {
         return {
             logining: false,
             ruleForm2: {
-                username: '18210863073@163.com',
-                // username: '1040803745@qq.com',
-                password: 'AAAaaa11',
-                // password: 'qq7461912',
+                // username: '18210863073@163.com',
+                username: '1040803745@qq.com',
+                // password: 'AAAaaa11',
+                password: 'qq7461912',
             },
             rules2: {
                 username: [{required: true, message: '请输入用户名', trigger: 'blur'}],

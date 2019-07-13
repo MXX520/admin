@@ -4,7 +4,7 @@ import store from '@/store/index'   //引入vuex的相关操作
 import { Message } from 'element-ui' //element Toast的提示
 import router from '@/router/index'
 
-let httpPath = 'http://39.106.77.121:8086/'
+let httpPath = 'http://39.100.65.236:8093/'
 
 
 //过滤请求--请求拦截器
