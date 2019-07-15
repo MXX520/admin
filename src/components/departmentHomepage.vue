@@ -2,27 +2,29 @@
     <div id="app">
         <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="会议标题">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="postDate.conferenceOverview"></el-input>
         </el-form-item>
         
         <el-form-item label="会议时间">
-            <el-col :span="11">
-            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+            <el-input v-model="postDate.conferenceTime"></el-input>
+            <!--<el-col :span="11">
+            <el-date-picker type="date" placeholder="选择日期" v-model="postDate.date1" style="width: 100%;"></el-date-picker>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
             <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-            </el-col>
+            </el-col>-->
         </el-form-item>
         <el-form-item label="会议地点">
-            <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-input v-model="postDate.conferencePlace"></el-input>
+            <!--<el-select v-model="postDate.conferencePlace" placeholder="请选择活动区域">
             <el-option label="区域一" value="shanghai"></el-option>
             <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
+            </el-select>-->
         </el-form-item>
         <el-form-item label="关于我们">
             <quill-editor 
-                v-model="content" 
+                v-model="postDate.about" 
                 ref="aboutUs" 
                 :options="editorOption" 
                 @blur="onEditorBlurUs($event)" @focus="onEditorFocusUs($event)"
@@ -31,7 +33,7 @@
         </el-form-item>
         <el-form-item label="会议通知">
             <quill-editor 
-                v-model="content" 
+                v-model="postDate.conferenceNotice" 
                 ref="meetingNotice" 
                 :options="editorOption" 
                 @blur="onEditorBlurNotice($event)" @focus="onEditorFocusNotice($event)"
@@ -39,29 +41,21 @@
             </quill-editor>
         </el-form-item>
         <el-form-item label="背景图一">
-            <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <el-image
+                style="width: 100px; height: 100px"
+                :src="postDate.image1"
+                :fit="fit">
+            </el-image>
         </el-form-item>
         <el-form-item label="背景图二">
-            <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess2"
-                :before-upload="beforeAvatarUpload2">
-                <img v-if="imageUrl2" :src="imageUrl2" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <el-image
+                style="width: 100px; height: 100px"
+                :src="postDate.image2"
+                :fit="fit">
+            </el-image>
         </el-form-item>
         <el-form-item label="板式选择">
-            <el-radio-group v-model="radio">
+            <el-radio-group v-model="postDate.type">
                 <el-radio :label="1">首页版式一</el-radio>
                 <el-radio :label="2">首页版式二</el-radio>
                 <el-radio :label="3">首页版式三</el-radio>
@@ -69,6 +63,7 @@
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="dialogHome">预览</el-button>
+            <el-button type="primary" @click="saveBtn">保存</el-button>
         </el-form-item>
         </el-form>
     </div>  
@@ -81,10 +76,9 @@ export default {
     data () {
         return {
             msg: '院系首页',
+            id:1,
             input:'',
             content:'',
-            imageUrl: 'http://39.106.77.121:8081/files-upload/images/forum-index/1-e1414fba6ae14e298a47a7128c4b6649.png', //图片1
-            imageUrl2: 'http://39.106.77.121:8081/files-upload/images/forum-index/1-e1414fba6ae14e298a47a7128c4b6649.png', //图片2
             //富文本配置文件
             editorOption:{
                 // modules:{
@@ -95,15 +89,16 @@ export default {
                 // }
             },
             //所有输入框model
-            form: {
-                name: '',
-                region: '',
-                date1: '',
-                date2: '',
-                delivery: false,
-                type: [],
-                resource: '',
-                desc: ''
+            postDate: {
+                forumId: '1',//论坛id
+                about:'',//关于我们(中文)	
+                conferenceTime:'',//会议时间(中文)	
+                conferenceOverview:'',//会议标题(中文)	
+                conferencePlace:'',//会议地点(中文)	
+                conferenceNotice:'',//会议通知(中文)	
+                image1:'',//论坛背景图片一	
+                image2:'',//论坛背景图片二	
+                type:'',//页面板式 1：版式一 2：版式二 3：版式三
             },
             //单选
             radio: 3
@@ -115,7 +110,13 @@ export default {
     },
     methods: {
         init(){
+            this.getList();
+        },
 
+        async getList(){
+            let {data}  = await this.$api.get("/forum/index/"+this.id)
+            console.log("获取的院系首页数据",data);
+            this.postDate = {...data.data};
         },
 
         //关于我们
@@ -173,10 +174,21 @@ export default {
             this.$message.error('上传头像图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
+        },
+        async saveBtn(){
+            console.log("保存",this.postDate);
+            let data = await this.$api.post("/forum/index",this.postDate);
+            console.log(data);
+            // if(data.data.code){
+            //     this.$message({
+            //         message: '申请成功',
+            //         type: 'success'
+            //         });
+            // }
         }
     },
     components: {
-
+        
     }
 }
 </script>

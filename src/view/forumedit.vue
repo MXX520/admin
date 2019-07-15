@@ -40,14 +40,7 @@ export default {
     name: 'App',
     data() {
       return {
-        data: [{
-          label: '一级 汇顶科技阿1',
-          children: [{
-            label: '二级 1-1'
-          },{
-            label: '二级 1-2'
-          }]
-        }],
+        data: [],
         defaultProps: {
           children: 'children',
           label: 'label'
@@ -58,8 +51,18 @@ export default {
     },
     created() {
         this.initEvt();
+        this.getList();
     },
     methods: {
+        async getList(){
+            let {data}  = await this.$api.get("forum/tree/open/list")
+            console.log("获取论坛编辑列表",data);
+            console.log("获取论坛编辑列表2",data.data[0].children);
+            if(!data){
+                return;
+            }
+            this.data =  data.data[0].children;
+        },
         handleNodeClick(){
 
         },

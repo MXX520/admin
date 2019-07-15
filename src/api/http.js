@@ -185,3 +185,32 @@ const api = {
  }
 }
 export default api;
+
+//代码示例
+// post
+/*let data = await this.$api.post("forum",{
+  title:this.form.name,
+  sponsor:this.form.people,
+  sponsorPhone:this.form.phone,
+  sponsorEmail:this.form.email,
+  applyReason:this.form.reson,
+  scaleOfMark:this.form.desc
+})
+if(data.data.code){
+  this.$message({
+      message: '申请成功',
+      type: 'success'
+      });
+}*/
+
+
+
+// get
+/*let {data}  = await this.$api.get("forum/list",{
+  pageNum:this.currentPage,
+  pageSize:10,
+  order:"id",
+  orderType:"desc",
+  query:this.filters.name,
+  type:"1"
+})*/
