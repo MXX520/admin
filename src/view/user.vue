@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="margin-top:20px;">
    <section>
 
 		<!--工具条已通过-->
@@ -12,7 +12,7 @@
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
 				</el-form-item>
 					<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">新增</el-button>
+					<el-button type="primary" v-on:click="showUsers">新增</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -30,16 +30,16 @@
 			</el-table-column>
 			<el-table-column prop="roleName" label="所属角色" width="140" >
 			</el-table-column>
-			<el-table-column prop="schoolName" label="所属院系" min-width="100" >
+			<el-table-column prop="facultyName" label="所属院系" min-width="100" >
 			</el-table-column>
 			<el-table-column prop="createTime" label="创建时间" min-width="170" >
 			</el-table-column>
 		
-			<el-table-column label="操作" width="240" fixed="right">
+			<el-table-column label="操作" width="260" fixed="right">
 				<template scope="scope">
 				
-					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
-          <el-button  size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>
+					<el-button  size="small" @click="handleD(scope.$index, scope.row)">详情</el-button>
+          <el-button  size="small" @click="changeUser(scope.$index, scope.row)">修改</el-button>
           <el-button  size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -60,38 +60,216 @@
 
 	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
-					<el-input v-model="title" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="所属院系">
-					<el-input v-model="school" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人">
-					<el-input v-model="people" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人电话">
-					<el-input v-model="phone" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人邮箱">
-					<el-input v-model="email" disabled="true"></el-input>
-				</el-form-item>
-				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" disabled="true"></el-input>
-		</el-form-item>
-			 <el-form-item label="评分标准">
-					<el-input v-model="biaozhu" disabled="true"></el-input>
-				</el-form-item>
+				<div class="clearfix" style="overflow:hidden;">
+
+			
+				<div class="item">
+					<el-form-item label="用户名">
+						<el-input v-model="title" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="邮箱">
+						<el-input v-model="school" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="手机号">
+						<el-input v-model="people" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="所属角色">
+						<el-input v-model="phone" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				
+				<div class="item">
+					 <el-form-item label="所属院系">
+						<el-input v-model="email" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="用户状态">
+						<el-input v-model="state" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="学校名称">
+						<el-input v-model="schoolName" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="专业名称">
+						<el-input v-model="major" disabled="true"></el-input>
+					</el-form-item>
+				</div>
+				
+					</div>
+				
 			
 
 				
 			</el-form>
-			<div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click.native="editSubmit(1)" :loading="editLoading">审核通过</el-button>
-				<el-button @click.native="editSubmit(0)">审核不通过</el-button>
+	
+		</el-dialog>
+		<el-dialog title="论坛审核" :visible.sync="addUsers" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+				<div class="clearfix" style="overflow:hidden;">
+
+			
+				<div class="item">
+					<el-form-item label="用户名">
+						<el-input v-model="title" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="邮箱">
+						<el-input v-model="school" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="手机号">
+						<el-input v-model="people" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="所属角色">
+						
+							  <el-select v-model="phone" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in roleList"
+							:key="item.id"
+							:label="item.roleName"
+							:value="item.id">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="初始密码">
+						<el-input v-model="moren" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="所属院系">
+							  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in schoolList.list"
+							:key="item.id"
+							:label="item.facultyName"
+							:value="item.id">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="用户状态">
+						  <el-select v-model="state" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="学校名称">
+						<el-input v-model="schoolName" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="专业名称">
+						<el-input v-model="major" ></el-input>
+					</el-form-item>
+				</div>
+				
+					</div>
+			
+			
+
+				
+			</el-form>
+				<div slot="footer" class="dialog-footer" style="text-align:center">
+       
+				<el-button @click.native="addNew()">新增</el-button>
 			</div>
 		</el-dialog>
-
-
+		<el-dialog title="论坛审核" :visible.sync="changeUsers" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+				<div class="clearfix" style="overflow:hidden;">
+				<div class="item">
+					<el-form-item label="用户名">
+						<el-input v-model="title" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="邮箱">
+						<el-input v-model="school" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="手机号">
+						<el-input v-model="people" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					<el-form-item label="所属角色">
+						<el-select v-model="phone" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in roleList"
+							:key="item.id"
+							:label="item.roleName"
+							:value="item.id">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				
+				<div class="item">
+					 <el-form-item label="所属院系">
+							  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in schoolList.list"
+							:key="item.id"
+							:label="item.facultyName"
+							:value="item.id">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="用户状态">
+						  <el-select v-model="state" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+							</el-option>
+						</el-select>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="学校名称">
+						<el-input v-model="schoolName" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="专业名称">
+						<el-input v-model="major" ></el-input>
+					</el-form-item>
+				</div>
+				
+					</div>
+			</el-form>
+				<div slot="footer" class="dialog-footer" style="text-align:center">
+       
+				<el-button @click.native="changeNew()">修改</el-button>
+			</div>
+		</el-dialog>
 	
 		
 	</section>
@@ -100,7 +278,7 @@
 <script>
 
 
-import { debug } from 'util';
+import { debug, debuglog } from 'util';
 	// import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
 	
@@ -112,12 +290,20 @@ import { debug } from 'util';
 					name: ''
 				},
 				title:"",
+				state:"1",
+				schoolName:"",
+				major:"",
+				yuanxi:"",
+				jingli:"",
+				moren:"abc123456",
+				lishi:"",
 				school:"",
 				people:"",
 				phone:"",
-				email:"",
+				email:"2",
 				reson:"",
 				biaozhu:"",
+				changeUsers:false,
 				total:10,
 				currentPage:1,
 				users: [],
@@ -125,7 +311,16 @@ import { debug } from 'util';
 				page: 1,
 				listLoading: false,
 				sels: [],//列表选中列
-
+				 options: [{
+				value: 1,
+				label: '启用'
+				}, {
+				value: 2,
+				label: '冻结'
+				}, {
+				value: 3,
+				label: '删除'
+				}],
 				editFormVisible: false,//编辑界面是否显示
 				editLoading: false,
 				editFormRules: {
@@ -158,28 +353,93 @@ import { debug } from 'util';
 					age: 0,
 					birth: '',
 					addr: ''
-				}
+				},
+				addUsers:false
 
 			}
 		},
 		methods: {
+		   async changeUser(index,row){
+			   	this.changeUsers = true;
+				this.title = row.userName;
+				this.school = row.email;
+				this.people = row.phone;
+				this.phone = row.roleName;
+				this.email = row.majorName;
+				this.state = row.status;
+				this.schoolName =  row.schoolName;
+				this.major = row.facultyName
+				this.jingli = row.academicExperience;
+				this.lishi = row.participateInHistory;
+			},
+			async handleDel(index,row){
+				this.$confirm('此操作将删除该用户, 是否继续?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+				}).then(async () => {
+					let {data} = await this.$api.delete("user/"+row.id)
+					if(data.code=="01"){
+
+						this.getUsers();
+					}
+				}).catch(() => {
+				this.$message({
+					type: 'info',
+					message: '已取消删除'
+				});          
+				});
+			},
+			showUsers(){
+				this.title = "";
+				this.school = "";
+				this.people = "";
+				this.phone = "";
+				this.email = "";
+				this.state = "";
+
+				this.schoolName = "";
+				this.major = "";
+				this.jingli = "";
+				this.lishi = "";
+				this.addUsers = true;
+
+			},
+			async addNew(){
+				let {data} = await this.$api.post("/user",{
+					userName:this.title,
+					email:this.school,
+					passWord:this.moren,
+					phone:this.people,
+					schoolName:this.schoolName,
+					majorName:this.major,
+					status:this.state,
+					roleId:this.phone,
+					facultyId:this.email
+				})
+				if(data.code=="01"){
+					this.addUsers = false
+				}else{
+					 this.$message.error(data.msg);
+				}
+				console.log(data)
+			},
 			//性别显示转换
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
 			handleCurrentChange(val) {
-				this.page = val;
+				this.currentPage = val;
 				this.getUsers();
 			},
-			handleCurrentChange(){
-				this.getUsers()
-			},
+		
 			async getRList(){
 				let {data} = await this.$api.get("role/list",{
 
 				})
 				
 				this.roleList = data.data;
+				this.getUsers();
 			},
 			async getSList(){
 				let {data} = await this.$api.get("faculty/list",{
@@ -187,6 +447,8 @@ import { debug } from 'util';
 				})
 				
 				this.schoolList = data.data;
+				
+				this.getRList();
 			},
 			//获取用户列表
 		async getUsers() {
@@ -208,9 +470,11 @@ import { debug } from 'util';
 						list[i].roleName = this.roleList[j].roleName;
 					}
 				}
-				for(let z in this.schoolList){
-					if(list[i].facultyId == this.schoolList[z].id){
-						list[i].schoolName = this.schoolList[z].facultyName;
+				for(let z in this.schoolList.list){
+				
+					if(list[i].facultyId == this.schoolList.list[z].id){
+					
+						list[i].facultyName = this.schoolList.list[z].facultyName;
 					}
 				}
 				
@@ -221,17 +485,22 @@ import { debug } from 'util';
 			
 			},
 			//删除
-			async handleDel (index, row) {
+			async handleD (index, row) {
 				console.log(index,row)
 				this.addFormVisible = true;
-				let {data} = await this.$api.get("forum/"+row.id)
-				this.title = data.data.title;
-				this.school = data.data.facultyName;
-				this.people = data.data.sponsor;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
-				this.reson = data.data.applyReason;
-				this.biaozhu =  data.data.scaleOfMarkName;
+				
+				this.title = row.userName;
+				this.school = row.email;
+				this.people = row.phone;
+				this.phone = row.roleName;
+				this.email = row.majorName;
+				this.state = row.status;
+				this.schoolName =  row.schoolName;
+				this.major = row.facultyName
+				this.jingli = row.academicExperience;
+				this.lishi = row.participateInHistory;
+
+
 				console.log(data)
 			},
 			//显示编辑界面
@@ -326,13 +595,18 @@ import { debug } from 'util';
 		},
 		mounted() {
 			this.getSList();
-			this.getRList();
-			this.getUsers();
+			
 		}
 	}
 
 </script>
 
 <style scoped>
-
+.item{
+	float: left;
+	width: 50%
+}
+.el-select{
+	width: 100%
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="margin-top:20px">
    <section>
 
 		<!--工具条已通过-->
@@ -12,7 +12,7 @@
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
 				</el-form-item>
 					<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">新增</el-button>
+					<el-button type="primary" v-on:click="add">新增</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
@@ -22,24 +22,15 @@
 			
 			<el-table-column type="index" label="序号"  width="80">
 			</el-table-column>
-			<el-table-column prop="userName" label="用户名称" width="100" >
+			<el-table-column prop="facultyName" label="院系名称" width="160" >
 			</el-table-column>
-			<el-table-column prop="email" label="邮箱" width="240"  >
-			</el-table-column>
-			<el-table-column prop="phone" label="手机号" width="160" >
-			</el-table-column>
-			<el-table-column prop="roleName" label="所属角色" width="140" >
-			</el-table-column>
-			<el-table-column prop="schoolName" label="所属院系" min-width="100" >
-			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" min-width="170" >
-			</el-table-column>
+			
 		
-			<el-table-column label="操作" width="240" fixed="right">
+			<el-table-column label="操作" width="240" >
 				<template scope="scope">
 				
-					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
-          <el-button  size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>
+					
+          <el-button  size="small" @click="handleChange(scope.$index, scope.row)">修改</el-button>
           <el-button  size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -60,37 +51,26 @@
 
 	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
-					<el-input v-model="title" disabled="true"></el-input>
+				 <el-form-item label="院系名称">
+					<el-input v-model="title" ></el-input>
 				</el-form-item>
-				 <el-form-item label="所属院系">
-					<el-input v-model="school" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人">
-					<el-input v-model="people" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人电话">
-					<el-input v-model="phone" disabled="true"></el-input>
-				</el-form-item>
-				 <el-form-item label="发起人邮箱">
-					<el-input v-model="email" disabled="true"></el-input>
-				</el-form-item>
-				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" disabled="true"></el-input>
-		</el-form-item>
-			 <el-form-item label="评分标准">
-					<el-input v-model="biaozhu" disabled="true"></el-input>
-				</el-form-item>
-			
-
-				
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click.native="editSubmit(1)" :loading="editLoading">审核通过</el-button>
-				<el-button @click.native="editSubmit(0)">审核不通过</el-button>
+        <el-button type="primary" @click.native="editSubmit()" :loading="editLoading">新增</el-button>
+			
 			</div>
 		</el-dialog>
-
+		<el-dialog title="论坛审核" :visible.sync="changeFormVisible" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+				 <el-form-item label="院系名称">
+					<el-input v-model="oldTitle" ></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer" style="text-align:center">
+        <el-button type="primary" @click.native="edit()" :loading="editLoading">修改</el-button>
+			
+			</div>
+		</el-dialog>
 
 	
 		
@@ -118,7 +98,9 @@ import { debug } from 'util';
 				email:"",
 				reson:"",
 				biaozhu:"",
+				changeFormVisible:false,
 				total:10,
+				oldTitle:"",
 				currentPage:1,
 				users: [],
 				total: 0,
@@ -163,17 +145,32 @@ import { debug } from 'util';
 			}
 		},
 		methods: {
+			handleChange(index,row){
+				this.oldTitle =  row.facultyName;
+				this.changeFormVisible = true;
+			},
+			async edit(){
+				let {data} = await this.$api.put("faculty/"+row.id)
+				if(data.code=="01"){
+					this.changeFormVisible = false;
+					this.getUsers()
+				}else {
+					this.$message.error(data.msg);
+				}
+			},
+			add(){
+				this.addFormVisible = true;
+			},
+
 			//性别显示转换
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
 			handleCurrentChange(val) {
-				this.page = val;
+				this.currentPage = val;
 				this.getUsers();
 			},
-			handleCurrentChange(){
-				this.getUsers()
-			},
+			
 		
 			//获取用户列表
 		async getUsers() {
@@ -182,7 +179,7 @@ import { debug } from 'util';
 					name: this.filters.name
 				};
 				
-			let {data}  = await this.$api.get("user/list",{
+			let {data}  = await this.$api.get("faculty/list",{
 				pageNum:this.currentPage,
 				pageSize:10,
 				query:this.filters.name
@@ -209,17 +206,21 @@ import { debug } from 'util';
 			},
 			//删除
 			async handleDel (index, row) {
-				console.log(index,row)
-				this.addFormVisible = true;
-				let {data} = await this.$api.get("forum/"+row.id)
-				this.title = data.data.title;
-				this.school = data.data.facultyName;
-				this.people = data.data.sponsor;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
-				this.reson = data.data.applyReason;
-				this.biaozhu =  data.data.scaleOfMarkName;
-				console.log(data)
+				this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+				}).then(async () => {
+					let {data} = await this.$api.delete("faculty/"+row.id)
+					if(data.code=="01"){
+						this.getUsers()
+					}
+				}).catch(() => {
+				this.$message({
+					type: 'info',
+					message: '已取消删除'
+				});          
+				});
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {
@@ -238,28 +239,13 @@ import { debug } from 'util';
 				};
 			},
 			//编辑
-			editSubmit: function () {
-				this.$refs.editForm.validate((valid) => {
-					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							this.editLoading = true;
-							//NProgress.start();
-							let para = Object.assign({}, this.editForm);
-							para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-							editUser(para).then((res) => {
-								this.editLoading = false;
-								//NProgress.done();
-								this.$message({
-									message: '提交成功',
-									type: 'success'
-								});
-								this.$refs['editForm'].resetFields();
-								this.editFormVisible = false;
-								this.getUsers();
-							});
-						});
-					}
-				});
+			async editSubmit() {
+				let {data} = await this.$api.post("faculty",{
+					facultyName:this.title
+				})
+				if(data.code=="01"){
+					this.addFormVisible = false
+				}
 			},
 			//新增
 			addSubmit: function () {
