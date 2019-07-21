@@ -9,6 +9,7 @@ import store from './store/index.js'
 import Axios from 'axios'
 import api from './api/http'
 import util from './api/utils'
+import consts from './api/consts'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
@@ -26,6 +27,7 @@ Vue.prototype.$axios = Axios;
 Vue.prototype.$api = api;
 Vue.prototype.$dayjs = dayjs;
 Vue.prototype.$util = util;
+Vue.prototype.$consts = consts;
 
 
 

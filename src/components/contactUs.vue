@@ -4,10 +4,19 @@
             class="contactUs"
             v-model="content" 
             ref="aboutUs" 
-            :options="editorOption" 
-            @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
-            @change="onEditorChange($event)">
+            :options="editorOption">
         </quill-editor>
+        <quill-editor 
+            class="contactUs"
+            v-model="contentEn" 
+            ref="aboutUs" 
+            :options="editorOption">
+        </quill-editor>
+        <el-row>
+            <el-button type="primary" @click="saveBtn">保存</el-button>
+            <el-button type="primary" @click="previewCh">中文预览</el-button>
+            <el-button type="primary" @click="previewEn">英文预览</el-button>
+        </el-row>
     </div>  
 </template>
 
@@ -18,7 +27,9 @@ export default {
     data () {
         return {
             msg: '联系我们',
-            content:'',
+            contentEn:'', //中文
+            content:'', //英文
+            id:'',//左侧论坛树id
             //富文本配置
             editorOption: {
 
@@ -26,20 +37,60 @@ export default {
         }
     },
     created() {
-        this.init();
+        this.initEvt();
     },
     methods: {
-        init(){
+        initEvt(){
+            this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
+                this.id = item;
+                this.getList();
+            });
+        },
 
+        //获取数据
+        async getList(){
+            let {data}  = await this.$api.get("/forum/contact/"+this.id)
+            console.log("获取联系我们数据",data);
+            this.content = data.data.content;
+            this.contentEn = data.data.contentEn;
         },
-        //联系我们
-        onEditorBlur(){//失去焦点事件
+
+        //保存
+        async saveBtn(){
+            let postData = {
+                "forumId":this.id,
+                "content":this.content,
+                "contentEn":this.contentEn
+            }
+            console.log(this.content);
+            let {data}  = await this.$api.post("/forum/contact",postData);
+            console.log("保存后",data);
+            if(data.code == '01'){
+                this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                });
+            }
         },
-        onEditorFocus(){//获得焦点事件
+
+        //中文预览
+        previewCh(){
+            let data = {
+                type:'contactUs',
+                content:this.content
+            }
+            this.$eventHub.$emit(this.$consts.Event.SHOW_PREVIEW, data)
         },
-        onEditorChange(ev){//内容改变事件
-            console.log(ev);
+
+        //英语预览
+        previewEn(){
+            let data = {
+                type:'contactUs',
+                content:this.contentEn
+            }
+            this.$eventHub.$emit(this.$consts.Event.SHOW_PREVIEW, data)
         }
+
     },
     components: {
 
@@ -49,10 +100,10 @@ export default {
 
 <style scoped lang="less">
     /deep/ .quill-editor{
-        min-height:500px;
+        min-height:300px;
         
     }
     /deep/ .ql-container{
-        min-height:400px;
+        min-height:300px;
     }
 </style>
