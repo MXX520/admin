@@ -1,14 +1,20 @@
 <template>
-    <div>
-        <el-row>
-            <el-col :span="4">
-                <div class="grid-content bg-purple">
-                    <div class="btnLeft" :class="btnIndex == item.id ? 'btnLeftShow' : 'btnLeftHide' " v-for="(item,index) in btnList" @click="benListClick(item.id)" :key="index">
-                        {{item.title}}
-                    </div>
-                </div>
+    <div id='app'>
+        <el-row class="forumList-box" ref="echartsWrapper">
+            <el-col :span="4" class="forumList">
+                <el-tree :data="btnList"
+                ref="tree"
+                show-checkbox
+                accordion
+                :expand-on-click-node="false"
+                :current-node-key="currentNodekey"
+                node-key="id"
+                :default-expanded-keys="[1]"
+                :props="defaultProps"
+                @node-click="benListClick"
+                ></el-tree>
             </el-col>
-            <el-col :span="20">
+            <el-col :span="18">
                 <div class="grid-content bg-purple-light">
                     <el-row class="content-top">
                         <el-table
@@ -130,7 +136,12 @@ import showPdf from '../components/showPdf'
             formLabelWidth: '120px',
             src: '',
             dialogVisible:false,
-            isImg:''
+            isImg:'',
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            },
+            currentNodekey:'',//树结构默认选中的key
         };
     },
     components:{
@@ -156,8 +167,15 @@ import showPdf from '../components/showPdf'
         },
         async loadListLeft(){
             let getData = await this.$api.get('forum/tree/list');
-            console.log("加载数据",getData)
+            console.log("加载数据-列表数据----",getData.data.data)
             this.btnList = getData.data.data;
+            if(this.btnList.length > 0){
+                this.currentNodekey = this.btnList[0].children[0].id;
+                this.$refs.tree.setCurrentKey(this.currentNodekey);//一定要加这个选中了否则样式没有出来
+                console.log("this.currentNodekey",this.currentNodekey);
+            }
+           
+            
         },
         async loadListRight(){
             let params = {
@@ -169,7 +187,7 @@ import showPdf from '../components/showPdf'
                 query:this.formData.query//查询条件	
             }
             let getData = this.$api.get(`paper/list`,params);
-
+            console.log("params",params);
             getData.then(res=>{
                 console.log("加载时间",res)
                 if(res){
@@ -179,10 +197,9 @@ import showPdf from '../components/showPdf'
                 }
             })
 
-            // console.log("加载时间",res)
-            // this.tableData = res.data.list;
-            // this.total = res.data.total;
-            // this.page = res.data.pages;
+            this.tableData = res.data.list;
+            this.total = res.data.total;
+            this.page = res.data.pages;
             // .then(res=>{
             //     console.log("加载时间",res)
             //     if(res){
@@ -209,9 +226,10 @@ import showPdf from '../components/showPdf'
           window.open('http://39.106.77.121:8086/paper/download')
         //   window.location.href = 'http://39.106.77.121:8086/paper/download'
         },
-        benListClick(id){
-            this.btnIndex = id;
-            this.formData.forumId = id;
+        benListClick(ev){
+            console.log(ev);
+            this.btnIndex = ev.id;
+            this.formData.forumId = ev.id;
             this.loadListRight();
         },
         handleSizeChange(val) {
@@ -229,7 +247,7 @@ import showPdf from '../components/showPdf'
   };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 
 .btnLeft{
     width:80%;
@@ -280,7 +298,6 @@ import showPdf from '../components/showPdf'
 .pdf-show{
     width:700px;
     height:600px;
-    
 }
 
 .close{
@@ -292,5 +309,67 @@ import showPdf from '../components/showPdf'
     right: 10%;
     top: 10%;
 }
+
+/deep/ .is-current{
+    color:#409EFF;
+    font-weight:600;
+}
+.forumList-box{
+    height:100%;
+    .forumList{
+        height:90%;
+        border:solid 1px #ccc;
+        overflow-x:scroll;
+        margin-top:10px;
+        margin-right:20px;
+        /deep/ .el-tree{
+            width:200%;
+        }
+        /deep/ span{
+            font-size:12px;
+        }
+    }
+    .forumTab{
+    }
+}
+
+.show-home-box{
+    position:absolute;
+    z-index:999;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+    background:rgba(0,0,0,0.6);
+    .show-home{
+        position:absolute;
+        width:800px;
+        height:600px;
+        background:#fff;
+        
+        .close-box{
+            height:40px;
+            background:#ccc;
+            width:100%;
+            position:relative;
+        }
+        .el-icon-close{
+            font-size:40px;
+            font-weight:700;
+            color:#fff;
+            position:absolute;
+            cursor:pointer;
+            right:0;
+        }
+        .content-box{
+            height:560px;
+            overflow:scroll;
+        }
+        .showEssayNotice ,.showContactUs{
+            padding:20px;
+        }
+    }
+}
+
 </style>
 

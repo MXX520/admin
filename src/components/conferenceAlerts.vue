@@ -2,10 +2,10 @@
     <div id="app">
         <el-row>
             <el-col :span="10">
-                <el-input v-model="input" placeholder="请输入内容"></el-input>
+                <el-input v-model="query" placeholder="请输入内容"></el-input>
             </el-col>
             <el-col :span="10" style="marginLeft:20px">
-                <el-button type="primary">主要按钮</el-button>
+                <el-button type="primary" @click="queryClick">查询</el-button>
                 <el-button type="primary" @click="addClick">新增</el-button>
             </el-col>
         </el-row>
@@ -17,11 +17,13 @@
                 <el-table-column
                     prop="id"
                     label="序号"
+                    height="10"
                     width="150">
                 </el-table-column>
                 <el-table-column
                     prop="title"
                     label="会议标题"
+                    height="20px"
                     width="120">
                 </el-table-column>
                 <el-table-column
@@ -54,34 +56,36 @@
                 </template>
                 </el-table-column>
             </el-table>
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page.sync="size"
+                layout="total, prev, pager, next"
+                :total="total">
+            </el-pagination>
         </el-row>
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-            <el-form ref="form" :model="form" label-width="80px">
-                <el-form-item label="序号">
-                    <el-input v-model="form.id"></el-input>
-                </el-form-item>
+            <el-form label-width="80px">
                 <el-form-item label="会议标题">
                     <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="会议简介">
                     <el-input v-model="form.briefIntroduction" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="会议内容">
+                    <el-input v-model="form.content" autocomplete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="会议来源">
                     <el-input v-model="form.source" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="浏览次数">
-                    <el-input v-model="form.viewCount" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="创建时间">
-                    <el-input v-model="form.createTime" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
+            </el-form> 
             <div slot="footer" class="dialog-footer" v-if="isBtn">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" v-show="isSave" @click="modifyClick">更新</el-button>
                 <el-button type="primary" v-show="!isSave" @click="saveClick">保存</el-button>
             </div>
         </el-dialog>
+        
     </div>  
 </template>
 
@@ -96,44 +100,69 @@ export default {
             isSave:false,//是否显示报错按钮或者更新按钮
             isBtn:false,//是否显示弹出窗操作按钮
             dialogFormVisible:false,
-            tableData: [{
-                "createTime":"2019-06-09 11:39:07",//创建时间
-                "briefIntroduction":"张京顺老师针对发言人的报告和讨论内容进行点评，他认为从宏大的教育科技主题中寻找细节是比较困难的，建议同学们在相关研究中从小到大，点滴积累形成架构。在“跨文化教育与社会流动”的圆桌环节，同学们分别就公民教育、性别问题、工程教育、学术领导力问题进行讨论。",//会议简介
-                "id":3,//主键
-                "source":"清华大学网站",//来源
-                "viewCount":23,//浏览次数
-                "title":"老师发言1",//标题
-                "content":"",//内容
-                "forumId":7//论坛id
-            }],
-            form: {},
+            tableData: [],
+            currentPage: 4,//第几页
+            total:10,//总页数
+            pageSize:10,//每次请求页数
+            size:1,//当前页面
+            isPagin:false,
+            query:'',//查询字段
+            form: {
+                forumId: '',
+                id: '',
+                title: '',
+                content:'',
+                briefIntroduction: '',
+                source: '',
+                viewCount: '',
+                createTime: ''
+            },
         }
     },
     created() {
-        this.init();
+        this.initEvt();
+        console.log("---------看看单击执行2");
     },
     methods: {
-        init(){
-            this.getList();
+        initEvt(){
+            this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
+                console.log("------2",item);
+                this.id = item;
+                this.getList();
+            });
         },
         async getList(){
-            let {data}  = await this.$api.get("/forum/express/list/"+this.id)
+            let params = {
+                pageNum:this.size,
+                pageSize:10,
+                order:null,
+                orderType:null,
+                forumId:this.id,
+                query:this.query
+            }
+            let {data}  = await this.$api.get("/forum/express/list",params)
             console.log("会议快讯333",data);
-            this.postDate = {...data.data};
+            this.total = data.data.total;//总页数
+            this.isPagin = true;
+            console.log("this.total",this.total);
+            this.tableData = data.data.list;//数据
         },
         
         //详情
-        detailClick(row) {
+        async detailClick(row) {
             console.log(row);
-            this.form = row;
+            let {data}  = await this.$api.get("/forum/express/"+row.id);
+            console.log("会议快讯详情-",data);
+            this.form = data.data;
             this.isBtn = false;
             this.dialogFormVisible = true;
         },
 
         //编辑
-        editorClick(row){
+        async editorClick(row){
             console.log(row);
-            this.form = row;
+            let {data}  = await this.$api.get("/forum/express/"+row.id);
+            this.form = data.data;
             this.isSave = true;
             this.isBtn = true;
             this.dialogFormVisible = true;
@@ -141,7 +170,18 @@ export default {
 
         //修改
         async modifyClick(){
-            let data = await this.$api.post("/forum/express/"+this.id,this.form)
+            let params = {
+                title:this.form.title,
+                briefIntroduction:this.form.briefIntroduction,
+                content:this.form.briefIntroduction,
+                source:this.form.briefIntroduction
+            }
+
+            console.log("修改1",params);
+            console.log("修改1",this.id);
+            let data = await this.$api.put("forum/express/"+this.id,params)
+            this.dialogFormVisible = false;
+            this.getList();
             if(data.data.code){
                 this.$message({
                 message: '修改成功',
@@ -156,6 +196,38 @@ export default {
             this.isBtn = true;
             this.isSave = false;
             this.form = [];
+        },
+
+        //保存
+        async saveClick(){
+            let postData = {
+                forumId: this.id,
+                title: this.form.title,
+                briefIntroduction: this.form.briefIntroduction,
+                source: this.form.source,
+            };
+            console.log(postData);
+            let data = await this.$api.post("/forum/express",postData);
+            this.dialogFormVisible = false;
+            this.getList();
+            if(data.data.code){
+                this.$message({
+                    message: '新增成功',
+                    type: 'success'
+                });
+            }
+        },
+
+        //查询
+        queryClick(){
+            this.size = 1;
+            this.getList();
+        },
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            console.log(`当前页: ${val}`);
         }
     },
     components: {
@@ -165,5 +237,12 @@ export default {
 </script>
 
 <style scoped lang="less">
-
+    /deep/ .cell{
+        max-height: 20px !important;
+        overflow: auto !important;
+    }
+    .pagin{
+        margin-top:20px;
+    }
+    
 </style>

@@ -7,31 +7,29 @@
                         <div class="title">
                             关于我们
                         </div>
-                        <div class="about">
-                            {{this.txt}}
-                        </div>
+                        <div class="about" v-html="showContent.about"></div>
                     </div>
                 </div>
                 <div class="img">
-                    <img :src="img" alt="">
+                    <img :src="showContent.image1" alt="">
                 </div>
             </div>
             <div class="item-2">
             
                 <div class="img">
-                    <img :src="img2" alt="">
+                    <img :src="showContent.image2" alt="">
                     <div class="dizhi">
                         <div class="clearfix d_it">
                             <div class="title">会议标题：</div>
-                            <div class="value">{{title}}</div>
+                            <div class="value">{{showContent.conferenceOverview}}</div>
                         </div>
                         <div class="clearfix d_it">
                             <div class="title">会议时间：</div>
-                            <div class="value">{{time}}</div>
+                            <div class="value">{{showContent.conferenceTime}}</div>
                         </div>
                         <div class="clearfix d_it">
                             <div class="title">会议地点：</div>
-                            <div class="value">{{address}}</div>
+                            <div class="value">{{showContent.conferencePlace}}</div>
                         </div>
                     </div>
                 </div>
@@ -40,10 +38,7 @@
                         会议通知
                     </div>
                     <div class="m-it">
-                        <div class="m-title">
-
-                        </div>
-                        <div v-show="list.length==0" class="nodata">暂无数据</div>
+                        <div class="m-title" v-html="showContent.conferenceNotice"></div>
                     </div>
                 </div>
             </div>
@@ -63,16 +58,24 @@ export default {
             title:"444",
             time:"555",
             address:"666",
-            list:[]
+            list:[],
+            showContent:''
         }
     },
     created() {
-        this.init();
+        this.initEvt();
     },
     methods: {
-        init(){
-
-        }
+        //定义广播事件
+        initEvt(){
+            this.$eventHub.$on(this.$consts.Event.SHOW_PREVIEW, (item)=>{
+                console.log("数据传输-----",item);
+                if(item.type != "departmentHomepage"){
+                    return;
+                }
+                this.showContent = item.content;
+            });
+        },
     },
     components: {
 

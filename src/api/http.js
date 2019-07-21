@@ -26,21 +26,39 @@ axios.interceptors.request.use(config => {
 // 添加响应拦截器
 axios.interceptors.response.use(
   response => {
+    console.log("拦截器成功",response);
     console.log("拦截器成功",response.data.code);
     if(response.data.code=="401"){
+      Message({
+        message: 'token已过期',
+        type: 'warning'
+      });
+      router.push({path:"/login"})
+    }else if(response.data.code=="402"){
+      Message({
+        message: '缺少必要参数',
+        type: 'warning'
+      });
       router.push({path:"/login"})
     }else if(response.data.code=="404"){
       router.push({path:"/404"})
     }else if(response.data.code=="403"){
+      Message({
+        message: '无权访问',
+        type: 'warning'
+      });
       router.push({path:"/403"})
     }else if(response.data.code=="500"){
       router.push({path:"/500"})
-    }if(response.data.code=="06"){
+    }else if(response.data.code=="06"){
       Message({
         message: '密码错误',
         type: 'warning'
       });
       console.log("d");
+      return;
+    }else if(response.data.code=="10"){
+      router.push({path:"/login"})
       return;
     }
     return response;
@@ -186,31 +204,3 @@ const api = {
 }
 export default api;
 
-//代码示例
-// post
-/*let data = await this.$api.post("forum",{
-  title:this.form.name,
-  sponsor:this.form.people,
-  sponsorPhone:this.form.phone,
-  sponsorEmail:this.form.email,
-  applyReason:this.form.reson,
-  scaleOfMark:this.form.desc
-})
-if(data.data.code){
-  this.$message({
-      message: '申请成功',
-      type: 'success'
-      });
-}*/
-
-
-
-// get
-/*let {data}  = await this.$api.get("forum/list",{
-  pageNum:this.currentPage,
-  pageSize:10,
-  order:"id",
-  orderType:"desc",
-  query:this.filters.name,
-  type:"1"
-})*/

@@ -131,6 +131,7 @@ export default {
     text-align:center;
 }
 /deep/ .navigationItem{
+    margin-bottom:20px;
     span{
         font-weight:700!important;
     }
