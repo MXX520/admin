@@ -18,8 +18,8 @@
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
-                        <el-button type="primary" @click="queryClick">查询</el-button>
-                        <el-button type="primary" @click="addClick">添加审稿人</el-button>
+                        <el-button type="primary" v-if="id" @click="queryClick">查询</el-button>
+                        <el-button type="primary" v-if="id" @click="addClick">添加审稿分组</el-button>
                     </el-col>
                 </el-row>
                 <el-row style="marginTop:20px">
@@ -55,6 +55,32 @@
                 </el-row>
             </el-col>
         </el-row>
+        <el-dialog title="添加审稿分组" :visible.sync="dialogTableVisible">
+            <el-table
+                    ref="multipleTable"
+                    :data="addTableData"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                    @selection-change="handleSelectionChange">
+                <el-table-column
+                    type="selection"
+                    width="55">
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    label="序号"
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="groupName"
+                    label="审稿分组名称"
+                    width="120">
+                </el-table-column>
+            </el-table>
+            <el-row>
+                <el-button type="primary" plain @click="addGrouping">添加到分组</el-button>
+            </el-row>
+        </el-dialog>
     </div>  
 </template>
 
@@ -74,6 +100,10 @@ export default {
         tableData:[],//数据集合
         size:1,//当前页
         total:10,//总页数
+        dialogTableVisible:false,//控制添加审稿分组弹窗的显示
+        addTableData: [],//获取的审稿分组列表
+        addTableDataOk:[],//已选择的审稿分组集合
+        id:''//树id
       };
     },
     created() {
@@ -87,48 +117,96 @@ export default {
             this.getList();
         },
 
-        //获取数据
         async getList(){
+            let {data}  = await this.$api.get("forum/tree/list");
+            console.log("论坛审稿分组--树",data);
+            this.data = data.data;
+        },
+
+        //获取数据
+        async getRecordList(){
             let params = {
                 pageNum:this.size,
                 pageSize:10,
                 order:null,
                 orderType:null,
+                forumId:this.id,
                 query:this.query
             }
-            let {data}  = await this.$api.get("reviewer/group/list",params);
-            console.log("审稿人分组列表",data);
+            let {data}  = await this.$api.get("forum/mapping/list",params);
+            console.log("论坛审稿分组列表",data);
             this.total = data.data.total;//总页数
             console.log("this.total",this.total);
-            this.data = data.data.list;//数据
+            this.tableData = data.data.list;//数据
         },
 
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
+            this.id = ev.id;
+            this.getRecordList();
         },
 
         //查询
         queryClick(){
             this.size = 1;
-            this.getList();
+            this.getRecordList();
         },
 
         //添加
-        addClick(){
-            this.titleDig = '新增';
-            this.dialogFormVisible = true;
-            this.nameDig = '';
+        async addClick(){
+          this.dialogTableVisible = true; 
+          let {data} = await this.$api.get("reviewer/group/forum/tree/list/"+this.id);
+          console.log("论坛审稿分组列表-==-=-=-=",data);
+          this.addTableData = data.data;
+        },
+
+        //添加到分组确认
+        async addGrouping(){
+            let arr = [];
+            this.addTableDataOk.forEach( item => {
+                arr.push(item.id);
+            })
+            console.log("确定添加审稿人id",arr);
+            let {data}  = await this.$api.post("forum/mapping/"+this.id,arr);
+            if(data.code) {
+                this.getRecordList();
+                this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                });
+            }
+            this.dialogTableVisible = false;
+            this.getRecordList();
         },
 
         //删除
         delClick(row){
-            this.$confirm('确定删除该审稿分组？')
+            this.$confirm('确定要将该审稿分组移出当前论坛？')
             .then(item => {
                 console.log(item);
                 this.delClickOk(row);
             })
             .catch(_ => {});
+        },
+
+        //删除确定
+        async delClickOk(row){
+            let {data}  = await this.$api.delete("forum/mapping/"+row.id);
+            if(data.code) {
+                this.getRecordList();
+                this.$message({
+                    message: '删除成功',
+                    type: 'success'
+                });
+            }
+        },
+
+
+        //每次选择审稿人出发
+        handleSelectionChange(row){
+            console.log("选择审稿人",row);
+            this.addTableDataOk = row;
         },
 
         //分页查询

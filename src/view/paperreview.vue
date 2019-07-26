@@ -18,8 +18,7 @@
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
-                        <el-button type="primary" @click="queryClick">查询</el-button>
-                        <el-button type="primary" @click="addClick">添加审稿人</el-button>
+                        <el-button type="primary" v-if="id" @click="queryClick">查询</el-button>
                     </el-col>
                 </el-row>
                 <el-row style="marginTop:20px">
@@ -33,16 +32,29 @@
                             height="10">
                         </el-table-column>
                         <el-table-column
-                            prop="groupName"
-                            label="审稿分组名称"
+                            prop="paperTitle"
+                            label="稿件标题"
                             height="20px">
                         </el-table-column>
                         <el-table-column
-                        fixed="right"
-                        label="操作">
-                        <template slot-scope="scope">
-                            <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
-                        </template>
+                            prop="userName"
+                            label="审稿人员"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="score"
+                            label="得分"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            label="是否通过"
+                            height="20px">
+                            <template slot-scope="scope">{{ scope.row.result == 1 ? '通过' : '未通过' }}</template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="createTime"
+                            label="审核时间"
+                            height="20px">
                         </el-table-column>
                     </el-table>
                     <el-pagination
@@ -74,6 +86,7 @@ export default {
         tableData:[],//数据集合
         size:1,//当前页
         total:10,//总页数
+        id:''//树id
       };
     },
     created() {
@@ -87,48 +100,40 @@ export default {
             this.getList();
         },
 
-        //获取数据
         async getList(){
+            let {data}  = await this.$api.get("forum/tree/list");
+            console.log("论坛审稿分组--树",data);
+            this.data = data.data;
+        },
+
+        //获取数据
+        async getRecordList(){
             let params = {
                 pageNum:this.size,
                 pageSize:10,
                 order:null,
                 orderType:null,
+                forumId:this.id,
                 query:this.query
             }
-            let {data}  = await this.$api.get("reviewer/group/list",params);
-            console.log("审稿人分组列表",data);
+            let {data}  = await this.$api.get("paper/review/list",params);
+            console.log("论坛审稿分组列表",data);
             this.total = data.data.total;//总页数
             console.log("this.total",this.total);
-            this.data = data.data.list;//数据
+            this.tableData = data.data.list;//数据
         },
 
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
+            this.id = ev.id;
+            this.getRecordList();
         },
 
         //查询
         queryClick(){
             this.size = 1;
-            this.getList();
-        },
-
-        //添加
-        addClick(){
-            this.titleDig = '新增';
-            this.dialogFormVisible = true;
-            this.nameDig = '';
-        },
-
-        //删除
-        delClick(row){
-            this.$confirm('确定删除该审稿分组？')
-            .then(item => {
-                console.log(item);
-                this.delClickOk(row);
-            })
-            .catch(_ => {});
+            this.getRecordList();
         },
 
         //分页查询

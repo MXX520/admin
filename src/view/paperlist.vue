@@ -216,14 +216,14 @@ import showPdf from '../components/showPdf'
             type:index
           }
           console.log(params);
-          let getData = this.$api.get(`paper/download`,params);
-          console.log("下载",getData);
-          let a;
-          getData.then((v)=>{
-            a = v;
-          });
-          console.log(a);
-          window.open('http://39.106.77.121:8086/paper/download')
+        //   let getData = this.$api.get(`paper/download`,params);
+        //   console.log("下载",getData);
+        //   let a;
+        //   getData.then((v)=>{
+        //     a = v;
+        //   });
+        //   console.log(a);
+          window.open('http://http://39.100.65.236:8093/paper/download',params)
         //   window.location.href = 'http://39.106.77.121:8086/paper/download'
         },
         benListClick(ev){
