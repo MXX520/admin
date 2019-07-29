@@ -19,7 +19,6 @@
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
                         <el-button type="primary" @click="queryClick">查询</el-button>
-                        <el-button type="primary" @click="addClick">添加审稿人</el-button>
                     </el-col>
                 </el-row>
                 <el-row style="marginTop:20px">
@@ -33,15 +32,41 @@
                             height="10">
                         </el-table-column>
                         <el-table-column
-                            prop="groupName"
-                            label="审稿分组名称"
+                            prop="paperTitle"
+                            label="标题"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="userId"
+                            label="投稿人"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="submitTypeName"
+                            label="投稿方式"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="themeName"
+                            label="投稿主题"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="lastSubmitTime"
+                            label="最后提交时间"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
+                            prop="isAudit"
+                            label="审核状态"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                         fixed="right"
                         label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
+                            <el-button @click="distribution(scope.row)" v-if="scope.row.isDistribute == 0" ype="text" size="small">分发</el-button>
+                            <el-button @click="reDistribution(scope.row)" v-if="scope.row.isDistribute == 1" type="text" size="small">重新分发</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -55,6 +80,19 @@
                 </el-row>
             </el-col>
         </el-row>
+        <el-dialog title="稿件分发" :visible.sync="dialogTableVisible">
+            <el-select v-model="value" placeholder="请选择">
+                <el-option
+                    v-for="item in options"
+                    :key="item.groupId"
+                    :label="item.groupName"
+                    :value="item.groupId">
+                </el-option>
+            </el-select>
+            <el-row>
+                <el-button type="primary" plain @click="distributionOk">分发</el-button>
+            </el-row>
+        </el-dialog>
     </div>  
 </template>
 
@@ -74,6 +112,11 @@ export default {
         tableData:[],//数据集合
         size:1,//当前页
         total:10,//总页数
+        id:'', //论坛树id
+        dialogTableVisible:false,//稿件分发弹窗
+        options:[],//下拉数据
+        value:'',//下拉选择内容
+        paperId:'',//分发的稿件id
       };
     },
     created() {
@@ -96,39 +139,70 @@ export default {
                 orderType:null,
                 query:this.query
             }
-            let {data}  = await this.$api.get("reviewer/group/list",params);
-            console.log("审稿人分组列表",data);
+            let {data}  = await this.$api.get("forum/tree/list");
+            console.log("稿件分发列表树",data);
+            this.data = data.data;//数据
+        },
+
+
+        async getRecordList(){
+            let params = {
+                pageNum:this.size,
+                pageSize:10,
+                order:null,
+                orderType:null,
+                forumId:this.id,
+                query:this.query
+            }
+            let {data}  = await this.$api.get("paper/list",params)
+            console.log("稿件分发记录列表",data);
             this.total = data.data.total;//总页数
-            console.log("this.total",this.total);
-            this.data = data.data.list;//数据
+            this.tableData = data.data.list;//数据
         },
 
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
+            this.id = ev.id;
+            this.getRecordList();
         },
 
         //查询
         queryClick(){
             this.size = 1;
-            this.getList();
+            this.getRecordList();
         },
 
-        //添加
-        addClick(){
-            this.titleDig = '新增';
-            this.dialogFormVisible = true;
-            this.nameDig = '';
+        //分发
+        async distribution(row){
+            this.paperId = row.id;
+            this.dialogTableVisible = true;
+            let {data} = await this.$api.get("forum/mapping/list/"+this.id);
+            console.log("论坛审稿分组列表-==-=-=-=",data);
+            this.options = data.data;
         },
 
-        //删除
-        delClick(row){
-            this.$confirm('确定删除该审稿分组？')
-            .then(item => {
-                console.log(item);
-                this.delClickOk(row);
-            })
-            .catch(_ => {});
+        //分发确定
+        async distributionOk(){
+            console.log(this.value);
+            let url = this.paperId+'?groupId='+this.value;
+            let {data}  = await this.$api.get("mail/paper/"+url);
+            console.log("dtaa-=-=-==-",data);
+            if(data.code) {
+                this.getRecordList();
+                this.$message({
+                    message: '添加成功',
+                    type: 'success'
+                });
+            }
+            this.dialogTableVisible = false;
+            this.getRecordList();
+        },
+
+        //重新分发
+        reDistribution(row){
+            this.distribution();
+            this.paperId = row.id;
         },
 
         //分页查询
