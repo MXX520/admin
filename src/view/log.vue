@@ -19,20 +19,19 @@
 			
 			<el-table-column type="index" label="序号"  width="80">
 			</el-table-column>
-			<el-table-column prop="url" label="url" width="260" >
+			<el-table-column prop="url" label="异常路径" width="310" >
 			</el-table-column>
 			<el-table-column prop="address" label="客户端IP" width="120" >
 			</el-table-column>
-			<el-table-column prop="innerException" label="异常实例" width="100" >
+			<el-table-column prop="innerException" label="异常实例" width="560" >
 			</el-table-column>
 			<el-table-column prop="method" label="请求方式" width="140" >
 			</el-table-column>
-			<el-table-column prop="source" label="错误对象" min-width="200" >
-			</el-table-column>
-			<el-table-column prop="exception" label="异常详情" min-width="120" >
+			<el-table-column prop="source" label="异常对象" min-width="400" >
 			</el-table-column>
 			
-			<el-table-column prop="happenTime" label="发生时间" min-width="120" >
+			
+			<el-table-column prop="happenTime" label="发生时间" min-width="220" >
 			</el-table-column>
 		
 		
@@ -96,25 +95,25 @@
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
+				 <el-form-item label="异常url">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="所属院系">
+				 <el-form-item label="客户端IP">
 					<el-input v-model="school" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人">
+				 <el-form-item label="异常实例">
 					<el-input v-model="people" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人电话">
+				 <el-form-item label="请求方式">
 					<el-input v-model="phone" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人邮箱">
+				 <el-form-item label="错误对象">
 					<el-input v-model="email" disabled="true"></el-input>
 				</el-form-item>
-				<el-form-item label="申请原因">
+				<el-form-item label="异常详情">
                     <el-input type="textarea" v-model="reson" disabled="true"></el-input>
 		        </el-form-item>
-			    <el-form-item label="评分标准">
+			    <el-form-item label="发生时间">
                     <el-input v-model="biaozhu" disabled="true"></el-input>
                 </el-form-item>
 			</el-form>
@@ -192,12 +191,10 @@
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
 			handleCurrentChange(val) {
-				this.page = val;
+				this.currentPage = val;
 				this.getUsers();
 			},
-			handleCurrentChange(){
-				this.getUsers()
-			},
+			
 			//获取用户列表
 		async getUsers() {
 				let para = {
@@ -208,24 +205,12 @@
 			let {data}  = await this.$api.get("exception/list",{
 				pageNum:this.currentPage,
 				pageSize:10,
-				order:"id",
-				orderType:"desc",
+				
 				query:this.filters.name,
-				type:"1"
+				
 			})
 			let list  =  data.data.list;
-			for(let i in list){
-				if(list[i].scaleOfMark){
-					list[i].scaleOfMark = "评分制"
-				}else{
-					list[i].scaleOfMark = "通过制"
-				}
-				if(list[i].isClosed){
-					list[i].isClosed = "开放"
-				}else{
-					list[i].isClosed = "关闭"
-				}
-			}
+			
 			this.users = data.data.list;
 			this.total = data.data.total;
 			console.log(data)		
@@ -236,14 +221,14 @@
 				console.log("看看这个",index,row)
 				this.addFormVisible = true;
 				
-				let {data} = await this.$api.get("forum/"+row.id)
-				this.title = data.data.title;
-				this.school = data.data.facultyName;
-				this.people = data.data.sponsor;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
-				this.reson = data.data.applyReason;
-				this.biaozhu =  data.data.scaleOfMarkName;
+				
+				this.title = row.url;
+				this.school =row.address;
+				this.people = row.innerException;
+				this.phone = row.method;
+				this.email = row.source;
+				this.reson = row.exception;
+				this.biaozhu =  row.happenTime;
 				console.log(data)
 			},
 			//显示编辑界面

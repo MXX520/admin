@@ -338,12 +338,12 @@
 				form.append("title",this.title2)
 				form.append("forumId",this.luntan2)
 				form.append("num",this.order2)
-				form.append("isVisible",this.visable2)
+				form.append("isVisible",this.visable2=="是"?1:0)
 				form.append("file",this.file[0])
 
 				let {data} = await axios.put("http://39.100.65.236:8093/carousel/"+this.editId,form)
 				if(data.code=="01"){
-					this.editFormVisible = false;
+					this.putVisible = false;
 					this.getUsers()
 				}else{
 					this.$message.error(data.msg);
