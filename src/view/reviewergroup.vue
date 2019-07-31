@@ -16,6 +16,7 @@
                 style="width: 100%">
                 <el-table-column
                     prop="id"
+                    type="index"
                     label="序号"
                     height="10">
                 </el-table-column>
@@ -170,12 +171,14 @@ export default {
             }
             let {data}  = apiPath;
             console.log("data",data);
-            if(data.code){
+            if(data.code == "01"){
                 this.getList();
                 this.$message({
                     message: this.titleDig+'成功',
                     type: 'success'
                 });
+            }else{
+                this.$message.error(data.msg);
             }
         }
     },

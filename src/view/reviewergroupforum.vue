@@ -29,6 +29,7 @@
                         style="width: 100%">
                         <el-table-column
                             prop="id"
+                            type="index"
                             label="序号"
                             height="10">
                         </el-table-column>
@@ -68,6 +69,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="id"
+                    type="index"
                     label="序号"
                     width="120">
                 </el-table-column>

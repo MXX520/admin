@@ -18,7 +18,7 @@
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
-                        <el-button type="primary" @click="queryClick">查询</el-button>
+                        <el-button v-if="id" type="primary" @click="queryClick">查询</el-button>
                     </el-col>
                 </el-row>
                 <el-row style="marginTop:20px">
@@ -28,6 +28,7 @@
                         style="width: 100%">
                         <el-table-column
                             prop="id"
+                            type="index"
                             label="序号"
                             height="10">
                         </el-table-column>

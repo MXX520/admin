@@ -29,6 +29,7 @@
                         style="width: 100%">
                         <el-table-column
                             prop="id"
+                            type="index"
                             label="序号"
                             height="10">
                         </el-table-column>
@@ -68,6 +69,8 @@
         <el-dialog title="添加审稿人" :visible.sync="dialogTableVisible">
             <el-table
                     ref="multipleTable"
+                    toggleRowSelection
+                    selected="true"
                     :data="addTableData"
                     tooltip-effect="dark"
                     style="width: 100%"
@@ -78,6 +81,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="id"
+                    type="index"
                     label="序号"
                     width="120">
                 </el-table-column>

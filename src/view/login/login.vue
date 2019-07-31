@@ -40,8 +40,10 @@ export default {
             logining: false,
             ruleForm2: {
                 // username: '18210863073@163.com',
-                username: '1040803745@qq.com',
+                // username: '1040803745@qq.com',
+                username: 'yuanxi@tsinghua.com',
                 // password: 'AAAaaa11',
+                // password: 'qq7461912',
                 password: 'qq7461912',
             },
             rules2: {

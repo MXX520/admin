@@ -30,12 +30,13 @@
                             <el-table-column
                                 prop="paperAbstract"
                                 label="摘要"
-                                width="80">
+                                max-height="40"
+                                width="auto">
                             </el-table-column>
                             <el-table-column
                                 prop="paperTitle"
                                 label="文章标题"
-                                width="180">
+                                height="40">
                             </el-table-column>
                             <el-table-column
                                 prop="themeName"
@@ -91,7 +92,6 @@
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :current-page="currentPage"
-                            :page-size="page"
                             prev-text="上一页"
                             next-text="下一页"
                             layout="total, prev, pager, next, jumper"
