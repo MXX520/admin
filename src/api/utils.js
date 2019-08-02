@@ -2,6 +2,14 @@
 import router from '../router/index'
 let util = {};
 
+
+if (process.env.NODE_ENV === 'development') {
+    util.isDebug = true;
+} else {
+    util.isDebug = false;
+}
+
+
 //动态生成路由
 util.GenerateRouter = (arr) => {
     arr.forEach( item => {
@@ -42,6 +50,45 @@ util.routerValidation = ()=>{
     next();
     });
 }
+
+/**
+ * 补零
+ * @param {Number} num 数字
+ * @param {Number} totalLen 总长度
+ */
+util.fillZero = function(num, totalLen) {
+    return (Array(totalLen).join(0) + num).slice(-totalLen);
+};
+
+/**
+ * 打印日志
+ */
+util.log = (...rest) => {
+    if (!util.isDebug) {
+        return;
+    }
+
+    let d = new Date();
+    let dStr =
+        '[' +
+        // + d.getFullYear() + '-'
+        util.fillZero(d.getMonth() + 1, 2) +
+        '-' +
+        util.fillZero(d.getDate(), 2) +
+        ' ' +
+        util.fillZero(d.getHours(), 2) +
+        ':' +
+        util.fillZero(d.getMinutes(), 2) +
+        ':' +
+        util.fillZero(d.getSeconds(), 2) +
+        '.' +
+        util.fillZero(d.getMilliseconds(), 2) +
+        ']';
+
+    rest.unshift(dStr, location.hash);
+    // console.debug.apply(console, rest);
+    console.log.apply(console, JSON.parse(JSON.stringify(rest)));
+};
 
 
 export default util;

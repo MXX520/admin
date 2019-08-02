@@ -4,9 +4,8 @@ import store from '@/store/index'   //引入vuex的相关操作
 import { Message } from 'element-ui' //element Toast的提示
 import router from '@/router/index'
 
-let httpPath = 'http://39.100.65.236:8093/'
 
-
+let httpPath = process.env.NODE_ENV == "development" ? 'http://39.100.65.236:8093/' : 'http://39.106.77.121:8086/';
 //过滤请求--请求拦截器
 axios.interceptors.request.use(config => {
   //config 为请求的一些配置 例如：请求头 请求时间 Token  可以根据自己的项目需求个性化配置，参考axios的中文说明手册  自己多动动手

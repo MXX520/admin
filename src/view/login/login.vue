@@ -60,6 +60,7 @@ export default {
                 "password":this.ruleForm2.password
             }
             let data = await this.$api.post('login',params);
+
             console.log(data);
             localStorage.setItem('menus',JSON.stringify(data.data.data.menus));
             localStorage.setItem('token',data.data.data.token);

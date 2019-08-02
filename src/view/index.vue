@@ -22,7 +22,7 @@
         </el-header>
         <el-container class="container">
             <el-aside class="aside" :style="{width: isCollapse?'65px':'200px'}">
-                <el-menu collapse-transition=false default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+                <el-menu :collapse-transition='false' default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
                     <el-submenu v-for="(item,index) in dataList" :index="index+''" :key="index">
                         <template slot="title">
                             <i class="el-icon-location"></i>
@@ -68,6 +68,9 @@ export default {
         this.dataList = JSON.parse(localStorage.getItem('menus'));
         // var result = $.parseJSON(jsonData);// 转成JSON对象
         console.log('头像--',this.$store.getters.getImg);
+        console.log("-=-=-=-==-=this.$util",this.$util)
+        this.$util.log("-=-=-=-==")
+
     },
     methods: {
         async init(){
