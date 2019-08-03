@@ -131,7 +131,10 @@ export default {
     height:100%;
 }
 /deep/ .el-menu-item{
-    text-align:center;
+    text-align:left;
+}
+/deep/ .el-menu-item-group>ul{
+    background: #eef1f6;
 }
 /deep/ .navigationItem{
     margin-bottom:20px;

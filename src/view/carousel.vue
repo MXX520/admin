@@ -45,7 +45,7 @@
 	
 
 		<!--编辑界面-->
-		<el-dialog title="论坛设置" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
+		<el-dialog title="轮播新增" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
 				<div class="item">
 					 <el-form-item label="标题">
@@ -83,7 +83,8 @@
 					</el-form-item>
 				</div>
 				<el-button type="primary" @click.native="upload" style="margin-left:80px;">上传</el-button>
-				<input type="file"  style="display:none;" ref="file" @change="changFile">
+				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
+				{{file[0].name}}
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center;">
 			
@@ -91,7 +92,7 @@
 			</div>
 		</el-dialog>
 		<!--编辑界面-->
-		<el-dialog title="论坛设置" :visible.sync="putVisible" :close-on-click-modal="false"  class="time">
+		<el-dialog title="图片修改" :visible.sync="putVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
 				<div class="item">
 					 <el-form-item label="标题">
@@ -129,7 +130,8 @@
 					</el-form-item>
 				</div>
 				<el-button type="primary" @click.native="upload" style="margin-left:80px;">上传</el-button>
-				<input type="file"  style="display:none;" ref="file" @change="changFile">
+				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
+				{{file[0].name}}
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center;">
 			
@@ -137,7 +139,7 @@
 			</div>
 		</el-dialog>
 		<!--新增界面-->
-		<el-dialog title="论坛详情" :visible.sync="preImg" :close-on-click-modal="false">
+		<el-dialog title="图片预览" :visible.sync="preImg" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				<img :src="src" alt="" style="width:600px;height:400px;">
 			</el-form>
@@ -162,7 +164,9 @@
 				src:"",
 				total: 0,
 				page: 1,
-				file:"",
+				file:[{
+					name:""
+				}],
 				visable:1,
 				title:"",
 				title2:"",
@@ -243,6 +247,7 @@
 			changFile(e){
 				this.file = []
 				this.file = e.target.files;
+				console.log(this.file[0])
 				
 			},
 			addImg(){

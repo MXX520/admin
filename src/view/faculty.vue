@@ -49,7 +49,7 @@
 			</el-pagination>
 		</el-col>
 
-	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
+	<el-dialog title="新增院系" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="院系名称">
 					<el-input v-model="title" ></el-input>
@@ -60,7 +60,7 @@
 			
 			</div>
 		</el-dialog>
-		<el-dialog title="论坛审核" :visible.sync="changeFormVisible" :close-on-click-modal="false">
+		<el-dialog title="院系修改" :visible.sync="changeFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="院系名称">
 					<el-input v-model="oldTitle" ></el-input>

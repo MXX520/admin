@@ -25,7 +25,7 @@
 			</el-table-column>
 			<el-table-column prop="innerException" label="异常实例" width="560" >
 			</el-table-column>
-			<el-table-column prop="method" label="请求方式" width="140" >
+			<el-table-column prop="method" label="异常方式" width="140" >
 			</el-table-column>
 			<el-table-column prop="source" label="异常对象" min-width="400" >
 			</el-table-column>

@@ -58,7 +58,7 @@
 			</el-pagination>
 		</el-col>
 
-	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
+	<el-dialog title="用户详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				<div class="clearfix" style="overflow:hidden;">
 
@@ -113,7 +113,7 @@
 			</el-form>
 	
 		</el-dialog>
-		<el-dialog title="论坛审核" :visible.sync="addUsers" :close-on-click-modal="false">
+		<el-dialog title="新增用户" :visible.sync="addUsers" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				<div class="clearfix" style="overflow:hidden;">
 
@@ -197,7 +197,7 @@
 				<el-button @click.native="addNew()">新增</el-button>
 			</div>
 		</el-dialog>
-		<el-dialog title="论坛审核" :visible.sync="changeUsers" :close-on-click-modal="false">
+		<el-dialog title="用户修改" :visible.sync="changeUsers" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
 				<div class="clearfix" style="overflow:hidden;">
 				<div class="item">

@@ -19,7 +19,7 @@
       <div class="item" v-for="(item,index) in users" :key="index" @click="showEdit(item)">
         <div class="img-con">
           <img :src="item.logo" alt="">
-          <i class="el-icon-circle-close icon" @click="deleteImg(item.id)"></i>
+          <i class="el-icon-circle-close icon" @click.stop="deleteImg(item.id)"></i>
         </div>
         <div class="name">
           {{item.name}}
@@ -31,7 +31,7 @@
 	
 
 		<!--编辑界面-->
-		<el-dialog title="论坛设置" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
+		<el-dialog title="修改合作" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
 			
 					 <el-form-item label="合作品牌名称">
@@ -46,14 +46,15 @@
 				
 			
 				<el-button type="primary" @click.native="upload" style="margin-left:80px;">上传</el-button>
-				<input type="file"  style="display:none;" ref="file" @change="changFile">
+				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
+         {{file[0].name}}
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center;">
 				<el-button @click.native="editFormVisible = false">取消</el-button>
 				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">修改</el-button>
 			</div>
 		</el-dialog>
-    	<el-dialog title="论坛设置" :visible.sync="newFormVisible" :close-on-click-modal="false"  class="time">
+    	<el-dialog title="新增合作" :visible.sync="newFormVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
 			
 					 <el-form-item label="合作品牌名称">
@@ -68,7 +69,8 @@
 				
 			
 				<el-button type="primary" @click.native="upload" style="margin-left:80px;">上传</el-button>
-				<input type="file"  style="display:none;" ref="file" @change="changFile">
+				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" > 
+        {{file[0].name}}
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center;">
 				<el-button @click.native="editFormVisible = false">取消</el-button>
@@ -124,7 +126,7 @@ import axios from "axios"
         title:"",
         title2:"",
         order2:"",
-        file:[],
+        file:[{name:""}],
 				school:"",
 				people:"",
 				phone:"",
