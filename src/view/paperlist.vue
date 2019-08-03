@@ -107,7 +107,7 @@
             <el-row type='flex' justify="center" align="middle" v-if='isImg' class="demo-image__placeholder">
                 <img :src="src" alt="">
             </el-row>
-            <showPdf class="pdf-show" v-if="!isImg"></showPdf>
+            <showPdf class="pdf-show" :msg-father="pdfPath" v-if="!isImg"></showPdf>
         </el-row>
         
     </div>
@@ -116,6 +116,8 @@
 <script>
 import pdf from 'vue-pdf'
 import showPdf from '../components/showPdf'
+import FileSaver from 'file-saver'
+import api from '../api/http'
   export default {
     data() {
         return {
@@ -142,6 +144,7 @@ import showPdf from '../components/showPdf'
                 label: 'label'
             },
             currentNodekey:'',//树结构默认选中的key
+            pdfPath:'',//pdf路径
         };
     },
     components:{
@@ -196,34 +199,34 @@ import showPdf from '../components/showPdf'
                     this.page = res.data.data.pages;
                 }
             })
-
-            this.tableData = res.data.list;
-            this.total = res.data.total;
-            this.page = res.data.pages;
-            // .then(res=>{
-            //     console.log("加载时间",res)
-            //     if(res){
-            //         this.tableData = res.data.list;
-            //         this.total = res.data.total;
-            //         this.page = res.data.pages;
-            //     }
-            // })
         },
         async handleClick(val,index){
-          console.log(val);
-          let params = {
-            id:val.id,
-            type:index
-          }
-          console.log(params);
+          console.log("下载",api);
+        //   axios({
+        //         method:'get',
+        //         url:`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}`,
+        //         responseType:'blob',
+        //     })
+        //     .then((data) => {
+        //         console.log(data);
+        //     })
+        //   let params = {
+        //     id:val.id,
+        //     type:index
+        //   }
+        //   console.log(params);
         //   let getData = this.$api.get(`paper/download`,params);
         //   console.log("下载",getData);
         //   let a;
         //   getData.then((v)=>{
         //     a = v;
         //   });
-        //   console.log(a);
-          window.open('http://http://39.100.65.236:8093/paper/download',params)
+        //   console.log("=-=-=-=",a);
+
+        //   FileSaver.saveAs(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}&Content=${api.headers.Content}`,'99');
+        // paper/download?id=1&type=0
+        window.location.herf =`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}&Content=${api.headers.Content}`;
+        //   window.open(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}`)
         //   window.location.href = 'http://39.106.77.121:8086/paper/download'
         },
         benListClick(ev){
@@ -239,9 +242,12 @@ import showPdf from '../components/showPdf'
             console.log(`当前页: ${val}`);
         },
        
-        skip(){
+        skip(row){
+            this.$util.log(row.paperName);
             this.isImg = false;
             this.dialogVisible = true;
+            // let mm = 'http://file.dakawengu.com/file/2018-05-29/20180527-tianfeng.pdf'
+            this.pdfPath = row.paperName;
         }
     }
   };

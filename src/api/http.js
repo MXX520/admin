@@ -71,6 +71,12 @@ axios.interceptors.response.use(
 
 // 封装请求
 const api = {
+  httpPath,
+  headers:{
+    'token':localStorage.getItem('token'),
+    "refreshToken":localStorage.getItem('refreshToken'),
+    'Content-Type': 'application/json',
+  },
   /**
   * 封装get请求
   * @param url
