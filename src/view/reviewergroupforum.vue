@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
                 current-node-key
                 node-key="id"
                 :default-expanded-keys="[1]"
@@ -28,18 +27,23 @@
                         border
                         style="width: 100%">
                         <el-table-column
-                            prop="id"
                             type="index"
                             label="序号"
+                            align='center'
+                            width="80"
                             height="10">
                         </el-table-column>
                         <el-table-column
                             prop="groupName"
                             label="审稿分组名称"
+                            align='center'
+                            width="auto"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                         fixed="right"
+                        align='center'
+                        width="auto"
                         label="操作">
                         <template slot-scope="scope">
                             <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
@@ -65,24 +69,27 @@
                     @selection-change="handleSelectionChange">
                 <el-table-column
                     type="selection"
-                    width="55">
+                    align='center'
+                    width="auto">
                 </el-table-column>
                 <el-table-column
-                    prop="id"
                     type="index"
                     label="序号"
-                    width="120">
+                    align='center'
+                    width="auto">
                 </el-table-column>
                 <el-table-column
                     prop="groupName"
                     label="审稿分组名称"
-                    width="120">
+                    align='center'
+                    width="auto">
                 </el-table-column>
             </el-table>
-            <el-row>
-                <el-button type="primary" plain @click="addGrouping">添加到分组</el-button>
+            <el-row type='flex' justify="center" align='middle'>
+                <el-button class="btn" type="primary" plain @click="addGrouping">添加到分组</el-button>
             </el-row>
         </el-dialog>
+        
     </div>  
 </template>
 
@@ -105,7 +112,7 @@ export default {
         dialogTableVisible:false,//控制添加审稿分组弹窗的显示
         addTableData: [],//获取的审稿分组列表
         addTableDataOk:[],//已选择的审稿分组集合
-        id:''//树id
+        id:'',//树id
       };
     },
     created() {
@@ -161,6 +168,13 @@ export default {
           let {data} = await this.$api.get("reviewer/group/forum/tree/list/"+this.id);
           console.log("论坛审稿分组列表-==-=-=-=",data);
           this.addTableData = data.data;
+          this.addTableData.forEach((item,index) => {
+              if(item.isCheck){
+                setTimeout(item=>{
+                    this.toggleSelection(index);
+                },0)
+              }
+          });
         },
 
         //添加到分组确认
@@ -221,6 +235,11 @@ export default {
             console.log(`每页 ${val} 条2`);
             this.size = val;
             this.getList();
+        },
+
+        //设置默认选中
+        toggleSelection(index) {
+            this.$refs.multipleTable.toggleRowSelection(this.addTableData[index]);
         },
     },
     components: {
@@ -290,5 +309,9 @@ export default {
                 padding:20px;
             }
         }
+    }
+
+    .btn{
+        margin-top:20px;
     }
 </style>

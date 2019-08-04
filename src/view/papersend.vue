@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
                 current-node-key
                 node-key="id"
                 :default-expanded-keys="[1]"
@@ -30,40 +29,55 @@
                             prop="id"
                             type="index"
                             label="序号"
+                            width="80"
+                            align='center'
                             height="10">
                         </el-table-column>
                         <el-table-column
                             prop="paperTitle"
                             label="标题"
+                            width="80"
+                            align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="userId"
                             label="投稿人"
+                            width="80"
+                            align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="submitTypeName"
                             label="投稿方式"
+                            width="80"
+                            align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="themeName"
                             label="投稿主题"
+                            width="80"
+                            align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="lastSubmitTime"
                             label="最后提交时间"
+                            width="120"
+                            align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="isAudit"
                             label="审核状态"
+                            align='center'
+                            width="80"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                         fixed="right"
+                        align='center'
                         label="操作">
                         <template slot-scope="scope">
                             <el-button @click="distribution(scope.row)" v-if="scope.row.isDistribute == 0" ype="text" size="small">分发</el-button>
@@ -82,16 +96,17 @@
             </el-col>
         </el-row>
         <el-dialog title="稿件分发" :visible.sync="dialogTableVisible">
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="value" placeholder="请选择" @change="fnDisable">
                 <el-option
                     v-for="item in options"
                     :key="item.groupId"
                     :label="item.groupName"
-                    :value="item.groupId">
+                    :value="item.groupId"
+                    >
                 </el-option>
             </el-select>
-            <el-row>
-                <el-button type="primary" plain @click="distributionOk">分发</el-button>
+            <el-row type='flex' justify="center" align='middle'>
+                <el-button type="primary" class="btn" :disabled='isdisabled' plain @click="distributionOk">分发</el-button>
             </el-row>
         </el-dialog>
     </div>  
@@ -118,6 +133,7 @@ export default {
         options:[],//下拉数据
         value:'',//下拉选择内容
         paperId:'',//分发的稿件id
+        isdisabled:true,
       };
     },
     created() {
@@ -202,8 +218,9 @@ export default {
 
         //重新分发
         reDistribution(row){
-            this.distribution();
+            console.log(row);
             this.paperId = row.id;
+            this.distribution(row);
         },
 
         //分页查询
@@ -217,6 +234,12 @@ export default {
             this.size = val;
             this.getList();
         },
+
+        fnDisable(){
+            if(this.value){
+                this.isdisabled = false;
+            }
+        }
     },
     components: {
        
@@ -285,5 +308,8 @@ export default {
                 padding:20px;
             }
         }
+    }
+    .btn{
+        margin-top:20px;
     }
 </style>

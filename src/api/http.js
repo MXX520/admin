@@ -4,8 +4,11 @@ import store from '@/store/index'   //引入vuex的相关操作
 import { Message } from 'element-ui' //element Toast的提示
 import router from '@/router/index'
 
-
-let httpPath = process.env.NODE_ENV == "development" ? 'http://39.100.65.236:8093/' : 'http://39.106.77.121:8086/';
+//没有token跳转到登录页
+if(!localStorage.getItem('token')){
+  router.push({path:"/login"})
+}
+let httpPath = process.env.NODE_ENV == "development" ? 'http://39.100.65.236:8093/' : 'http://39.100.65.236:8093/';//'http://39.106.77.121:8086/';
 //过滤请求--请求拦截器
 axios.interceptors.request.use(config => {
   //config 为请求的一些配置 例如：请求头 请求时间 Token  可以根据自己的项目需求个性化配置，参考axios的中文说明手册  自己多动动手
@@ -72,11 +75,6 @@ axios.interceptors.response.use(
 // 封装请求
 const api = {
   httpPath,
-  headers:{
-    'token':localStorage.getItem('token'),
-    "refreshToken":localStorage.getItem('refreshToken'),
-    'Content-Type': 'application/json',
-  },
   /**
   * 封装get请求
   * @param url
@@ -187,25 +185,53 @@ const api = {
   * @returns {Promise}
   */
 
- async delete (url, data) {
-  let urlPath = httpPath+url;
-  console.log(urlPath);
-  try {
-    let res = await axios.delete(urlPath, JSON.stringify(data))
-    return new Promise((resolve, reject) => {
-      console.log("请求成功");
-      if (res) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    })
-  } catch (err) {
-    return (e.message)
-    alert('服务器出错2')
-    console.log(err)
+  async delete (url, data) {
+    let urlPath = httpPath+url;
+    console.log(urlPath);
+    try {
+      let res = await axios.delete(urlPath, JSON.stringify(data))
+      return new Promise((resolve, reject) => {
+        console.log("请求成功");
+        if (res) {
+          resolve(res)
+        } else {
+          reject(res)
+        }
+      })
+    } catch (err) {
+      return (e.message)
+      alert('服务器出错2')
+      console.log(err)
+    }
+  },
+
+  download(url,data,name){
+      let urlPath = httpPath+url;
+      window.location.href = `${urlPath}?id=${data.id}&type=${data.type}`;
+      return;
+      axios.get(`${urlPath}?id=${data.id}&type=${data.type}`, {
+              responseType: 'arraybuffer', // 或者responseType: 'blob'
+              xsrfHeaderName: 'Authorization',
+              headers
+          }).then(res => {
+              console.log("res",res);
+              const blob = new Blob([res.data], {
+                  type: 'application/vnd.ms-excel'
+              })
+              console.log("blob",blob);
+              const objectUrl = URL.createObjectURL(blob)
+              let link = document.createElement('a')
+              link.style.display = 'none'
+              link.href = objectUrl
+              link.setAttribute('download',name)
+              
+              document.body.appendChild(link)
+              link.click()
+              // window.location.href = objectUrl
+          }).catch(err => {
+              console.log(err)
+          })
   }
- }
 }
 export default api;
 

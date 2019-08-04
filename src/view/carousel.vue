@@ -19,21 +19,21 @@
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			
-			<el-table-column type="index" label="序号"  width="80">
+			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="标题" width="100" >
+			<el-table-column prop="title" label="标题" align='center' width="100" >
 			</el-table-column>
-			<el-table-column prop="forumName" label="对应论坛" width="320" >
+			<el-table-column prop="forumName" label="对应论坛" align='center' width="320" >
 			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" width="190" >
+			<el-table-column prop="createTime" label="创建时间" align='center' width="190" >
 			</el-table-column>
-			<el-table-column prop="num" label="显示顺序" width="100" >
+			<el-table-column prop="num" label="显示顺序" align='center' width="100" >
 			</el-table-column>
-			<el-table-column prop="isVisible" label="是否可见" min-width="200" >
+			<el-table-column prop="isVisible" label="是否可见" align='center' min-width="200" >
 			</el-table-column>
 			
 		
-			<el-table-column label="操作" width="250" >
+			<el-table-column label="操作" align='center' width="250" >
 				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">预览</el-button>
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>

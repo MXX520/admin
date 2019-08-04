@@ -17,29 +17,28 @@
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			
-			<el-table-column type="index" label="序号"  width="80">
+			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="论坛名称" width="280" >
+			<el-table-column prop="title" label="论坛名称" align='center' width="280" >
 			</el-table-column>
-			<el-table-column prop="facultyName" label="所属院系" width="120"  >
+			<el-table-column prop="facultyName" label="所属院系" align='center' width="120"  >
 			</el-table-column>
-			<el-table-column prop="sponsor" label="发起人" width="100" >
+			<el-table-column prop="sponsor" label="发起人" align='center' width="100" >
 			</el-table-column>
-			<el-table-column prop="sponsorPhone" label="发起人电话" width="140" >
+			<el-table-column prop="sponsorPhone" label="发起人电话" align='center' width="140" >
 			</el-table-column>
-			<el-table-column prop="sponsorEmail" label="发起人邮箱" min-width="200" >
+			<el-table-column prop="sponsorEmail" label="发起人邮箱" align='center' min-width="200" >
 			</el-table-column>
-			<el-table-column prop="scaleOfMark" label="评分标准" min-width="120" >
+			<el-table-column prop="scaleOfMark" label="评分标准" align='center' min-width="120" >
 			</el-table-column>
 			
-			<el-table-column prop="isClosed" label="状态" min-width="120" >
+			<el-table-column prop="isClosed" label="状态" align='center' min-width="120" >
 			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" min-width="180" sortable>
+			<el-table-column prop="createTime" label="创建时间" align='center' min-width="180" sortable>
 			</el-table-column>
 		
-			<el-table-column label="操作" width="100" fixed="right">
+			<el-table-column label="操作" width="100" align='center' fixed="right">
 				<template scope="scope">
-				
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
 				</template>
 			</el-table-column>

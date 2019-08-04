@@ -15,18 +15,23 @@
                 border
                 style="width: 100%">
                 <el-table-column
-                    prop="id"
                     type="index"
                     label="序号"
+                    align='center'
+                    width="auto"
                     height="10">
                 </el-table-column>
                 <el-table-column
                     prop="groupName"
+                    align='center'
+                    width="auto"
                     label="审稿分组名称"
                     height="20px">
                 </el-table-column>
                 <el-table-column
                 fixed="right"
+                align='center'
+                width="auto"
                 label="操作">
                 <template slot-scope="scope">
                     <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
