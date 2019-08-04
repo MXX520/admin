@@ -50,21 +50,21 @@
                         <el-table-column
                             prop="submitTypeName"
                             label="投稿方式"
-                            width="80"
+                            width="180"
                             align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="themeName"
                             label="投稿主题"
-                            width="80"
+                            width="180"
                             align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="lastSubmitTime"
                             label="最后提交时间"
-                            width="120"
+                            width="180"
                             align='center'
                             height="20px">
                         </el-table-column>
@@ -179,9 +179,10 @@ export default {
 
         //列表树单击事件
         handleNodeClick(ev){
-            console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

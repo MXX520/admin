@@ -57,6 +57,10 @@
                     style="width: 100px; height: 100px"
                     :src="postDate.image1">
                 </el-image>
+                
+                <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
             </el-form-item>
             <el-form-item label="背景图二">
                 <el-image
@@ -117,7 +121,7 @@ export default {
             },
             //单选
             radio: 3,
-            form: ''
+            form: '',
             
         }
     },
@@ -165,7 +169,10 @@ export default {
                     type: 'success'
                     });
             }
-        }
+        },
+
+        //上传图片
+        
     },
     components: {
         
@@ -182,6 +189,30 @@ export default {
     min-height:200px;
 }
 .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;

@@ -152,8 +152,10 @@ export default {
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

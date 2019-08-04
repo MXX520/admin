@@ -29,7 +29,7 @@
                             prop="id"
                             type="index"
                             align='center'
-                            width="auto"
+                            width="80"
                             label="序号"
                             height="10">
                         </el-table-column>
@@ -65,7 +65,7 @@
                             prop="createTime"
                             label="审核时间"
                             align='center'
-                            width="80"
+                            width="180"
                             height="20px">
                         </el-table-column>
                     </el-table>
@@ -138,8 +138,10 @@ export default {
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

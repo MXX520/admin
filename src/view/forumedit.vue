@@ -95,7 +95,9 @@ export default {
         handleNodeClick(ev){
             console.log(ev.id);
             console.log(this.$consts.Event.FORUMEDIT);
-            this.$eventHub.$emit(this.$consts.Event.FORUMEDIT, ev.id)
+            if(ev.id){
+                this.$eventHub.$emit(this.$consts.Event.FORUMEDIT, ev.id)
+            }
         },
 
         handleClick(tab, event) {

@@ -5,6 +5,13 @@ const Event = {
     PDF:'showPdf'
 };
 
+const ManuscriptListStyle = {
+    0: '未审核',
+    1: '审核中',
+    2: '通过审核'
+}
+
 module.exports = {
-    Event
+    Event,
+    ManuscriptListStyle
 }
