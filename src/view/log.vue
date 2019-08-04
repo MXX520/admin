@@ -17,21 +17,21 @@
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			
-			<el-table-column type="index" label="序号"  width="80">
+			<el-table-column type="index"  :fit="true"  label="序号"  width="80">
 			</el-table-column>
-			<el-table-column prop="url" label="异常路径" width="310" >
+			<el-table-column prop="url" :fit="true"  label="异常路径" width="310" >
 			</el-table-column>
-			<el-table-column prop="address" label="客户端IP" width="120" >
+			<el-table-column prop="address" :fit="true"  label="客户端IP" width="120" >
 			</el-table-column>
-			<el-table-column prop="innerException" label="异常实例" width="560" >
+			<el-table-column prop="innerException" :fit="true"  label="异常实例" width="560" >
 			</el-table-column>
-			<el-table-column prop="method" label="异常方式" width="140" >
+			<el-table-column prop="method"  :fit="true"  label="异常方式" width="140" >
 			</el-table-column>
-			<el-table-column prop="source" label="异常对象" min-width="400" >
+			<el-table-column prop="source" :fit="true"  label="异常对象" min-width="400" >
 			</el-table-column>
 			
 			
-			<el-table-column prop="happenTime" label="发生时间" min-width="220" >
+			<el-table-column prop="happenTime" :fit="true"  label="发生时间" min-width="220" >
 			</el-table-column>
 		
 		

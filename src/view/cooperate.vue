@@ -67,8 +67,9 @@
 						<el-input v-model="order" ></el-input>
 					</el-form-item>
 				
-			
+        	 
 				<el-button type="primary" @click.native="upload" style="margin-left:80px;">上传</el-button>
+        	 
 				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" > 
         {{file[0].name}}
 			</el-form>
@@ -126,6 +127,7 @@ import axios from "axios"
         title:"",
         title2:"",
         order2:"",
+         order:"",
         file:[{name:""}],
 				school:"",
 				people:"",

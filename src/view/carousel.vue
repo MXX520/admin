@@ -92,7 +92,7 @@
 			</div>
 		</el-dialog>
 		<!--编辑界面-->
-		<el-dialog title="图片修改" :visible.sync="putVisible" :close-on-click-modal="false"  class="time">
+		<el-dialog title="轮播修改" :visible.sync="putVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
 				<div class="item">
 					 <el-form-item label="标题">
@@ -343,7 +343,7 @@
 				form.append("title",this.title2)
 				form.append("forumId",this.luntan2)
 				form.append("num",this.order2)
-				form.append("isVisible",this.visable2=="是"?1:0)
+				form.append("isVisible",0)
 				form.append("file",this.file[0])
 
 				let {data} = await axios.put("http://39.100.65.236:8093/carousel/"+this.editId,form)

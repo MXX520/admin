@@ -124,6 +124,7 @@ import { debug } from 'util';
 					birth: '',
 					addr: ''
 				},
+				editId:"",
 				roleList:[],
 				schoolList:[],
 				addFormVisible: false,//新增界面是否显示
@@ -146,11 +147,12 @@ import { debug } from 'util';
 		},
 		methods: {
 			handleChange(index,row){
+				this.editId = row.id
 				this.oldTitle =  row.facultyName;
 				this.changeFormVisible = true;
 			},
 			async edit(){
-				let {data} = await this.$api.put("faculty/"+row.id)
+				let {data} = await this.$api.put("faculty/"+this.editId)
 				if(data.code=="01"){
 					this.changeFormVisible = false;
 					this.getUsers()
@@ -159,6 +161,7 @@ import { debug } from 'util';
 				}
 			},
 			add(){
+				this.title = ""
 				this.addFormVisible = true;
 			},
 

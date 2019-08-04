@@ -88,7 +88,7 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click.native="editSubmit(1)" :loading="editLoading">审核通过</el-button>
-				<el-button @click.native="editSubmit(0)">审核不通过</el-button>
+				<el-button @click.native="editSubmit(-1)">审核不通过</el-button>
 			</div>
 		</el-dialog>
 

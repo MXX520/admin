@@ -225,7 +225,7 @@ import api from '../api/http'
 
         //   FileSaver.saveAs(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}&Content=${api.headers.Content}`,'99');
         // paper/download?id=1&type=0
-        window.location.herf =`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}&Content=${api.headers.Content}`;
+        window.location.herf =`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}`;
         //   window.open(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}`)
         //   window.location.href = 'http://39.106.77.121:8086/paper/download'
         },
