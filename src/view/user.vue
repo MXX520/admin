@@ -20,22 +20,22 @@
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			
-			<el-table-column type="index" :fit="true"  label="序号"  width="80">
+			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="userName"  :fit="true"  label="用户名称" width="80" >
+			<el-table-column prop="userName" label="用户名称" align='center' width="100" >
 			</el-table-column>
-			<el-table-column prop="email" :fit="true"  label="邮箱" width="240"  >
+			<el-table-column prop="email" label="邮箱" align='center' width="240"  >
 			</el-table-column>
-			<el-table-column prop="phone" :fit="true"  label="手机号" width="160" >
+			<el-table-column prop="phone" label="手机号" align='center' width="160" >
 			</el-table-column>
-			<el-table-column prop="roleName"  :fit="true"  label="所属角色" width="140" >
+			<el-table-column prop="roleName" label="所属角色" align='center' width="140" >
 			</el-table-column>
-			<el-table-column prop="facultyName" :fit="true"  label="所属院系" min-width="100" >
+			<el-table-column prop="facultyName" label="所属院系" align='center' min-width="100" >
 			</el-table-column>
-			<el-table-column prop="createTime"  :fit="true"  label="创建时间" min-width="170" >
+			<el-table-column prop="createTime" label="创建时间" align='center' min-width="170" >
 			</el-table-column>
 		
-			<el-table-column label="操作" width="260" fixed="right">
+			<el-table-column label="操作" width="260" align='center' fixed="right">
 				<template scope="scope">
 				
 					<el-button  size="small" @click="handleD(scope.$index, scope.row)">详情</el-button>

@@ -19,19 +19,14 @@
 
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-			
-			<el-table-column type="index" label="序号"  width="80">
+			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="facultyName" label="院系名称" width="160" >
+			<el-table-column prop="facultyName" label="院系名称" align='center' width="160" >
 			</el-table-column>
-			
-		
-			<el-table-column label="操作" width="240" >
+			<el-table-column label="操作" align='center' width="240" >
 				<template scope="scope">
-				
-					
-          <el-button  size="small" @click="handleChange(scope.$index, scope.row)">修改</el-button>
-          <el-button  size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button  size="small" @click="handleChange(scope.$index, scope.row)">修改</el-button>
+					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

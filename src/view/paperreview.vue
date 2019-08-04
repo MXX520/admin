@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
                 current-node-key
                 node-key="id"
                 :default-expanded-keys="[1]"
@@ -29,32 +28,44 @@
                         <el-table-column
                             prop="id"
                             type="index"
+                            align='center'
+                            width="auto"
                             label="序号"
                             height="10">
                         </el-table-column>
                         <el-table-column
                             prop="paperTitle"
+                            align='center'
+                            width="auto"
                             label="稿件标题"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="userName"
+                            align='center'
+                            width="auto"
                             label="审稿人员"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="score"
                             label="得分"
+                            align='center'
+                            width="auto"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             label="是否通过"
+                            align='center'
+                            width="auto"
                             height="20px">
                             <template slot-scope="scope">{{ scope.row.result == 1 ? '通过' : '未通过' }}</template>
                         </el-table-column>
                         <el-table-column
                             prop="createTime"
                             label="审核时间"
+                            align='center'
+                            width="80"
                             height="20px">
                         </el-table-column>
                     </el-table>

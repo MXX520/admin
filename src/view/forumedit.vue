@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
                 current-node-key
                 node-key="id"
                 :default-expanded-keys="[1]"

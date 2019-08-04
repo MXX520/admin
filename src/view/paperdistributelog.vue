@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
                 current-node-key
                 node-key="id"
                 :default-expanded-keys="[1]"
@@ -29,26 +28,31 @@
                         <el-table-column
                             prop="id"
                             type="index"
+                            align='center'
                             label="序号"
                             height="10">
                         </el-table-column>
                         <el-table-column
                             prop="paperTitle"
+                            align='center'
                             label="稿件标题"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="userName"
+                            align='center'
                             label="分发人员"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="reviewer"
+                            align='center'
                             label="审核人员"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="createTime"
+                            align='center'
                             label="分发时间"
                             height="20px">
                         </el-table-column>

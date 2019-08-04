@@ -19,37 +19,44 @@
                     type="index"
                     label="序号"
                     height="10"
+                    align='center'
                     width="150">
                 </el-table-column>
                 <el-table-column
                     prop="title"
                     label="会议标题"
                     height="20px"
+                    align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
                     prop="briefIntroduction"
                     label="会议简介"
+                    align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
                     prop="source"
                     label="会议来源"
+                    align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
                     prop="viewCount"
+                    align='center'
                     label="浏览次数"
                     width="300">
                 </el-table-column>
                 <el-table-column
                     prop="createTime"
                     label="创建时间"
+                    align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
                 fixed="right"
                 label="操作"
+                align='center'
                 width="100">
                 <template slot-scope="scope">
                     <el-button @click="detailClick(scope.row)" type="text" size="small">详情</el-button>

@@ -4,12 +4,13 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
-                show-checkbox
-                current-node-key
+                accordion
+                current-node-key = "currentNodekey"
                 node-key="id"
                 :default-expanded-keys="[1]"
                 :props="defaultProps"
                 @node-click="handleNodeClick"
+                :expand-on-click-node="false"
                 ></el-tree>
             </el-col>
             <el-col :span="18" class="forumTab">
@@ -18,7 +19,7 @@
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
-                        <el-button type="primary" @click="queryClick">查询</el-button>
+                        <el-button v-if="id" type="primary" @click="queryClick">查询</el-button>
                         <el-button type="primary" v-if="id" @click="addClick">添加审稿人</el-button>
                     </el-col>
                 </el-row>
@@ -31,25 +32,34 @@
                             prop="id"
                             type="index"
                             label="序号"
+                            align='center'
+                            width="auto"
                             height="10">
                         </el-table-column>
                         <el-table-column
                             prop="userName"
+                            align='center'
+                            width="auto"
                             label="用户名"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="email"
+                            align='center'
+                            width="auto"
                             label="邮箱"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="phone"
+                            align='center'
+                            width="auto"
                             label="电话"
                             height="20px">
                         </el-table-column>
                         <el-table-column
                         fixed="right"
+                        align='center'
                         label="操作">
                         <template slot-scope="scope">
                             <el-button @click="delClick(scope.row)" type="text" size="small">删除</el-button>
@@ -101,8 +111,8 @@
                     show-overflow-tooltip>
                 </el-table-column>
             </el-table>
-            <el-row>
-                <el-button type="primary" plain @click="addGrouping">添加到分组</el-button>
+            <el-row type='flex' justify="center" align='middle'>
+                <el-button type="primary" class="btn"  plain @click="addGrouping">添加到分组</el-button>
             </el-row>
         </el-dialog>
     </div>  
@@ -127,7 +137,8 @@ export default {
         dialogTableVisible:false,//控制添加审稿人弹窗的显示
         addTableData: [],//获取的审稿人列表
         addTableDataOk:[],//已选择的审稿人集合
-        id:''//树id
+        id:'',//树id
+        currentNodekey:'',//树结构默认选中的key
       };
     },
     created() {
@@ -183,6 +194,13 @@ export default {
           let {data} = await this.$api.get("user/reviewer/list/"+this.id);
           console.log("审稿人列表",data);
           this.addTableData = data.data;
+          this.addTableData.forEach((item,index) => {
+              if(item.isCheck){
+                setTimeout(item=>{
+                    this.toggleSelection(index);
+                },0)
+              }
+          });
         },
 
         //添加到分组确认
@@ -243,6 +261,11 @@ export default {
             console.log(`每页 ${val} 条2`);
             this.size = val;
             this.getList();
+        },
+
+        //设置默认选中
+        toggleSelection(index) {
+            this.$refs.multipleTable.toggleRowSelection(this.addTableData[index]);
         },
     },
     components: {
@@ -312,5 +335,8 @@ export default {
                 padding:20px;
             }
         }
+    }
+    .btn{
+        margin-top:20px;
     }
 </style>

@@ -4,7 +4,6 @@
             <el-col :span="4" class="forumList">
                 <el-tree :data="btnList"
                 ref="tree"
-                show-checkbox
                 accordion
                 :expand-on-click-node="false"
                 :current-node-key="currentNodekey"
@@ -23,67 +22,103 @@
                             border
                             style="width: 100%">
                             <el-table-column
-                                prop="id"
-                                label="文章id"
+                                type="index"
+                                align='center'
+                                label="序号"
                                 width="80">
                             </el-table-column>
                             <el-table-column
-                                prop="paperAbstract"
-                                label="摘要"
-                                max-height="40"
-                                width="auto">
-                            </el-table-column>
-                            <el-table-column
                                 prop="paperTitle"
+                                align='center'
                                 label="文章标题"
                                 height="40">
                             </el-table-column>
                             <el-table-column
+                                align='center'
                                 prop="themeName"
                                 label="论文主题名称"
                                 width="180">
                             </el-table-column>
                             <el-table-column
+                                prop="email"
+                                align='center'
+                                label="投稿人"
+                                max-height="40"
+                                width="auto">
+                            </el-table-column>
+                            <el-table-column
                                 prop="submitTypeName"
+                                align='center'
                                 label="稿件提交方式"
                                 width="140">
-                            </el-table-column><el-table-column
+                            </el-table-column>
+                            <el-table-column
                                 label="论文名称"
+                                align='center'
                                 width="100">
                                 <template slot-scope="scope">
-                                    <el-button @click="skip(scope.row)" type="text" size="small">预览</el-button>
-                                    <el-button @click="handleClick(scope.row,0)" type="text" size="small">下载</el-button>
+                                    <el-button v-if="scope.row.paperName" @click="skip(scope.row)" type="text" size="small">预览</el-button>
+                                    <el-button v-if="scope.row.paperName" @click="handleClick(scope.row,0)" type="text" size="small">下载</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column
                                 label="海报名称"
+                                align='center'
                                 width="100">
                                 <template slot-scope="scope">
-                                    <el-button @click="showSrc(scope.row)" type="text" size="small">预览</el-button>
-                                    <el-button @click="handleClick(scope.row,1)" type="text" size="small">下载</el-button>
+                                    <el-button v-if="scope.row.posterName" @click="showSrc(scope.row)" type="text" size="small">预览</el-button>
+                                    <el-button v-if="scope.row.posterName" @click="handleClick(scope.row,1)" type="text" size="small">下载</el-button>
                                 </template>
                             </el-table-column>
+                            <el-table-column
+                                prop="isAudit"
+                                align='center'
+                                label="发布状态"
+                                width="80">
+                            </el-table-column>
+                            <el-table-column
+                                fixed="right"
+                                label="操作"
+                                align='center'
+                                width="100">
+                                <template slot-scope="scope">
+                                    <el-button @click="detailClick(scope.row)" type="text" size="small">详情</el-button>
+                                </template>
+                            </el-table-column>
+
+
+                            
+                            <!--<el-table-column
+                                prop="paperAbstract"
+                                align='center'
+                                label="摘要"
+                                max-height="40"
+                                width="auto">
+                            </el-table-column>
+                            
+
+                            
+                            
                             
                             </el-table-column><el-table-column
                                 prop="paperKeywords"
+                                align='center'
                                 label="关键词"
                                 width="80">
                             </el-table-column>
                             </el-table-column><el-table-column
                                 prop="paperReference"
+                                align='center'
                                 label="参考文献"
                                 width="180">
                             </el-table-column>
                             <el-table-column
                                 prop="createTime"
+                                align='center'
                                 label="上传时间"
                                 width="100">
-                            </el-table-column>
-                            <el-table-column
-                                prop="isAudit"
-                                label="发布状态"
-                                width="80">
-                            </el-table-column>
+                            </el-table-column>-->
+                            
                         </el-table>
                     </el-row>
                     <el-row>
@@ -109,7 +144,50 @@
             </el-row>
             <showPdf class="pdf-show" :msg-father="pdfPath" v-if="!isImg"></showPdf>
         </el-row>
-        
+        <!--详情-->
+		<el-dialog class='dtails' title="论坛详情" :visible.sync="dtailFormVisible" :close-on-click-modal="false">
+			<el-form :model="dtailForm" label-width="120px" :rules="addFormRules">
+				<el-form-item label="论坛名称">
+					<el-input v-model="dtailForm.forumName" :disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="投稿主题">
+					<el-input v-model="dtailForm.themeName" :disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="投稿方式">
+					<el-input v-model="dtailForm.submitTypeName" :disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="投稿人">
+					<el-input v-model="dtailForm.email" :disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="标题">
+					<el-input v-model="dtailForm.paperTitle" :disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="摘要">
+                    <el-input v-model="dtailForm.paperAbstract" :disabled="true"></el-input>
+		        </el-form-item>
+			    <el-form-item label="关键词">
+                    <el-input v-model="dtailForm.paperKeywords" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="参考文献">
+                    <el-input v-model="dtailForm.paperReference" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="论文名称">
+                    <el-input v-model="dtailForm.paperName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="海报名称">
+                    <el-input v-model="dtailForm.posterName" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="首次提交时间">
+                    <el-input v-model="dtailForm.createTime" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="最后提交时间">
+                    <el-input v-model="dtailForm.lastSubmitTime" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="浏览次数">
+                    <el-input v-model="dtailForm.viewCount" :disabled="true"></el-input>
+                </el-form-item>
+			</el-form>
+		</el-dialog>
     </div>
 </template>
 
@@ -117,6 +195,7 @@
 import pdf from 'vue-pdf'
 import showPdf from '../components/showPdf'
 import FileSaver from 'file-saver'
+import axios from 'axios'
 import api from '../api/http'
   export default {
     data() {
@@ -145,6 +224,27 @@ import api from '../api/http'
             },
             currentNodekey:'',//树结构默认选中的key
             pdfPath:'',//pdf路径
+            dtailForm:{
+                "forumName":"",//论坛名称
+                "themeName":"",//投稿主题
+                "submitTypeName":"",//投稿方式
+                "email":"",//投稿人
+                "paperTitle":"",//标题
+                "paperAbstract":"",//摘要
+                "paperKeywords":"",//关键词
+                "paperReference":"",//参考文献
+                "paperName":"",//论文名称
+                "posterName":"",//海报名称
+                "createTime":"",//首次提交时间
+                "lastSubmitTime":"",//最后提交时间
+                "viewCount":''//浏览次数
+            },//详情数据
+            dtailFormVisible:false ,//详情控制
+            addFormRules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ]
+            },
         };
     },
     components:{
@@ -201,33 +301,17 @@ import api from '../api/http'
             })
         },
         async handleClick(val,index){
-          console.log("下载",api);
-        //   axios({
-        //         method:'get',
-        //         url:`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}`,
-        //         responseType:'blob',
-        //     })
-        //     .then((data) => {
-        //         console.log(data);
-        //     })
-        //   let params = {
-        //     id:val.id,
-        //     type:index
-        //   }
-        //   console.log(params);
-        //   let getData = this.$api.get(`paper/download`,params);
-        //   console.log("下载",getData);
-        //   let a;
-        //   getData.then((v)=>{
-        //     a = v;
-        //   });
-        //   console.log("=-=-=-=",a);
-
-        //   FileSaver.saveAs(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}&Content=${api.headers.Content}`,'99');
-        // paper/download?id=1&type=0
-        window.location.herf =`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}`;
-        //   window.open(`http://39.100.65.236:8093/paper/download?id=${val.id}&type=${index}&token=${api.headers.token}&refreshToken=${api.headers.refreshToken}`)
-        //   window.location.href = 'http://39.106.77.121:8086/paper/download'
+            let params = {
+                id:val.id,
+                type:index
+            }
+            // let name;
+            // if(index == 0){
+            //     name = val.paperName.split("manuscript/");
+            // }else {
+            //     name = val.posterName.split("manuscript/");
+            // }
+            this.$api.download('paper/download',params)
         },
         benListClick(ev){
             console.log(ev);
@@ -248,6 +332,20 @@ import api from '../api/http'
             this.dialogVisible = true;
             // let mm = 'http://file.dakawengu.com/file/2018-05-29/20180527-tianfeng.pdf'
             this.pdfPath = row.paperName;
+        },
+
+        //详情
+        async detailClick(row){
+            console.log("row.id-=-=-=",row.id);
+            let {data} = await this.$api.get(`paper/${row.id}`);
+            console.log("加载数据-列表数据----详情",data)
+            
+            if(data.code == '01'){
+                this.dtailFormVisible = true;
+                this.dtailForm = data.data;
+            }else {
+                this.$message.error(data.msg);
+            }
         }
     }
   };
@@ -375,6 +473,11 @@ import api from '../api/http'
             padding:20px;
         }
     }
+}
+
+.dtails{
+    // height:80%;
+    // overflow:scroll;
 }
 
 </style>
