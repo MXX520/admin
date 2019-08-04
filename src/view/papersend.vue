@@ -59,7 +59,7 @@
                             label="投稿主题"
                             width="180"
                             align='center'
-                            height="20px">
+                            height="120px">
                         </el-table-column>
                         <el-table-column
                             prop="lastSubmitTime"
@@ -74,6 +74,9 @@
                             align='center'
                             width="80"
                             height="20px">
+                            <template slot-scope="scope">
+                                <p>{{consts.ManuscriptListStyle[scope.row.isAudit]}}</p>
+                            </template>
                         </el-table-column>
                         <el-table-column
                         fixed="right"
@@ -134,6 +137,7 @@ export default {
         value:'',//下拉选择内容
         paperId:'',//分发的稿件id
         isdisabled:true,
+        consts: this.$consts
       };
     },
     created() {
