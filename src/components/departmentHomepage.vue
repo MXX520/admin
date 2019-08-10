@@ -57,12 +57,59 @@
                     style="width: 100px; height: 100px"
                     :src="postDate.image1">
                 </el-image>
+                
+                <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+
+                <el-button type="primary" @click="updataimg">上传</el-button>
+                <input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
             </el-form-item>
             <el-form-item label="背景图二">
                 <el-image
                     style="width: 100px; height: 100px"
                     :src="postDate.image2">
                 </el-image>
+
+                <el-upload
+                    action="#"
+                    list-type="picture-card"
+                    :auto-upload="false">
+                        <i slot="default" class="el-icon-plus"></i>
+                        <div slot="file" slot-scope="{file}">
+                        <img
+                            class="el-upload-list__item-thumbnail"
+                            :src="file.url" alt=""
+                        >
+                        <span class="el-upload-list__item-actions">
+                            <span
+                            class="el-upload-list__item-preview"
+                            @click="handlePictureCardPreview(file)"
+                            >
+                            <i class="el-icon-zoom-in"></i>
+                            </span>
+                            <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleDownload(file)"
+                            >
+                            <i class="el-icon-download"></i>
+                            </span>
+                            <span
+                            v-if="!disabled"
+                            class="el-upload-list__item-delete"
+                            @click="handleRemove(file)"
+                            >
+                            <i class="el-icon-delete"></i>
+                            </span>
+                        </span>
+                        </div>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+
+
             </el-form-item>
             <el-form-item label="板式选择">
                 <el-radio-group v-model="postDate.type">
@@ -117,8 +164,10 @@ export default {
             },
             //单选
             radio: 3,
-            form: ''
-            
+            form: '',
+            dialogImageUrl: '',
+            dialogVisible: false,
+            disabled: false
         }
     },
     created() {
@@ -165,6 +214,29 @@ export default {
                     type: 'success'
                     });
             }
+        },
+
+        //上传图片
+
+        changFile(e){
+            this.file = []
+            this.file = e.target.files;
+            console.log("this.file-=-=",this.file);
+        },
+        updataimg(){
+            this.$refs.file.click()
+            // let form = new FormData();
+            // form.append("file",this.file[0])
+        },
+        handleRemove(file) {
+            console.log(file);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
+        handleDownload(file) {
+            console.log(file);
         }
     },
     components: {
@@ -182,6 +254,30 @@ export default {
     min-height:200px;
 }
 .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;

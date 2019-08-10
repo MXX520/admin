@@ -5,10 +5,11 @@
                 <el-tree :data="data"
                 ref="tree"
                 accordion
-                current-node-key = "currentNodekey"
+                :current-node-key = currentNodekey
                 node-key="id"
                 :default-expanded-keys="[1]"
                 :props="defaultProps"
+                :default-expand-all="true"
                 @node-click="handleNodeClick"
                 :expand-on-click-node="false"
                 ></el-tree>
@@ -33,7 +34,7 @@
                             type="index"
                             label="序号"
                             align='center'
-                            width="auto"
+                            width="80"
                             height="10">
                         </el-table-column>
                         <el-table-column
@@ -138,7 +139,7 @@ export default {
         addTableData: [],//获取的审稿人列表
         addTableDataOk:[],//已选择的审稿人集合
         id:'',//树id
-        currentNodekey:'',//树结构默认选中的key
+        currentNodekey:'2',//树结构默认选中的key
       };
     },
     created() {
@@ -155,6 +156,7 @@ export default {
         async getList(){
             let {data}  = await this.$api.get("reviewer/group/tree/list");
             console.log("审稿人分组--树",data);
+            console.log("审稿人分组--树",JSON.stringify(data));
             this.data = data.data;
         },
 
@@ -178,8 +180,10 @@ export default {
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

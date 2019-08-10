@@ -44,7 +44,7 @@
                                 align='center'
                                 label="投稿人"
                                 max-height="40"
-                                width="auto">
+                                width="200">
                             </el-table-column>
                             <el-table-column
                                 prop="submitTypeName"
@@ -75,6 +75,9 @@
                                 align='center'
                                 label="发布状态"
                                 width="80">
+                                <template slot-scope="scope">
+                                   <p>{{consts.ManuscriptListStyle[scope.row.isAudit]}}</p>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                 fixed="right"
@@ -245,6 +248,7 @@ import api from '../api/http'
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ]
             },
+            consts: this.$consts
         };
     },
     components:{
@@ -314,10 +318,12 @@ import api from '../api/http'
             this.$api.download('paper/download',params)
         },
         benListClick(ev){
-            console.log(ev);
-            this.btnIndex = ev.id;
-            this.formData.forumId = ev.id;
-            this.loadListRight();
+            if(ev.id){
+                this.btnIndex = ev.id;
+                this.formData.forumId = ev.id;
+                this.loadListRight();
+            }
+            
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);

@@ -30,6 +30,7 @@
                             type="index"
                             align='center'
                             label="序号"
+                            width="80"
                             height="10">
                         </el-table-column>
                         <el-table-column
@@ -126,8 +127,10 @@ export default {
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

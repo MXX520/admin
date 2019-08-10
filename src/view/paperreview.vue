@@ -29,7 +29,7 @@
                             prop="id"
                             type="index"
                             align='center'
-                            width="auto"
+                            width="80"
                             label="序号"
                             height="10">
                         </el-table-column>
@@ -53,19 +53,20 @@
                             align='center'
                             width="auto"
                             height="20px">
+                            <template slot-scope="scope">{{ scope.row.score == -1 ? '':scope.row.score }}</template>
                         </el-table-column>
                         <el-table-column
                             label="是否通过"
                             align='center'
                             width="auto"
                             height="20px">
-                            <template slot-scope="scope">{{ scope.row.result == 1 ? '通过' : '未通过' }}</template>
+                            <template v-if="scope.row.result != -1" slot-scope="scope">{{ scope.row.result == 1 ? '通过' : '未通过' }}</template>
                         </el-table-column>
                         <el-table-column
                             prop="createTime"
                             label="审核时间"
                             align='center'
-                            width="80"
+                            width="180"
                             height="20px">
                         </el-table-column>
                     </el-table>
@@ -138,8 +139,10 @@ export default {
         //列表树单击事件
         handleNodeClick(ev){
             console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询

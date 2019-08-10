@@ -1,21 +1,32 @@
 <template>
 	<el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
-		<el-form-item label="论坛标题">
+		<el-form-item label="论坛标题(中文)">
 			<el-input v-model="form.name"></el-input>
 		</el-form-item>
-		<el-form-item label="发起人">
+		<el-form-item label="论坛标题(英文)">
+			<el-input v-model="formEnglish.name"></el-input>
+		</el-form-item>
+		<el-form-item label="发起人(中文)">
 			<el-input v-model="form.people"></el-input>
+		</el-form-item>
+		<el-form-item label="发起人(英文)">
+			<el-input v-model="formEnglish.people"></el-input>
 		</el-form-item>
 		<el-form-item label="发起人电话">
 			<el-input v-model="form.phone"></el-input>
 		</el-form-item>
+		
+		
 		<el-form-item label="发起人邮箱">
 			<el-input v-model="form.email"></el-input>
 		</el-form-item>
-		<el-form-item label="申请原因">
+		
+		<el-form-item label="申请原因(中文)">
 			<el-input type="textarea" v-model="form.reson"></el-input>
 		</el-form-item>
-	
+		<el-form-item label="申请原因(英文)">
+			<el-input type="textarea" v-model="formEnglish.reson"></el-input>
+		</el-form-item>
 		
 		<el-form-item label="评分标准">
 			<el-radio-group v-model="form.desc">
@@ -37,6 +48,14 @@
 		data() {
 			return {
 				form: {
+					name: '',
+					people: '',
+					phone: '',
+					email: '',
+					reson:"",
+					desc: '0'
+				},
+				formEnglish: {
 					name: '',
 					people: '',
 					phone: '',
@@ -89,7 +108,10 @@
 					sponsorPhone:this.form.phone,
 					sponsorEmail:this.form.email,
 					applyReason:this.form.reson,
-					scaleOfMark:this.form.desc
+					scaleOfMark:this.form.desc,
+					titleEn:this.formEnglish.name,
+					sponsorEn:this.formEnglish.people,
+					applyReasonEn:this.formEnglish.reson
 				})
 				if(data.data.code){
 					this.$message({

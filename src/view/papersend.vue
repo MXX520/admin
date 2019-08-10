@@ -50,21 +50,21 @@
                         <el-table-column
                             prop="submitTypeName"
                             label="投稿方式"
-                            width="80"
+                            width="180"
                             align='center'
                             height="20px">
                         </el-table-column>
                         <el-table-column
                             prop="themeName"
                             label="投稿主题"
-                            width="80"
+                            width="180"
                             align='center'
-                            height="20px">
+                            height="120px">
                         </el-table-column>
                         <el-table-column
                             prop="lastSubmitTime"
                             label="最后提交时间"
-                            width="120"
+                            width="180"
                             align='center'
                             height="20px">
                         </el-table-column>
@@ -74,6 +74,9 @@
                             align='center'
                             width="80"
                             height="20px">
+                            <template slot-scope="scope">
+                                <p>{{consts.ManuscriptListStyle[scope.row.isAudit]}}</p>
+                            </template>
                         </el-table-column>
                         <el-table-column
                         fixed="right"
@@ -134,6 +137,7 @@ export default {
         value:'',//下拉选择内容
         paperId:'',//分发的稿件id
         isdisabled:true,
+        consts: this.$consts
       };
     },
     created() {
@@ -179,9 +183,10 @@ export default {
 
         //列表树单击事件
         handleNodeClick(ev){
-            console.log(ev.id);
-            this.id = ev.id;
-            this.getRecordList();
+            if(ev.id){
+                this.id = ev.id;
+                this.getRecordList();
+            }
         },
 
         //查询
