@@ -1,5 +1,5 @@
 <template>
-	<el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
+	<el-form ref="form" :model="form" label-width="130px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
 		<el-form-item label="论坛标题(中文)">
 			<el-input v-model="form.name"></el-input>
 		</el-form-item>
