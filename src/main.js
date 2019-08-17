@@ -13,6 +13,10 @@ import consts from './api/consts'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+//vue-tinymce-editor富文本配置
+import tinymce from 'vue-tinymce-editor'
+Vue.component('tinymce', tinymce)
+
 //富文本
 import  VueQuillEditor from 'vue-quill-editor'
 // require styles 引入样式

@@ -104,7 +104,7 @@ const api = {
   * @param data
   * @returns {Promise}
   */
-  async post (url, data) {
+  async post (url, data, config) {
     let urlPath = httpPath+url;
     console.log(urlPath);
     try {

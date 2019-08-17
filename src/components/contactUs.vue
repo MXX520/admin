@@ -1,17 +1,15 @@
 <template>
     <div id="app">
-        <quill-editor 
+        <tinymce id="d8"
             class="contactUs"
             v-model="content" 
-            ref="aboutUs" 
-            :options="editorOption">
-        </quill-editor>
-        <quill-editor 
+            ref="aboutUs">
+        </tinymce>
+        <tinymce id="d9"
             class="contactUs"
             v-model="contentEn" 
-            ref="aboutUs" 
-            :options="editorOption">
-        </quill-editor>
+            ref="aboutUs">
+        </tinymce>
         <el-row>
             <el-button type="primary" @click="saveBtn">保存</el-button>
             <el-button type="primary" @click="previewCh">中文预览</el-button>
@@ -30,10 +28,6 @@ export default {
             contentEn:'', //中文
             content:'', //英文
             id:'',//左侧论坛树id
-            //富文本配置
-            editorOption: {
-
-            }
         }
     },
     created() {
@@ -99,11 +93,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-    /deep/ .quill-editor{
-        min-height:300px;
-        
-    }
-    /deep/ .ql-container{
-        min-height:300px;
+    /deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
+        min-height:400px;
+        margin-bottom:20px;
     }
 </style>
