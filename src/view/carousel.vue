@@ -329,7 +329,7 @@
 				form.append("isVisible",this.visable)
 				form.append("file",this.file[0])
 
-				let {data} = await axios.post("http://39.100.65.236:8093/carousel",form)
+				let {data} = await axios.post(this.$api.httpPath+"carousel",form)
 				if(data.code=="01"){
 					this.editFormVisible = false;
 					this.getUsers()
@@ -346,7 +346,7 @@
 				form.append("isVisible",0)
 				form.append("file",this.file[0])
 
-				let {data} = await axios.put("http://39.100.65.236:8093/carousel/"+this.editId,form)
+				let {data} = await axios.put(this.$api.httpPath+"carousel/"+this.editId,form)
 				if(data.code=="01"){
 					this.putVisible = false;
 					this.getUsers()
