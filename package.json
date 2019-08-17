@@ -23,6 +23,7 @@
     "vue-pdf": "^4.0.7",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
+    "vue-tinymce-editor": "^1.6.2",
     "vue-ueditor-wrap": "^2.4.1",
     "vuex": "^3.1.1"
   },

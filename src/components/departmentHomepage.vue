@@ -23,93 +23,51 @@
             </el-form-item>
 
             <el-form-item label="关于我们（中文）">
-                <quill-editor 
+                <tinymce id="d5"
                     v-model="postDate.about" 
-                    ref="aboutUs" 
-                    :options="editorOption">
-                </quill-editor>
+                    ref="aboutUs">
+                </tinymce>
+                
             </el-form-item>
             <el-form-item label="关于我们（英文）">
-                <quill-editor 
+                <tinymce id="d6"
                     v-model="postDate.aboutEn" 
-                    ref="aboutUs" 
-                    :options="editorOption">
-                </quill-editor>
+                    ref="aboutUs">
+                </tinymce>
             </el-form-item>
             
             <el-form-item label="会议通知（中文）">
-                <quill-editor 
+                <tinymce id="d3"
                     v-model="postDate.conferenceNotice" 
-                    ref="meetingNotice" 
-                    :options="editorOption">
-                </quill-editor>
+                    ref="meetingNotice">
+                </tinymce>
             </el-form-item>
             <el-form-item label="会议通知（英文）">
-                <quill-editor 
+                <tinymce id="d4"
                     v-model="postDate.conferenceNoticeEn" 
-                    ref="meetingNotice" 
-                    :options="editorOption">
-                </quill-editor>
+                    ref="meetingNotice" >
+                </tinymce>
             </el-form-item>
 
-            <el-form-item label="背景图一">
+            <el-form-item label="背景图一" class="fileImg">
                 <el-image
                     style="width: 100px; height: 100px"
-                    :src="postDate.image1">
+                    :src="showImg1">
                 </el-image>
-                
                 <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-
-                <el-button type="primary" @click="updataimg">上传</el-button>
-                <input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
+                <upImg v-if="showImg1"  @fileImg="getImgFile"></upImg>
             </el-form-item>
-            <el-form-item label="背景图二">
+            <el-form-item label="背景图二" class="fileImg">
                 <el-image
                     style="width: 100px; height: 100px"
-                    :src="postDate.image2">
+                    :src="showImg2">
                 </el-image>
-
-                <el-upload
-                    action="#"
-                    list-type="picture-card"
-                    :auto-upload="false">
-                        <i slot="default" class="el-icon-plus"></i>
-                        <div slot="file" slot-scope="{file}">
-                        <img
-                            class="el-upload-list__item-thumbnail"
-                            :src="file.url" alt=""
-                        >
-                        <span class="el-upload-list__item-actions">
-                            <span
-                            class="el-upload-list__item-preview"
-                            @click="handlePictureCardPreview(file)"
-                            >
-                            <i class="el-icon-zoom-in"></i>
-                            </span>
-                            <span
-                            v-if="!disabled"
-                            class="el-upload-list__item-delete"
-                            @click="handleDownload(file)"
-                            >
-                            <i class="el-icon-download"></i>
-                            </span>
-                            <span
-                            v-if="!disabled"
-                            class="el-upload-list__item-delete"
-                            @click="handleRemove(file)"
-                            >
-                            <i class="el-icon-delete"></i>
-                            </span>
-                        </span>
-                        </div>
-                    </el-upload>
                     <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-
-
+                <upImg v-if="showImg2" @fileImgs="getImgFiles"></upImg>
             </el-form-item>
             <el-form-item label="板式选择">
                 <el-radio-group v-model="postDate.type">
@@ -127,24 +85,16 @@
 </template>
 
 <script>
- import { quillEditor } from 'vue-quill-editor'
+import upImg from './upImg'
+import axios from 'axios'
 export default {
     name: 'departmentHomepage',
     data () {
         return {
             msg: '院系首页',
-            id:1,
+            id:"",
             input:'',
             content:'',
-            //富文本配置文件
-            editorOption:{
-                // modules:{
-                //     toolbar:[
-                //         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                //         ['blockquote', 'code-block']
-                //     ]
-                // }
-            },
             //所有输入框model
             postDate: {
                 forumId: '',//论坛id
@@ -167,7 +117,10 @@ export default {
             form: '',
             dialogImageUrl: '',
             dialogVisible: false,
-            disabled: false
+            disabled: false,
+            showImg1:'',
+            showImg2:'',
+            formData: new FormData()
         }
     },
     created() {
@@ -180,6 +133,7 @@ export default {
         initEVt(){
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
                 this.id = item;
+                console.log(this.id);
                 this.getList(item);
             });
         },
@@ -190,6 +144,8 @@ export default {
             let {data}  = await this.$api.get("/forum/index/"+this.id)
             console.log("获取的院系首页数据",data);
             this.postDate = {...data.data};
+            this.showImg1 = this.postDate.image1;
+            this.showImg2 = this.postDate.image2;
         },
         
         //发送广播事件，显示预览弹窗
@@ -204,9 +160,39 @@ export default {
 
         //保存
         async saveBtn(){
-            this.postDate.forumId = 1;
-            console.log("保存",this.postDate);
-            let data = await this.$api.post("/forum/index",this.postDate);
+            let formData = new FormData();
+            formData.append("forumId", Number(this.postDate.forumId));
+            formData.append("about", this.postDate.about);
+            formData.append("aboutEn", this.postDate.aboutEn);
+            formData.append("conferenceTime", this.postDate.conferenceTime);
+            formData.append("conferenceTimeEn", this.postDate.conferenceTimeEn);
+            formData.append("conferenceOverview", this.postDate.conferenceOverview);
+            formData.append("conferenceOverviewEn", this.postDate.conferenceOverviewEn);
+            formData.append("conferencePlace", this.postDate.conferencePlace);
+            formData.append("conferencePlaceEn", this.postDate.conferencePlaceEn);
+            formData.append("image1", null);
+            formData.append("image2", null);
+            formData.append("conferenceNotice", this.postDate.conferenceNotice);
+            formData.append("conferenceNoticeEn", this.postDate.conferenceNoticeEn);
+            formData.append("type", Number(this.postDate.type));
+            console.log("保存",formData);
+            console.log("forumId",formData.get("forumId"));
+            console.log("about",formData.get("about"));
+            console.log("aboutEn",formData.get("aboutEn"));
+            console.log("conferenceTime",formData.get("conferenceTime"));
+            console.log("conferenceTimeEn",formData.get("conferenceTimeEn"));
+            console.log("conferenceOverview",formData.get("conferenceOverview"));
+            console.log("conferenceOverviewEn",formData.get("conferenceOverviewEn"));
+            console.log("conferencePlace",formData.get("conferencePlace"));
+            console.log("conferencePlaceEn",formData.get("conferencePlaceEn"));
+            console.log("conferenceNotice",formData.get("conferenceNotice"));
+            console.log("conferenceNoticeEn",formData.get("conferenceNoticeEn"));
+            console.log("type",formData.get("type"));
+            let config = {       
+               headers: { "Content-Type": "multipart/form-data" }
+            };
+            let {data} = await axios.post("http://39.100.65.236:8093/forum/index",form, config)
+            // let data = await this.$api.post("/forum/index", formData, config);
             console.log(data);
             if(data.code == '01'){
                 this.$message({
@@ -218,37 +204,25 @@ export default {
 
         //上传图片
 
-        changFile(e){
-            this.file = []
-            this.file = e.target.files;
-            console.log("this.file-=-=",this.file);
+        getImgFile(data){
+            console.log("获取的文件======--=+++++",data);
+            formData.append("image1", data);
         },
-        updataimg(){
-            this.$refs.file.click()
-            // let form = new FormData();
-            // form.append("file",this.file[0])
-        },
-        handleRemove(file) {
-            console.log(file);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        handleDownload(file) {
-            console.log(file);
+        getImgFiles(data){
+            console.log("获取的文件======--=+++++",data);
+            formData.append("image2", data);
         }
     },
     components: {
-        
+        upImg
     }
 }
 </script>
 
 <style scoped lang="less">
-.essayNoticeBox{
-    min-height:500px;
-    
+/deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
+    min-height:400px;
+    margin-bottom:20px;
 }
 /deep/ .ql-container{
     min-height:200px;

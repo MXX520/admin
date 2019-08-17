@@ -1,17 +1,7 @@
 <template>
     <div id="app">
-        <quill-editor 
-            class="essayNoticeBox"
-            v-model="content" 
-            ref="aboutUs" 
-            :options="editorOption">
-        </quill-editor>
-        <quill-editor 
-            class="essayNoticeBox"
-            v-model="contentEn" 
-            ref="aboutUs" 
-            :options="editorOption">
-        </quill-editor>
+        <tinymce id="d1" class="essayNoticeBox" v-model="content"></tinymce>
+        <tinymce id="d2" class="essayNoticeBox" v-model="contentEn"></tinymce>
         <el-row>
             <el-button type="primary" @click="saveBtn">保存</el-button>
             <el-button type="primary" @click="previewCh">中文预览</el-button>
@@ -30,14 +20,11 @@ export default {
             msg: '征文通知',
             content:'',//中文
             contentEn:'',//英文
-            //富文本配置规则
-            editorOption: {
-                
-            }
         }
     },
     created() {
         this.initEvt();
+        console.log("this.$refs.tm.editor-=-=-=-=-=-=-=-=-=",this.$refs.tm);
     },
     methods: {
         initEvt(){
@@ -102,11 +89,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-    .essayNoticeBox{
-        min-height:500px;
-        
-    }
-    /deep/ .ql-container{
+    /deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
         min-height:400px;
+        margin-bottom:20px;
     }
 </style>
