@@ -191,7 +191,7 @@ export default {
             let config = {       
                headers: { "Content-Type": "multipart/form-data" }
             };
-            let {data} = await axios.post("http://39.100.65.236:8093/forum/index",form, config)
+            let {data} = await axios.post("http://39.100.65.236:8093/forum/index",formData)
             // let data = await this.$api.post("/forum/index", formData, config);
             console.log(data);
             if(data.code == '01'){
