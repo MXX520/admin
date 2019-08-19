@@ -273,7 +273,7 @@ import axios from "axios"
 			
 				form.append("file",this.file[0])
 
-				let {data} = await axios.put("http://39.100.65.236:8093/cooperate/"+this.editId,form)
+				let {data} = await axios.put(this.$api.httpPath+"cooperate/"+this.editId,form)
 				if(data.code=="01"){
 					this.editFormVisible = false;
 					this.getUsers()
@@ -292,7 +292,7 @@ import axios from "axios"
 			
 				form.append("file",this.file[0])
 
-				let {data} = await axios.put("http://39.100.65.236:8093/cooperate",form)
+				let {data} = await axios.put(this.$api.httpPath+"cooperate",form)
 				if(data.code=="01"){
 					this.newFormVisible = false;
 					this.getUsers()

@@ -125,7 +125,6 @@ export default {
     },
     created() {
         this.initEVt();
-        
         console.log("---------看看单击执行1");
     },
     methods: {
@@ -160,39 +159,23 @@ export default {
 
         //保存
         async saveBtn(){
-            let formData = new FormData();
-            formData.append("forumId", Number(this.postDate.forumId));
-            formData.append("about", this.postDate.about);
-            formData.append("aboutEn", this.postDate.aboutEn);
-            formData.append("conferenceTime", this.postDate.conferenceTime);
-            formData.append("conferenceTimeEn", this.postDate.conferenceTimeEn);
-            formData.append("conferenceOverview", this.postDate.conferenceOverview);
-            formData.append("conferenceOverviewEn", this.postDate.conferenceOverviewEn);
-            formData.append("conferencePlace", this.postDate.conferencePlace);
-            formData.append("conferencePlaceEn", this.postDate.conferencePlaceEn);
-            formData.append("image1", null);
-            formData.append("image2", null);
-            formData.append("conferenceNotice", this.postDate.conferenceNotice);
-            formData.append("conferenceNoticeEn", this.postDate.conferenceNoticeEn);
-            formData.append("type", Number(this.postDate.type));
-            console.log("保存",formData);
-            console.log("forumId",formData.get("forumId"));
-            console.log("about",formData.get("about"));
-            console.log("aboutEn",formData.get("aboutEn"));
-            console.log("conferenceTime",formData.get("conferenceTime"));
-            console.log("conferenceTimeEn",formData.get("conferenceTimeEn"));
-            console.log("conferenceOverview",formData.get("conferenceOverview"));
-            console.log("conferenceOverviewEn",formData.get("conferenceOverviewEn"));
-            console.log("conferencePlace",formData.get("conferencePlace"));
-            console.log("conferencePlaceEn",formData.get("conferencePlaceEn"));
-            console.log("conferenceNotice",formData.get("conferenceNotice"));
-            console.log("conferenceNoticeEn",formData.get("conferenceNoticeEn"));
-            console.log("type",formData.get("type"));
+            // let formData = new FormData();
+            this.formData.append("forumId", Number(this.postDate.forumId));
+            this.formData.append("about", this.postDate.about);
+            this.formData.append("aboutEn", this.postDate.aboutEn);
+            this.formData.append("conferenceTime", this.postDate.conferenceTime);
+            this.formData.append("conferenceTimeEn", this.postDate.conferenceTimeEn);
+            this.formData.append("conferenceOverview", this.postDate.conferenceOverview);
+            this.formData.append("conferenceOverviewEn", this.postDate.conferenceOverviewEn);
+            this.formData.append("conferencePlace", this.postDate.conferencePlace);
+            this.formData.append("conferencePlaceEn", this.postDate.conferencePlaceEn);
+            this.formData.append("conferenceNotice", this.postDate.conferenceNotice);
+            this.formData.append("conferenceNoticeEn", this.postDate.conferenceNoticeEn);
+            this.formData.append("type", Number(this.postDate.type));
             let config = {       
                headers: { "Content-Type": "multipart/form-data" }
             };
-            let {data} = await axios.post("http://39.100.65.236:8093/forum/index",formData)
-            // let data = await this.$api.post("/forum/index", formData, config);
+            let {data} = await axios.post(this.$api.httpPath+"forum/index",this.formData)
             console.log(data);
             if(data.code == '01'){
                 this.$message({
@@ -206,11 +189,11 @@ export default {
 
         getImgFile(data){
             console.log("获取的文件======--=+++++",data);
-            formData.append("image1", data);
+            this.formData.append("image1", data);
         },
         getImgFiles(data){
             console.log("获取的文件======--=+++++",data);
-            formData.append("image2", data);
+            this.formData.append("image2", data);
         }
     },
     components: {

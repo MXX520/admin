@@ -87,8 +87,8 @@ export default {
             // let params = {
             //   blob
             // }
-            self.$emit('fileImg',blob)
-            self.$emit('fileImgs',blob)
+            self.$emit('fileImg',file)
+            self.$emit('fileImgs',file)
           };
         };
       }
