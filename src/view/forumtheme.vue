@@ -148,7 +148,7 @@ export default {
             this.editId = row.id;
         },
         async getList(){
-            let {data}  = await this.$api.get("forum/tree/list");
+            let {data}  = await this.$api.get("forum/tree/open/list");
             console.log("审稿人分组--树",data);
             console.log("审稿人分组--树",JSON.stringify(data));
             this.data = data.data;
