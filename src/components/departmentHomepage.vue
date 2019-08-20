@@ -51,26 +51,28 @@
 
             <el-form-item label="背景图一" class="fileImg">
                 <el-image
+                    v-if="postDate.image1"
                     style="width: 100px; height: 100px"
-                    :src="showImg1">
+                    :src="postDate.image1">
                 </el-image>
                 <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-                <upImg v-if="showImg1"  @fileImg="getImgFile"></upImg>
+                <upImg  @fileImg="getImgFile"></upImg>
             </el-form-item>
             <el-form-item label="背景图二" class="fileImg">
                 <el-image
+                    v-if="postDate.image1"
                     style="width: 100px; height: 100px"
-                    :src="showImg2">
+                    :src="postDate.image2">
                 </el-image>
                     <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
-                <upImg v-if="showImg2" @fileImgs="getImgFiles"></upImg>
+                <upImg @fileImgs="getImgFiles"></upImg>
             </el-form-item>
             <el-form-item label="板式选择">
-                <el-radio-group v-model="postDate.type">
+                <el-radio-group v-model="type">
                     <el-radio :label="1">首页版式一</el-radio>
                     <el-radio :label="2">首页版式二</el-radio>
                     <el-radio :label="3">首页版式三</el-radio>
@@ -95,6 +97,7 @@ export default {
             id:"",
             input:'',
             content:'',
+            type: '',
             //所有输入框model
             postDate: {
                 forumId: '',//论坛id
@@ -118,8 +121,6 @@ export default {
             dialogImageUrl: '',
             dialogVisible: false,
             disabled: false,
-            showImg1:'',
-            showImg2:'',
             formData: new FormData()
         }
     },
@@ -143,8 +144,7 @@ export default {
             let {data}  = await this.$api.get("/forum/index/"+this.id)
             console.log("获取的院系首页数据",data);
             this.postDate = {...data.data};
-            this.showImg1 = this.postDate.image1;
-            this.showImg2 = this.postDate.image2;
+            this.type =  this.postDate.type ?  this.postDate.type : 1;
         },
         
         //发送广播事件，显示预览弹窗
@@ -159,22 +159,23 @@ export default {
 
         //保存
         async saveBtn(){
-            // let formData = new FormData();
-            this.formData.append("forumId", Number(this.postDate.forumId));
-            this.formData.append("about", this.postDate.about);
-            this.formData.append("aboutEn", this.postDate.aboutEn);
-            this.formData.append("conferenceTime", this.postDate.conferenceTime);
-            this.formData.append("conferenceTimeEn", this.postDate.conferenceTimeEn);
-            this.formData.append("conferenceOverview", this.postDate.conferenceOverview);
-            this.formData.append("conferenceOverviewEn", this.postDate.conferenceOverviewEn);
-            this.formData.append("conferencePlace", this.postDate.conferencePlace);
-            this.formData.append("conferencePlaceEn", this.postDate.conferencePlaceEn);
-            this.formData.append("conferenceNotice", this.postDate.conferenceNotice);
-            this.formData.append("conferenceNoticeEn", this.postDate.conferenceNoticeEn);
-            this.formData.append("type", Number(this.postDate.type));
+            console.log("保存", this.id);
+            this.formData.append("forumId", this.id);
+            this.formData.append("about", this.postDate.about || "");
+            this.formData.append("aboutEn", this.postDate.aboutEn || "");
+            this.formData.append("conferenceTime", this.postDate.conferenceTime || "");
+            this.formData.append("conferenceTimeEn", this.postDate.conferenceTimeEn || "");
+            this.formData.append("conferenceOverview", this.postDate.conferenceOverview || "");
+            this.formData.append("conferenceOverviewEn", this.postDate.conferenceOverviewEn || "");
+            this.formData.append("conferencePlace", this.postDate.conferencePlace || "");
+            this.formData.append("conferencePlaceEn", this.postDate.conferencePlaceEn || "");
+            this.formData.append("conferenceNotice", this.postDate.conferenceNotice || "");
+            this.formData.append("conferenceNoticeEn", this.postDate.conferenceNoticeEn || "");
+            this.formData.append("type", this.type);
             let config = {       
                headers: { "Content-Type": "multipart/form-data" }
             };
+            
             let {data} = await axios.post(this.$api.httpPath+"forum/index",this.formData)
             console.log(data);
             if(data.code == '01'){
@@ -182,6 +183,8 @@ export default {
                     message: '保存成功',
                     type: 'success'
                     });
+            }else {
+                this.$message.error(data.msg);
             }
         },
 
