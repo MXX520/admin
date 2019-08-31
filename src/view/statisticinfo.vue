@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<div class="title">各院论坛总数</div>
-		<div class="title">统计信息导出
+		<div class="title" style="float:right;margin-top:-36px;">统计信息导出
 			 <el-button type="primary" @click="goOut">导出</el-button>
 		</div>
 		 <el-table

@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     console.log("拦截器成功",response);
     console.log("拦截器成功",response.data.code);
     if(response.data.code!="01"){
-      Message.error(esponse.data.msg)
+      Message.error(response.data.msg)
     }
     /*if(response.data.code=="401"){
       Message({
