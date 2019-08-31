@@ -173,7 +173,6 @@ export default {
 
         //列表树单击事件
         handleNodeClick(ev){
-            console.log(ev.id);
             if(ev.id){
                 this.id = ev.id;
                 this.getRecordList();

@@ -1,6 +1,9 @@
 <template>
 	<section>
 		<div class="title">各院论坛总数</div>
+		<div class="title">统计信息导出
+			 <el-button type="primary" @click="goOut">导出</el-button>
+		</div>
 		 <el-table
 			:data="forumCount"
 			style="width: 100%">
@@ -84,6 +87,9 @@
 			}
 		},
 		methods: {
+			async goOut(){
+				window.location.href = "http://39.100.65.236:8093/export?token="+localStorage.getItem('token')+"&refreshToken="+localStorage.getItem('refreshToken')
+			},
 			async init(){
                 let {data} =await this.$api.get("/statistic")
                 console.log(data)
