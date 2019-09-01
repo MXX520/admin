@@ -19,6 +19,8 @@
     "file-saver": "^2.0.2",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
     "vue": "^2.5.2",
     "vue-pdf": "^4.0.7",
     "vue-quill-editor": "^3.0.6",
