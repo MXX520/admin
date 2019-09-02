@@ -1,13 +1,14 @@
 <template>
     <div id="app">
-        <tinymce id="d1" class="essayNoticeBox" v-model="content"></tinymce>
-        <tinymce id="d2" class="essayNoticeBox" v-model="contentEn"></tinymce>
+        <!--<tinymce id="d1" class="essayNoticeBox" v-model="content"></tinymce>
+        <tinymce id="d2" class="essayNoticeBox" v-model="contentEn"></tinymce>-->
+        <VueUeditorWrap class="essayNoticeBox" v-model="content"></VueUeditorWrap>
+        <VueUeditorWrap class="essayNoticeBox" v-model="contentEn"></VueUeditorWrap>
         <el-row>
             <el-button type="primary" @click="saveBtn">保存</el-button>
             <el-button type="primary" @click="previewCh">中文预览</el-button>
             <el-button type="primary" @click="previewEn">英文预览</el-button>
         </el-row>
-        <VueUeditorWrap/>
     </div>  
 </template>
 

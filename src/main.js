@@ -10,21 +10,23 @@ import Axios from 'axios'
 import api from './api/http'
 import util from './api/utils'
 import consts from './api/consts'
+// import VueUeditorWrap from 'vue-ueditor-wrap'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 //vue-tinymce-editor富文本配置
-import tinymce from 'vue-tinymce-editor'
-Vue.component('tinymce', tinymce)
+// import tinymce from 'vue-tinymce-editor'
+// Vue.component('tinymce', tinymce)
 
 //富文本
-import  VueQuillEditor from 'vue-quill-editor'
+// import  VueQuillEditor from 'vue-quill-editor'
 // require styles 引入样式
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 
-Vue.use(VueQuillEditor)
+// Vue.use(VueQuillEditor)
+// Vue.component('vue-ueditor-wrap', VueUeditorWrap)
 
 //修改原型链，全局使用axios,这样之后可在每个组件的methods中调用$axios命令完成数据请求
 Vue.prototype.$axios = Axios;

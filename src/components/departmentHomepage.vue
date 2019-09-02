@@ -23,30 +23,30 @@
             </el-form-item>
 
             <el-form-item label="关于我们（中文）">
-                <tinymce id="d5"
+                <VueUeditorWrap id="d5"
                     v-model="postDate.about" 
                     ref="aboutUs">
-                </tinymce>
+                </VueUeditorWrap>
                 
             </el-form-item>
             <el-form-item label="关于我们（英文）">
-                <tinymce id="d6"
+                <VueUeditorWrap id="d6"
                     v-model="postDate.aboutEn" 
                     ref="aboutUs">
-                </tinymce>
+                </VueUeditorWrap>
             </el-form-item>
             
             <el-form-item label="会议通知（中文）">
-                <tinymce id="d3"
+                <VueUeditorWrap id="d3"
                     v-model="postDate.conferenceNotice" 
                     ref="meetingNotice">
-                </tinymce>
+                </VueUeditorWrap>
             </el-form-item>
             <el-form-item label="会议通知（英文）">
-                <tinymce id="d4"
+                <VueUeditorWrap id="d4"
                     v-model="postDate.conferenceNoticeEn" 
                     ref="meetingNotice" >
-                </tinymce>
+                </VueUeditorWrap>
             </el-form-item>
 
             <el-form-item label="背景图一" class="fileImg">
@@ -89,6 +89,7 @@
 <script>
 import upImg from './upImg'
 import axios from 'axios'
+import VueUeditorWrap from 'vue-ueditor-wrap'
 export default {
     name: 'departmentHomepage',
     data () {
@@ -200,7 +201,8 @@ export default {
         }
     },
     components: {
-        upImg
+        upImg,
+        VueUeditorWrap
     }
 }
 </script>

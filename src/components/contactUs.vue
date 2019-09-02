@@ -1,15 +1,15 @@
 <template>
     <div id="app">
-        <tinymce id="d8"
+        <VueUeditorWrap id="d8"
             class="contactUs"
             v-model="content" 
             ref="aboutUs">
-        </tinymce>
-        <tinymce id="d9"
+        </VueUeditorWrap>
+        <VueUeditorWrap id="d9"
             class="contactUs"
             v-model="contentEn" 
             ref="aboutUs">
-        </tinymce>
+        </VueUeditorWrap>
         <el-row>
             <el-button type="primary" @click="saveBtn">保存</el-button>
             <el-button type="primary" @click="previewCh">中文预览</el-button>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { quillEditor } from 'vue-quill-editor'
+import VueUeditorWrap from 'vue-ueditor-wrap'
 export default {
     name: 'contactUs',
     data () {
@@ -87,7 +87,7 @@ export default {
 
     },
     components: {
-
+        VueUeditorWrap
     }
 }
 </script>
