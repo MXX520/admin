@@ -34,7 +34,11 @@
 				<el-radio label="1">评分制</el-radio>
 			</el-radio-group>
 		</el-form-item>
-		
+		<el-form-item>
+			<el-button type="primary" @click.native="upload" style="margin-left:0px;">图片上传</el-button>
+				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
+				{{file[0].name}}
+		</el-form-item>
 		<el-form-item>
 			<el-button type="primary" @click="sub">申请</el-button>
 			
@@ -55,6 +59,9 @@
 					reson:"",
 					desc: '0'
 				},
+				file:[{
+					name:""
+				}],
 				formEnglish: {
 					name: '',
 					people: '',
@@ -66,6 +73,16 @@
 			}
 		},
 		methods: {
+			upload(){
+				this.$refs.file.click()
+
+			},
+			changFile(e){
+				this.file = []
+				this.file = e.target.files;
+				console.log(this.file[0])
+				
+			},
 			async  sub() {
 				if(this.form.name==""){
 					  this.$message({
@@ -95,6 +112,7 @@
 						});
 					return
 				}
+				let form = new FormData();
 				if(this.form.reson==""){
 					  this.$message({
 						message: '申请原因不能为空',
@@ -102,17 +120,18 @@
 						});
 					return
 				}
-				let data = await this.$api.post("forum",{
-					title:this.form.name,
-					sponsor:this.form.people,
-					sponsorPhone:this.form.phone,
-					sponsorEmail:this.form.email,
-					applyReason:this.form.reson,
-					scaleOfMark:this.form.desc,
-					titleEn:this.formEnglish.name,
-					sponsorEn:this.formEnglish.people,
-					applyReasonEn:this.formEnglish.reson
-				})
+				form.append("title",this.form.name)
+				form.append("sponsor",this.form.people)
+				form.append("sponsorPhone",this.form.phone)
+				form.append("sponsorEmail",this.form.email)
+				form.append("applyReason",this.form.reson)
+				form.append("scaleOfMark",this.form.desc)
+				form.append("titleEn",this.formEnglish.name)
+				form.append("titleEn",this.formEnglish.people)
+				form.append("sponsorEn",this.formEnglish.reson)
+				form.append("applyReasonEn",this.formEnglish.reson)
+				form.append("image",this.file[0])
+				let data = await this.$api.post("forum",form)
 				if(data.data.code){
 					this.$message({
 						message: '申请成功',

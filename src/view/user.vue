@@ -39,8 +39,8 @@
 				<template scope="scope">
 				
 					<el-button  size="small" @click="handleD(scope.$index, scope.row)">详情</el-button>
-          <el-button  size="small" @click="changeUser(scope.$index, scope.row)">修改</el-button>
-          <el-button  size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+          <el-button   size="small" @click="changeUser(scope.$index, scope.row)">修改</el-button>
+          <el-button v-show="scope.row.roleId!=1" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -229,7 +229,7 @@
 				</div>
 				
 				<div class="item">
-					 <el-form-item label="所属院系">
+					 <el-form-item label="专业名称">
 							  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
 							<el-option
 							v-for="item in schoolList.list"
@@ -258,7 +258,7 @@
 					</el-form-item>
 				</div>
 				<div class="item">
-					 <el-form-item label="专业名称">
+					 <el-form-item label="所属院系">
 						<el-input v-model="major" ></el-input>
 					</el-form-item>
 				</div>

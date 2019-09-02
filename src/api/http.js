@@ -31,7 +31,10 @@ axios.interceptors.response.use(
   response => {
     console.log("拦截器成功",response);
     console.log("拦截器成功",response.data.code);
-    if(response.data.code=="401"){
+    if(response.data.code!="01"){
+      Message.error(response.data.msg)
+    }
+    /*if(response.data.code=="401"){
       Message({
         message: 'token已过期',
         type: 'warning'
@@ -63,7 +66,7 @@ axios.interceptors.response.use(
     }else if(response.data.code=="10"){
       router.push({path:"/login"})
       return;
-    }
+    }*/
     return response;
   },
   error => {

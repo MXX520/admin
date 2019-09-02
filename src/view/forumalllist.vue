@@ -99,16 +99,7 @@
                     <el-radio v-model="radio" label="0">通过制</el-radio>
                     <el-radio v-model="radio" label="1">评分制</el-radio>
                 </el-form-item>
-                <el-form-item label="审核状态">
-                     <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+               
                 <el-form-item label="论坛状态">
                       <el-select v-model="value2" placeholder="请选择">
                         <el-option
@@ -294,7 +285,7 @@
 				this.reson = row.applyReason;
                 this.biaozhu =  row.scaleOfMarkName;
                 this.value2 = row.isClosed=="关闭"?0:1;
-                this.value = row.isAudit;
+              
                 this.value3 = row.pageIndexType;
                 this.title2 = row.titleEn;
                 this.people2 = row.sponsorEn;
