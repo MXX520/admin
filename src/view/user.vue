@@ -86,7 +86,7 @@
 				
 				<div class="item">
 					 <el-form-item label="所属院系">
-						<el-input v-model="email" disabled="true"></el-input>
+						<el-input v-model="major" disabled="true"></el-input>
 					</el-form-item>
 				</div>
 				<div class="item">
@@ -101,7 +101,7 @@
 				</div>
 				<div class="item">
 					 <el-form-item label="专业名称">
-						<el-input v-model="major" disabled="true"></el-input>
+						<el-input v-model="email" disabled="true"></el-input>
 					</el-form-item>
 				</div>
 				
@@ -230,14 +230,7 @@
 				
 				<div class="item">
 					 <el-form-item label="专业名称">
-							  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
-							<el-option
-							v-for="item in schoolList.list"
-							:key="item.id"
-							:label="item.facultyName"
-							:value="item.id">
-							</el-option>
-						</el-select>
+							<el-input v-model="email" ></el-input>
 					</el-form-item>
 				</div>
 				<div class="item">
@@ -259,7 +252,15 @@
 				</div>
 				<div class="item">
 					 <el-form-item label="所属院系">
-						<el-input v-model="major" ></el-input>
+						
+						  <el-select v-model="major" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in schoolList.list"
+							:key="item.id"
+							:label="item.facultyName"
+							:value="item.id">
+							</el-option>
+						</el-select>
 					</el-form-item>
 				</div>
 				
@@ -494,7 +495,7 @@ import { debug, debuglog } from 'util';
 				this.people = row.phone;
 				this.phone = row.roleName;
 				this.email = row.majorName;
-				this.state = row.status;
+				this.state = row.statusName;
 				this.schoolName =  row.schoolName;
 				this.major = row.facultyName
 				this.jingli = row.academicExperience;

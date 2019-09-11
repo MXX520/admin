@@ -41,9 +41,9 @@
                             height="20px">
                         </el-table-column>
                         <el-table-column
-                            prop="userId"
+                            prop="email"
                             label="投稿人"
-                            width="80"
+                            width="220"
                             align='center'
                             height="20px">
                         </el-table-column>

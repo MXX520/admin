@@ -75,12 +75,12 @@
 				this.name  = value.userName;
 				this.phone = value.phone;
 				this.email = value.email;
-				this.role = value.roleId;
-				this.roleId = value.facultyId;
+				this.role = value.roleName;
+				this.roleId = value.facultyName;
 				this.createTime = value.createTime;
 				this.schoolName = value.schoolName;
 				 this.majorName = value.majorName;
-				this.status = value.status;
+				this.status = value.statusName;
 			}
 		},
 		mounted() {

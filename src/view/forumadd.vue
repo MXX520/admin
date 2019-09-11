@@ -34,7 +34,7 @@
 				<el-radio label="1">评分制</el-radio>
 			</el-radio-group>
 		</el-form-item>
-		<el-form-item>
+		<el-form-item label="论坛背景图片">
 			<el-button type="primary" @click.native="upload" style="margin-left:0px;">图片上传</el-button>
 				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
 				{{file[0].name}}
