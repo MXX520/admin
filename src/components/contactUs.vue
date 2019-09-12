@@ -1,11 +1,11 @@
 <template>
     <div id="app">
-        <VueUeditorWrap id="d8"
+        <VueUeditorWrap
             class="contactUs"
             v-model="content" 
             ref="aboutUs">
         </VueUeditorWrap>
-        <VueUeditorWrap id="d9"
+        <VueUeditorWrap
             class="contactUs"
             v-model="contentEn" 
             ref="aboutUs">
