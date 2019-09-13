@@ -90,6 +90,13 @@ util.log = (...rest) => {
     console.log.apply(console, JSON.parse(JSON.stringify(rest)));
 };
 
+util.number = function(val){
+    let arr = []
+    for(var i=1;i<=10;i++){
+        console.log(i*val)
+    }
+}
+
 
 
 export default util;
