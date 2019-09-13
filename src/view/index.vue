@@ -42,6 +42,7 @@
                 <el-breadcrumb separator="/" class="navigation">
                     <el-breadcrumb-item class="navigationItem" style="font-weight:700;" :to="{ path: matched.path }">{{matched.name}}</el-breadcrumb-item>
                 </el-breadcrumb>
+               
                 <router-view/>
             </el-main>
         </el-container>
@@ -60,6 +61,7 @@ export default {
             sysUserName: '',
             matched:'', //面包屑
             isCollapse:false, //收缩展开
+            html:""
         }
     },
     created() {
@@ -75,7 +77,9 @@ export default {
     methods: {
         async init(){
             console.log(this.$api.post);
-            
+            let {data} =  await this.$api.get("config/help")
+            console.log(data)
+            this.html = data.data.content;
         },
         logout(){
             console.log("退出登录");

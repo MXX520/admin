@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/view/index'
+import indexchild from '@/view/indexChild'
 import login from '@/view/login/login'
 import forum_audit from '@/view/forum_audit'
 import person from '@/view/person'
@@ -15,11 +16,17 @@ export default new Router({
       path: '/',
       name: '首页',
       component: index,
+      redirect:"/index",
       children: [
         {
           path: '/person',
           name: '个人中心',
           component: person
+        },
+        {
+          path: '/index',
+          name: '首页',
+          component: indexchild
         },
         {
           path: '/changpsd',
