@@ -1,5 +1,8 @@
 <template>
     <div id="app">
+        <div class="back" @click="back">
+            返回
+        </div>
          <el-form style="width:400px;">
                 <el-form-item label="原密码" >
                     <el-input v-model="oldPassword" autocomplete="off"></el-input>
@@ -47,6 +50,9 @@ export default {
                newPassword:this.newPassword,
                confirmPassword:this.confirmPassword
            })
+        },
+        back(){
+            this.$router.go(-1)
         }
     },
     components: {
@@ -65,5 +71,10 @@ export default {
     background #409eff
     color white
     cursor pointer
+}
+.back{
+    color blue
+    cursor pointer
+    text-decoration underline
 }
 </style>
