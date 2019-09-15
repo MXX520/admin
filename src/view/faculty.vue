@@ -21,7 +21,9 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="facultyName" label="院系名称" align='center' width="160" >
+			<el-table-column prop="facultyName" label="院系名称(中文)" align='center' width="160" >
+			</el-table-column>
+			<el-table-column prop="facultyNameEn" label="院系名称(英文)" align='center' width="360" >
 			</el-table-column>
 			<el-table-column label="操作" align='center' width="240" >
 				<template scope="scope">
@@ -46,8 +48,11 @@
 
 	<el-dialog title="新增院系" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="院系名称">
+				 <el-form-item label="院系名称（中文）">
 					<el-input v-model="title" ></el-input>
+				</el-form-item>
+				 <el-form-item label="院系名称（英文）">
+					<el-input v-model="title2" ></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
@@ -57,8 +62,11 @@
 		</el-dialog>
 		<el-dialog title="院系修改" :visible.sync="changeFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="院系名称">
+				 <el-form-item label="院系名称（中文）">
 					<el-input v-model="oldTitle" ></el-input>
+				</el-form-item>
+				 <el-form-item label="院系名称（英文）">
+					<el-input v-model="oldtitle2" ></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
@@ -92,6 +100,8 @@ import { debug } from 'util';
 				phone:"",
 				email:"",
 				reson:"",
+				title2:"",
+				oldtitle2:"",
 				biaozhu:"",
 				changeFormVisible:false,
 				total:10,
@@ -147,7 +157,10 @@ import { debug } from 'util';
 				this.changeFormVisible = true;
 			},
 			async edit(){
-				let {data} = await this.$api.put("faculty/"+this.editId)
+				let {data} = await this.$api.put("faculty/"+this.editId,{
+					facultyName:this.oldTitle,
+					facultyNameEn:this.oldtitle2
+				})
 				if(data.code=="01"){
 					this.changeFormVisible = false;
 					this.getUsers()
@@ -239,7 +252,8 @@ import { debug } from 'util';
 			//编辑
 			async editSubmit() {
 				let {data} = await this.$api.post("faculty",{
-					facultyName:this.title
+					facultyName:this.title,
+					facultyNameEn:this.title2
 				})
 				if(data.code=="01"){
 					this.addFormVisible = false

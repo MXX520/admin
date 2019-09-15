@@ -9,7 +9,7 @@ export default {
     name: 'App',
     data () {
         return {
-        msg: 333
+            msg: 333
         }
     },
     created() {
@@ -17,7 +17,7 @@ export default {
     },
     methods: {
         init(){
-
+            
         }
     },
     components: {

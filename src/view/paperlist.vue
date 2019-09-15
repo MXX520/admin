@@ -14,6 +14,17 @@
                 ></el-tree>
             </el-col>
             <el-col :span="18">
+                 <el-row>
+                    <el-col :span="10">
+                        <el-input v-model="query" placeholder="请输入内容"></el-input>
+                    </el-col>
+                    <el-col :span="10" style="marginLeft:20px">
+                        <el-button  type="primary" @click="queryClick">查询</el-button>
+                    </el-col>
+                    <el-button  type="primary">
+                        稿件信息导出
+                    </el-button>
+                </el-row>
                 <div class="grid-content bg-purple-light">
                     <el-row class="content-top">
                         <el-table
@@ -211,6 +222,7 @@ import util from '@/api/utils'
             currentPage: 1,
             page:null,//页码
             total:null,//每页大小	
+            query:"",
             formData:{
                 pageNum:null, 
                 pageSize:null,
@@ -219,6 +231,7 @@ import util from '@/api/utils'
                 forumId:null,//论坛id （论坛树返回的id字段）	
                 query:null//查询条件	
             },
+            
             formLabelWidth: '120px',
             src: '',
             dialogVisible:false,
@@ -264,6 +277,7 @@ import util from '@/api/utils'
         this.init();
     },
     methods: {
+        
         init(){
             console.log("121");
             this.loadListLeft();
@@ -363,7 +377,9 @@ import util from '@/api/utils'
 </script>
 
 <style scoped lang="less">
-
+.export{
+    cursor: pointer;
+}
 .btnLeft{
     width:80%;
     height:50px;
