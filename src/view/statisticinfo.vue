@@ -88,8 +88,7 @@
 		},
 		methods: {
 			async goOut(){
-				let httpPath = process.env.NODE_ENV == "development" ? 'http://39.100.65.236:8093/' : 'http://39.100.65.236:8093/';//'http://39.106.77.121:8086/';
-				window.location.href = httpPath+"export?token="+localStorage.getItem('token')+"&refreshToken="+localStorage.getItem('refreshToken')
+				window.location.href = this.$api.httpPath+"export?token="+localStorage.getItem('token')+"&refreshToken="+localStorage.getItem('refreshToken')
 			},
 			async init(){
                 let {data} =await this.$api.get("/statistic")

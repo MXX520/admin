@@ -14,16 +14,20 @@
                 ></el-tree>
             </el-col>
             <el-col :span="18">
-                 <el-row>
-                    <el-col :span="10">
-                        <el-input v-model="query" placeholder="请输入内容"></el-input>
+                 <el-row style="flex" justify="space-between" v-if="formData.forumId">
+                    <el-col :span="12" style="paddingLeft:10px;">
+                        <el-col :span="12">
+                            <el-input v-model="formData.query" placeholder="请输入内容"></el-input>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-button type="primary" @click="loadListRight">查询</el-button>
+                        </el-col>
                     </el-col>
-                    <el-col :span="10" style="marginLeft:20px">
-                        <el-button  type="primary" @click="queryClick">查询</el-button>
+                    <el-col :span="12" style="paddingRight:10px;">
+                        <el-row style="flex">
+                            <el-button style="float:right" type="primary" @click="exportMsg">稿件信息导出</el-button>
+                        </el-row>
                     </el-col>
-                    <el-button  type="primary">
-                        稿件信息导出
-                    </el-button>
                 </el-row>
                 <div class="grid-content bg-purple-light">
                     <el-row class="content-top">
@@ -222,7 +226,6 @@ import util from '@/api/utils'
             currentPage: 1,
             page:null,//页码
             total:null,//每页大小	
-            query:"",
             formData:{
                 pageNum:null, 
                 pageSize:null,
@@ -371,6 +374,11 @@ import util from '@/api/utils'
             }else {
                 this.$message.error(data.msg);
             }
+        },
+
+        //导出信息
+        async exportMsg(){
+            window.location.href = this.$api.httpPath+"paper/export/"+this.formData.forumId
         }
     }
   };
