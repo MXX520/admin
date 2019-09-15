@@ -27,7 +27,6 @@
                     v-model="postDate.about" 
                     ref="aboutUs">
                 </VueUeditorWrap>
-                
             </el-form-item>
             <el-form-item label="关于我们（英文）">
                 <VueUeditorWrap id="d6"
@@ -214,6 +213,15 @@ export default {
 }
 /deep/ .ql-container{
     min-height:200px;
+}
+/deep/ .edui-editor{
+    width: auto !important;
+}
+/deep/ .edui-editor-iframeholder{
+    height: 300px;
+}
+/deep/ .edui-box{
+    height:25px;
 }
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;

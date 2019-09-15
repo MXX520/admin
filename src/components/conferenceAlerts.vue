@@ -12,31 +12,10 @@
         <el-row style="marginTop:20px">
             <el-table
                 :data="tableData"
-                height="250"
                 border
                 style="width: 100%">
                 <el-table-column
-                prop="date"
-                label="日期"
-                width="180">
-                </el-table-column>
-                <el-table-column
-                prop="name"
-                label="姓名"
-                width="180">
-                </el-table-column>
-                <el-table-column
-                prop="address"
-                label="地址">
-                </el-table-column>
-            </el-table>
-            <!--<el-table
-                :data="tableData"
-                border
-                style="width: 100%">
-                <el-table-column
-                    prop="id"
-                    type="index"
+                    prop="num"
                     label="序号"
                     height="10"
                     align='center'
@@ -65,7 +44,7 @@
                     prop="viewCount"
                     align='center'
                     label="浏览次数"
-                    width="300">
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     prop="createTime"
@@ -77,13 +56,14 @@
                 fixed="right"
                 label="操作"
                 align='center'
-                width="100">
+                width="180">
                 <template slot-scope="scope">
                     <el-button @click="detailClick(scope.row)" type="text" size="small">详情</el-button>
                     <el-button type="text" size="small" @click="editorClick(scope.row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="showDel(scope.row)">删除</el-button>
                 </template>
                 </el-table-column>
-            </el-table>-->
+            </el-table>
             <el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -118,6 +98,7 @@
 </template>
 
 <script>
+import util from '@/api/utils'
 export default {
     name: 'conferenceAlerts',
     data () {
@@ -144,36 +125,7 @@ export default {
                 source: '',
                 viewCount: '',
                 createTime: ''
-            },
-            tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+            }
         }
     },
     created() {
@@ -197,12 +149,16 @@ export default {
                 forumId:this.id,
                 query:this.query
             }
+            console.log("params",params)
             let {data}  = await this.$api.get("/forum/express/list",params)
             console.log("会议快讯333",data);
             this.total = data.data.total;//总页数
             this.isPagin = true;
             console.log("this.total",this.total);
             this.tableData = data.data.list;//数据
+            this.tableData.forEach((item,index) => {
+                item.num = util.number(this.size)[index];
+            })
         },
         
         //详情
@@ -275,6 +231,25 @@ export default {
             }
         },
 
+        async delClick(row){
+            let {data}  = await this.$api.delete("/forum/express/"+row.id);
+            if(data.code == '01'){
+                this.$message({
+                    message: '删除成功',
+                    type: 'success'
+                });
+                this.getList();
+            }
+        },
+
+        showDel(row){
+            this.$confirm('确认关闭？')
+            .then(item => {
+                this.delClick(row)
+            })
+            .catch(_ => {});
+        },
+
         //查询
         queryClick(){
             this.size = 1;
@@ -282,10 +257,15 @@ export default {
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
+            this.size = val;
+            this.getList();
         },
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
+            this.size = val;
+            this.getList();
         }
+
     },
     components: {
 
@@ -294,9 +274,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+    /deep/ .el-table__row{
+        height: 25px !important;
+    }
     /deep/ .cell{
-        max-height: 20px !important;
-        overflow: auto !important;
+        height: 25px !important;
     }
     .pagin{
         margin-top:20px;

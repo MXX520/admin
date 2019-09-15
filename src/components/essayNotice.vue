@@ -90,8 +90,17 @@ export default {
 </script>
 
 <style scoped lang="less">
-    /deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
-        min-height:400px;
-        margin-bottom:20px;
-    }
+/deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
+    min-height:400px;
+    margin-bottom:20px;
+}
+/deep/ .edui-editor{
+    width: auto !important;
+}
+/deep/ .edui-editor-iframeholder{
+    height: 300px;
+}
+/deep/ .edui-box{
+    height:25px;
+}
 </style>

@@ -26,8 +26,7 @@
                         border
                         style="width: 100%">
                         <el-table-column
-                            prop="id"
-                            type="index"
+                            prop="num"
                             label="序号"
                             width="80"
                             align='center'
@@ -116,6 +115,7 @@
 </template>
 
 <script>
+import util from '@/api/utils'
 export default {
     name: 'App',
     data() {
@@ -179,6 +179,9 @@ export default {
             console.log("稿件分发记录列表",data);
             this.total = data.data.total;//总页数
             this.tableData = data.data.list;//数据
+            this.tableData.forEach((item,index) => {
+                item.num = util.number(this.size)[index];
+            })
         },
 
         //列表树单击事件

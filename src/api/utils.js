@@ -92,9 +92,11 @@ util.log = (...rest) => {
 
 util.number = function(val){
     let arr = []
-    for(var i=1;i<=10;i++){
-        console.log(i*val)
+    for(var i=1;i<=9;i++){
+        arr.push(Number(val-1+''+i))
     }
+    arr.push(Number(val+''+0))
+    return arr;
 }
 
 

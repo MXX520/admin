@@ -22,7 +22,7 @@
                             border
                             style="width: 100%">
                             <el-table-column
-                                type="index"
+                                prop="num"
                                 align='center'
                                 label="序号"
                                 width="80">
@@ -200,6 +200,8 @@ import showPdf from '../components/showPdf'
 import FileSaver from 'file-saver'
 import axios from 'axios'
 import api from '../api/http'
+import util from '@/api/utils'
+
   export default {
     data() {
         return {
@@ -301,6 +303,9 @@ import api from '../api/http'
                     this.tableData = res.data.data.list;
                     this.total = res.data.data.total;
                     this.page = res.data.data.pages;
+                    this.tableData.forEach((item,index) => {
+                        item.num = util.number(this.currentPage)[index];
+                    })
                 }
             })
         },

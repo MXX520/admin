@@ -27,7 +27,7 @@
                         border
                         style="width: 100%">
                         <el-table-column
-                            type="index"
+                            prop="num"
                             label="序号"
                             align='center'
                             width="80"
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import util from '@/api/utils'
 export default {
     name: 'App',
     data() {
@@ -147,6 +148,9 @@ export default {
             this.total = data.data.total;//总页数
             console.log("this.total",this.total);
             this.tableData = data.data.list;//数据
+            this.tableData.forEach((item,index) => {
+                item.num = util.number(this.size)[index];
+            })
         },
 
         //列表树单击事件
