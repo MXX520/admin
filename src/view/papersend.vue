@@ -135,6 +135,7 @@ export default {
         dialogTableVisible:false,//稿件分发弹窗
         options:[],//下拉数据
         value:'',//下拉选择内容
+        type:'',//分发与重新分发判断
         paperId:'',//分发的稿件id
         isdisabled:true,
         consts: this.$consts
@@ -200,7 +201,9 @@ export default {
 
         //分发
         async distribution(row){
+            this.options = [];
             this.paperId = row.id;
+            this.type = '0';
             this.dialogTableVisible = true;
             let {data} = await this.$api.get("forum/mapping/list/"+this.id);
             console.log("论坛审稿分组列表-==-=-=-=",data);
@@ -210,7 +213,8 @@ export default {
         //分发确定
         async distributionOk(){
             console.log(this.value);
-            let url = this.paperId+'?groupId='+this.value;
+            let url = this.paperId+'?groupId='+this.value+'&type='+this.type;
+            console.log(url)
             let {data}  = await this.$api.get("mail/paper/"+url);
             console.log("dtaa-=-=-==-",data);
             if(data.code) {
@@ -225,10 +229,15 @@ export default {
         },
 
         //重新分发
-        reDistribution(row){
+        async reDistribution(row){
             console.log(row);
+            this.options = [];
             this.paperId = row.id;
-            this.distribution(row);
+            this.type = '1';
+            this.dialogTableVisible = true;
+            let {data} = await this.$api.get("forum/mapping/list/"+this.id);
+            console.log("论坛审稿分组列表-==-=-=-=",data);
+            this.options = data.data;
         },
 
         //分页查询
