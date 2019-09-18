@@ -80,10 +80,12 @@
                         <el-table-column
                         fixed="right"
                         align='center'
+                        width="200"
                         label="操作">
                         <template slot-scope="scope">
                             <el-button @click="distribution(scope.row)" v-if="scope.row.isDistribute == 0" ype="text" size="small">分发</el-button>
                             <el-button @click="reDistribution(scope.row)" v-if="scope.row.isDistribute == 1" type="text" size="small">重新分发</el-button>
+                            <el-button @click="delDistributionClick(scope.row)" v-if="scope.row.isDistribute == 1" type="text" size="small">撤销分发</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -228,6 +230,27 @@ export default {
             this.getRecordList();
         },
 
+        // 撤销稿件分发
+        delDistributionClick(row){
+            this.$confirm('是否要撤销稿件分发？')
+            .then(_ => {
+                this.delDistribution(row)
+            })
+        },
+
+        //执行撤销分发
+        async delDistribution(row){
+            let {data} = await this.$api.delete("paper/distribute/recall/"+row.id);
+            console.log(data);
+            if(data.code == "01"){
+                this.$message({
+                    message: '撤销成功',
+                    type: 'success'
+                });
+            }
+            this.getRecordList();
+        },
+
         //重新分发
         async reDistribution(row){
             console.log(row);
@@ -249,7 +272,7 @@ export default {
         handleCurrentChange(val){
             console.log(`每页 ${val} 条2`);
             this.size = val;
-            this.getList();
+            this.getRecordList();
         },
 
         fnDisable(){

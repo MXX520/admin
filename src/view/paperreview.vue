@@ -164,7 +164,7 @@ export default {
         handleCurrentChange(val){
             console.log(`每页 ${val} 条2`);
             this.size = val;
-            this.getList();
+            this.getRecordList();
         },
     },
     components: {
