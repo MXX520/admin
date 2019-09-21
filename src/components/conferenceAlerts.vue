@@ -135,7 +135,7 @@ export default {
     methods: {
         initEvt(){
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
-                console.log("------2",item);
+                console.log("会议快讯");
                 this.id = item;
                 this.getList();
             });
