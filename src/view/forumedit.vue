@@ -19,6 +19,9 @@
                     <el-tab-pane label="会议快讯" name="second">
                         <conferenceAlerts></conferenceAlerts>
                     </el-tab-pane>
+                    <el-tab-pane label="投稿须知" name="five">
+                        <submissionGuidelines></submissionGuidelines>
+                    </el-tab-pane>
                     <el-tab-pane label="征文通知" name="third">
                         <essayNotice></essayNotice>
                     </el-tab-pane>
@@ -50,6 +53,7 @@ import conferenceAlerts from '../components/conferenceAlerts'
 import essayNotice from '../components/essayNotice'
 import contactUs from '../components/contactUs'
 import showHome from '../components/dialogShowHome'
+import submissionGuidelines from '../components/submissionGuidelines'
 export default {
     name: 'App',
     data() {
@@ -108,6 +112,7 @@ export default {
 
         //定义广播事件
         initEvt(){
+            // this.$eventHub.$off(this.$consts.Event.SHOW_PREVIEW)
             this.$eventHub.$on(this.$consts.Event.SHOW_PREVIEW, (item)=>{
                 console.log("数据传输-----",item);
                 this.showMask = true;
@@ -128,8 +133,8 @@ export default {
         conferenceAlerts, //会议快讯
         essayNotice,
         contactUs,
-        showHome
-
+        showHome,
+        submissionGuidelines
     }
 }
 </script>
@@ -138,6 +143,9 @@ export default {
     /deep/ .is-current{
         color:#409EFF;
         font-weight:600;
+    }
+    /deep/ .edui-default{
+        width:auto!important;
     }
     .forumList-box{
         height:100%;

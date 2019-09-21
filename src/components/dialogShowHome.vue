@@ -68,6 +68,7 @@ export default {
     methods: {
         //定义广播事件
         initEvt(){
+            // this.$eventHub.$off(this.$consts.Event.SHOW_PREVIEW)
             this.$eventHub.$on(this.$consts.Event.SHOW_PREVIEW, (item)=>{
                 console.log("数据传输-----",item);
                 if(item.type != "departmentHomepage"){

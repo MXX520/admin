@@ -89,9 +89,19 @@
                                 prop="isAudit"
                                 align='center'
                                 label="发布状态"
-                                width="80">
+                                width="100">
                                 <template slot-scope="scope">
                                    <p>{{consts.ManuscriptListStyle[scope.row.isAudit]}}</p>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                prop="isReview"
+                                align='center'
+                                label="是否第三方审稿"
+                                sortable
+                                width="180">
+                                <template slot-scope="scope">
+                                    <el-button type="danger">{{scope.row.isReview == 1 ? '是' : '不是'}}</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -103,40 +113,6 @@
                                     <el-button @click="detailClick(scope.row)" type="text" size="small">详情</el-button>
                                 </template>
                             </el-table-column>
-
-
-                            
-                            <!--<el-table-column
-                                prop="paperAbstract"
-                                align='center'
-                                label="摘要"
-                                max-height="40"
-                                width="auto">
-                            </el-table-column>
-                            
-
-                            
-                            
-                            
-                            </el-table-column><el-table-column
-                                prop="paperKeywords"
-                                align='center'
-                                label="关键词"
-                                width="80">
-                            </el-table-column>
-                            </el-table-column><el-table-column
-                                prop="paperReference"
-                                align='center'
-                                label="参考文献"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="createTime"
-                                align='center'
-                                label="上传时间"
-                                width="100">
-                            </el-table-column>-->
-                            
                         </el-table>
                     </el-row>
                     <el-row>

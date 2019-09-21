@@ -23,6 +23,7 @@
                 <el-row style="marginTop:20px">
                     <el-table
                         :data="tableData"
+                        height="500"
                         border
                         style="width: 100%">
                         <el-table-column

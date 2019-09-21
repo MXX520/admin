@@ -1,15 +1,9 @@
 <template>
     <div id="app">
-        <VueUeditorWrap
-            class="contactUs"
-            v-model="content" 
-            ref="aboutUs">
-        </VueUeditorWrap>
-        <VueUeditorWrap
-            class="contactUs"
-            v-model="contentEn" 
-            ref="aboutUs">
-        </VueUeditorWrap>
+        <!--<tinymce id="d1" class="essayNoticeBox" v-model="paperNotice"></tinymce>
+        <tinymce id="d2" class="essayNoticeBox" v-model="paperNoticeEn"></tinymce>-->
+        <VueUeditorWrap class="essayNoticeBox" v-model="paperNotice"></VueUeditorWrap>
+        <VueUeditorWrap class="essayNoticeBox" v-model="paperNoticeEn"></VueUeditorWrap>
         <el-row>
             <el-button type="primary" @click="saveBtn">保存</el-button>
             <el-button type="primary" @click="previewCh">中文预览</el-button>
@@ -21,21 +15,20 @@
 <script>
 import VueUeditorWrap from 'vue-ueditor-wrap'
 export default {
-    name: 'contactUs',
+    name: 'submissionGuidelines',
     data () {
         return {
-            msg: '联系我们',
-            contentEn:'', //中文
-            content:'', //英文
-            id:'',//左侧论坛树id
+            msg: '投稿须知',
+            paperNotice:'',//中文
+            paperNoticeEn:'',//英文
         }
     },
     created() {
         this.initEvt();
+        console.log("this.$refs.tm.editor-=-=-=-=-=-=-=-=-=",this.$refs.tm);
     },
     methods: {
         initEvt(){
-            this.$eventHub.$off(this.$consts.Event.FORUMEDIT)
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
                 this.id = item;
                 this.getList();
@@ -43,22 +36,24 @@ export default {
         },
 
         //获取数据
-        async getList(){
-            let {data}  = await this.$api.get("/forum/contact/"+this.id)
-            console.log("获取联系我们数据",data);
-            this.content = data.data.content;
-            this.contentEn = data.data.contentEn;
+        async getList(id){
+            console.log('获取投稿须知数据-=-=-=-=-=-=-=')
+            let {data}  = await this.$api.get("forum/paper/"+this.id)
+            console.log("获取投稿须知数据",data);
+            this.paperNotice = data.data.paperNotice;
+            console.log(JSON.stringify(this.paperNotice));
+            this.paperNoticeEn = data.data.paperNoticeEn;
         },
 
         //保存
         async saveBtn(){
             let postData = {
                 "forumId":this.id,
-                "content":this.content,
-                "contentEn":this.contentEn
+                "paperNotice":this.paperNotice,
+                "paperNoticeEn":this.paperNoticeEn
             }
-            console.log(this.content);
-            let {data}  = await this.$api.post("/forum/contact",postData);
+            console.log(this.paperNotice);
+            let {data}  = await this.$api.post("forum/paper",postData);
             console.log("保存后",data);
             if(data.code == '01'){
                 this.$message({
@@ -68,11 +63,12 @@ export default {
             }
         },
 
+
         //中文预览
         previewCh(){
             let data = {
-                type:'contactUs',
-                content:this.content
+                type:'essayNotice',
+                content:this.paperNotice
             }
             this.$eventHub.$emit(this.$consts.Event.SHOW_PREVIEW, data)
         },
@@ -80,13 +76,14 @@ export default {
         //英语预览
         previewEn(){
             let data = {
-                type:'contactUs',
-                content:this.contentEn
+                type:'essayNotice',
+                content:this.paperNoticeEn
             }
             this.$eventHub.$emit(this.$consts.Event.SHOW_PREVIEW, data)
         }
-
     },
+
+    
     components: {
         VueUeditorWrap
     }
