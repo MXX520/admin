@@ -2,42 +2,38 @@
 	<section>
 		<div class="item clearfix" > 
 			 <div class="name">用户名：</div>
-			 <div class="value">{{name}}</div>
+			 <div class="value"><el-input v-model="name" placeholder="请输入内容"></el-input></div>
 			 <div class="changword" style="margin-left:20px;">
 				<router-link to="changpsd">修改密码</router-link>
 			 </div>
 		</div>
 		<div class="item clearfix" > 
 			 <div class="name">邮箱：</div>
-			 <div class="value">{{email}}</div>
+			 <div class="value"><el-input v-model="email" placeholder="请输入内容" disabled="true"></el-input></div>
 		</div>
 		<div class="item clearfix" > 
 			 <div class="name">电话：</div>
-			 <div class="value">{{phone}}</div>
+			 <div class="value"><el-input v-model="phone" placeholder="请输入内容"></el-input></div>
 		</div>
 		<div class="item clearfix" > 
 			 <div class="name">所属角色：</div>
-			 <div class="value">{{role}}</div>
+			 <div class="value"><el-input v-model="role" placeholder="请输入内容" disabled="true"></el-input></div>
 		</div>
 		<div class="item clearfix" > 
 			 <div class="name">所属院系：</div>
-			 <div class="value">{{roleId}}</div>
+			 <div class="value"><el-input v-model="roleId" placeholder="请输入内容" disabled="true"></el-input></div>
 		</div>
-		<div class="item clearfix" > 
-			 <div class="name">学校名称：</div>
-			 <div class="value">{{schoolName}}</div>
-		</div>
-		<div class="item clearfix" > 
-			 <div class="name">专业名称：</div>
-			 <div class="value">{{majorName}}</div>
-		</div>
+		
 		<div class="item clearfix" > 
 			 <div class="name">用户状态：</div>
-			 <div class="value">{{status}}</div>
+			 <div class="value"><el-input v-model="status" placeholder="请输入内容" disabled="true"></el-input></div>
 		</div>
 		<div class="item clearfix" > 
 			 <div class="name">注册时间：</div>
-			 <div class="value">{{createTime}}</div>
+			 <div class="value"><el-input v-model="createTime" disabled="true" placeholder="请输入内容"></el-input></div>
+		</div>
+		<div>
+			 <el-button type="primary" @click="updata">更新</el-button>
 		</div>
 	</section>
 </template>
@@ -81,6 +77,18 @@
 				this.schoolName = value.schoolName;
 				 this.majorName = value.majorName;
 				this.status = value.statusName;
+			},
+			async updata(){
+				let {data} = await this.$api.put("user/info",{
+					userName:this.name,
+					phone:this.phone
+				})
+				if(data.code=="01"){
+					this.$message({
+          message:data.msg,
+          type: 'success'
+        });
+				}
 			}
 		},
 		mounted() {
@@ -96,6 +104,7 @@
 	.name{
 		float left
 		width 80px
+		margin-top 10px
 	}
 	.value{
 		float left

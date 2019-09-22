@@ -67,7 +67,7 @@
 		</el-dialog>
 
 		<!--新增界面-->
-		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
+		<el-dialog title="论坛修改" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="160px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="论坛名称（中文）">
 					<el-input v-model="title" ></el-input>
@@ -99,7 +99,30 @@
                     <el-radio v-model="radio" label="0">通过制</el-radio>
                     <el-radio v-model="radio" label="1">评分制</el-radio>
                 </el-form-item>
-               
+                <el-form-item label="举办地点（中文）">
+					<el-input v-model="venue" ></el-input>
+				</el-form-item>
+				 <el-form-item label="举办地点（英文）">
+					<el-input v-model="venueEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="举办时间">
+					 <el-date-picker
+						v-model="startTime"
+						type="daterange"
+						range-separator="至"
+						start-placeholder="开始日期"
+						end-placeholder="结束日期">
+						</el-date-picker>
+				</el-form-item>
+				 <el-form-item label="投稿时间">
+					 <el-date-picker
+						v-model="tgsj"
+						type="daterange"
+						range-separator="至"
+						start-placeholder="开始日期"
+						end-placeholder="结束日期">
+						</el-date-picker>
+				</el-form-item>
                 <el-form-item label="论坛状态">
                       <el-select v-model="value2" placeholder="请选择">
                         <el-option
@@ -146,7 +169,11 @@
 				total: 0,
 				page: 1,
                 title:"",
-                title2:"",
+				title2:"",
+				venue:"",
+				venueEn:"",
+				startTime:[],
+				tgsj:[],
 				school:"",
                 people:"",
                 people2:"",
@@ -282,10 +309,15 @@
 				this.people = row.sponsor;
 				this.phone = row.sponsorPhone;
 				this.email = row.sponsorEmail;
+				this.venue = row.venue;
+				this.venueEn = row.venueEn;
 				this.reson = row.applyReason;
                 this.biaozhu =  row.scaleOfMarkName;
                 this.value2 = row.isClosed=="关闭"?0:1;
-              
+				this.startTime.push(row.forumOpenTime);
+				this.startTime.push(row.forumCloseTime);
+				this.tgsj.push(row.paperOpenTime)
+				this.tgsj.push(row.paperCloseTime)
                 this.value3 = row.pageIndexType;
                 this.title2 = row.titleEn;
                 this.people2 = row.sponsorEn;
@@ -323,7 +355,13 @@
                     sponsorEmail:this.email,
                     applyReason:this.reson,
                     applyReasonEn:this.reson2,
-                    scaleOfMark:this.radio,
+					scaleOfMark:this.radio,
+					venueEn:this.venueEn,
+					venue:this.venue,
+					forumOpenTime:this.startTime[0],
+					forumCloseTime:this.startTime[1],
+					paperOpenTime:this.tgsj[0],
+					paperCloseTime:this.tgsj[1],
                     isAudit:this.value,
                     isClosed:this.value2,
                     pageIndexType:this.value3

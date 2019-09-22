@@ -27,7 +27,21 @@
 		<el-form-item label="申请原因(英文)">
 			<el-input type="textarea" v-model="formEnglish.reson"></el-input>
 		</el-form-item>
-		
+		<el-form-item label="举办地点（中文）">
+					<el-input v-model="venue" ></el-input>
+				</el-form-item>
+				 <el-form-item label="举办地点（英文）">
+					<el-input v-model="venueEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="举办时间">
+					 <el-date-picker
+						v-model="startTime"
+						type="daterange"
+						range-separator="至"
+						start-placeholder="开始日期"
+						end-placeholder="结束日期">
+						</el-date-picker>
+				</el-form-item>
 		<el-form-item label="评分标准">
 			<el-radio-group v-model="form.desc">
 				<el-radio label="0">通过制</el-radio>
@@ -51,6 +65,9 @@
 	export default {
 		data() {
 			return {
+				venue:"",
+				venueEn:"",
+				startTime:[],
 				form: {
 					name: '',
 					people: '',
@@ -127,6 +144,10 @@
 				form.append("applyReason",this.form.reson)
 				form.append("scaleOfMark",this.form.desc)
 				form.append("titleEn",this.formEnglish.name)
+				form.append("venue",this.venue)
+				form.append("venueEn",this.venueEn)
+				form.append("forumOpenTime",this.startTime[0])
+				form.append("forumCloseTime",this.startTime[1])
 				form.append("titleEn",this.formEnglish.people)
 				form.append("sponsorEn",this.formEnglish.reson)
 				form.append("applyReasonEn",this.formEnglish.reson)

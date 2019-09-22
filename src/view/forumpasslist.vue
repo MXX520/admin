@@ -278,10 +278,10 @@
 			//编辑
 			async editSubmit () {
 				let data = await this.$api.put("forum/"+this.editId,{
-					forumOpenTime:this.value2[1],
-					forumCloseTime:this.value2[0],
-					paperOpenTime:this.value[1],
-					paperCloseTime:this.value[0]
+					forumOpenTime:this.value2[0],
+					forumCloseTime:this.value2[1],
+					paperOpenTime:this.value[0],
+					paperCloseTime:this.value[1]
 				})
 				console.log(data)
 				this.editFormVisible = false;
