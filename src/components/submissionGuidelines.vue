@@ -30,6 +30,7 @@ export default {
     methods: {
         initEvt(){
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
+                console.log("投稿须知")
                 this.id = item;
                 this.getList();
             });

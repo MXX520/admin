@@ -133,7 +133,7 @@ export default {
         initEVt(){
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
                 this.id = item;
-                console.log(this.id);
+                console.log("院系首页");
                 this.getList(item);
             });
         },
