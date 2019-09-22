@@ -35,7 +35,6 @@ export default {
     },
     methods: {
         initEvt(){
-            this.$eventHub.$off(this.$consts.Event.FORUMEDIT)
             this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
                 this.id = item;
                 this.getList();
