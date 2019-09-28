@@ -100,7 +100,7 @@
 					</el-form-item>
 				</div>
 				<div class="item">
-					 <el-form-item label="专业名称">
+					 <el-form-item label="院系名称">
 						<el-input v-model="email" disabled="true"></el-input>
 					</el-form-item>
 				</div>
@@ -181,7 +181,7 @@
 					</el-form-item>
 				</div>
 				<div class="item">
-					 <el-form-item label="专业名称">
+					 <el-form-item label="院系名称">
 						<el-input v-model="major" ></el-input>
 					</el-form-item>
 				</div>
@@ -229,7 +229,7 @@
 				</div>
 				
 				<div class="item">
-					 <el-form-item label="专业名称">
+					 <el-form-item label="院系名称">
 							<el-input v-model="email" ></el-input>
 					</el-form-item>
 				</div>
