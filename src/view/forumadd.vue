@@ -152,7 +152,7 @@
 				form.append("sponsorEn",this.formEnglish.reson)
 				form.append("applyReasonEn",this.formEnglish.reson)
 				form.append("image",this.file[0])
-				let data = await this.$api.post("forum",form)
+				let data = await this.$api.post("forum/apply",form)
 				if(data.data.code){
 					this.$message({
 						message: '申请成功',
