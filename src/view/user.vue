@@ -301,11 +301,14 @@ import { debug, debuglog } from 'util';
 				school:"",
 				people:"",
 				phone:"",
+				roleId:"",
 				email:"2",
+				facultyId:"",
 				reson:"",
 				biaozhu:"",
 				changeUsers:false,
 				total:10,
+				editId:0,
 				currentPage:1,
 				users: [],
 				total: 0,
@@ -361,17 +364,38 @@ import { debug, debuglog } from 'util';
 		},
 		methods: {
 		   async changeUser(index,row){
+			   this.editId = row.id;
 			   	this.changeUsers = true;
 				this.title = row.userName;
 				this.school = row.email;
 				this.people = row.phone;
 				this.phone = row.roleName;
+				this.roleId = row.roleId;
+				this.facultyId = row.facultyId;
 				this.email = row.majorName;
 				this.state = row.status;
 				this.schoolName =  row.schoolName;
 				this.major = row.facultyName
 				this.jingli = row.academicExperience;
 				this.lishi = row.participateInHistory;
+			},
+			async changeNew(){
+				let {data} = await this.$api.put("user/"+this.editId,{
+					userName:this.title,
+					email:this.school,
+					passWord:this.moren,
+					phone:this.people,
+					schoolName:this.schoolName,
+					majorName:this.major,
+					status:this.state,
+					roleId:this.roleId,
+					facultyId:this.facultyId
+				})
+				if(data.code=="01"){
+					this.addFormVisible = false
+				}else{
+					 this.$message.error(data.msg);
+				}
 			},
 			async handleDel(index,row){
 				this.$confirm('此操作将删除该用户, 是否继续?', '提示', {
