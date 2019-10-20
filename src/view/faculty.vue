@@ -47,7 +47,7 @@
 		</el-col>
 
 	<el-dialog title="新增院系" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="院系名称（中文）">
 					<el-input v-model="title" ></el-input>
 				</el-form-item>
@@ -61,7 +61,7 @@
 			</div>
 		</el-dialog>
 		<el-dialog title="院系修改" :visible.sync="changeFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="院系名称（中文）">
 					<el-input v-model="oldTitle" ></el-input>
 				</el-form-item>
@@ -153,7 +153,9 @@ import { debug } from 'util';
 		methods: {
 			handleChange(index,row){
 				this.editId = row.id
+				console.log(row)
 				this.oldTitle =  row.facultyName;
+				this.oldtitle2 = row.facultyNameEn;
 				this.changeFormVisible = true;
 			},
 			async edit(){

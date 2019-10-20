@@ -155,7 +155,7 @@
 					 <el-form-item label="所属院系">
 							  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
 							<el-option
-							v-for="item in schoolList.list"
+							v-for="item in schoolList"
 							:key="item.id"
 							:label="item.facultyName"
 							:value="item.id">
@@ -230,7 +230,20 @@
 				
 				<div class="item">
 					 <el-form-item label="院系名称">
-							<el-input v-model="email" ></el-input>
+							<el-input v-model="major" ></el-input>
+					</el-form-item>
+				</div>
+				<div class="item">
+					 <el-form-item label="所属院系">
+						
+						  <el-select v-model="email" placeholder="请选择" style="widht:100%;">
+							<el-option
+							v-for="item in schoolList"
+							:key="item.id"
+							:label="item.facultyName"
+							:value="item.id">
+							</el-option>
+						</el-select>
 					</el-form-item>
 				</div>
 				<div class="item">
@@ -251,18 +264,11 @@
 					</el-form-item>
 				</div>
 				<div class="item">
-					 <el-form-item label="所属院系">
-						
-						  <el-select v-model="major" placeholder="请选择" style="widht:100%;">
-							<el-option
-							v-for="item in schoolList.list"
-							:key="item.id"
-							:label="item.facultyName"
-							:value="item.id">
-							</el-option>
-						</el-select>
+					 <el-form-item label="院系名称">
+							<el-input v-model="major" ></el-input>
 					</el-form-item>
 				</div>
+				
 				
 					</div>
 			</el-form>
@@ -364,6 +370,7 @@ import { debug, debuglog } from 'util';
 		},
 		methods: {
 		   async changeUser(index,row){
+			   console.log(row.facultyId)
 			   this.editId = row.id;
 			   	this.changeUsers = true;
 				this.title = row.userName;
@@ -372,10 +379,10 @@ import { debug, debuglog } from 'util';
 				this.phone = row.roleName;
 				this.roleId = row.roleId;
 				this.facultyId = row.facultyId;
-				this.email = row.majorName;
+				this.email = row.facultyId;
 				this.state = row.status;
 				this.schoolName =  row.schoolName;
-				this.major = row.facultyName
+				this.major = row.majorName
 				this.jingli = row.academicExperience;
 				this.lishi = row.participateInHistory;
 			},
@@ -389,10 +396,10 @@ import { debug, debuglog } from 'util';
 					majorName:this.major,
 					status:this.state,
 					roleId:this.roleId,
-					facultyId:this.facultyId
+					facultyId:this.email
 				})
 				if(data.code=="01"){
-					this.addFormVisible = false
+					this.changeUsers = false
 				}else{
 					 this.$message.error(data.msg);
 				}
@@ -467,7 +474,7 @@ import { debug, debuglog } from 'util';
 				this.getUsers();
 			},
 			async getSList(){
-				let {data} = await this.$api.get("faculty/list",{
+				let {data} = await this.$api.get("faculty/list/all",{
 
 				})
 				
@@ -495,11 +502,9 @@ import { debug, debuglog } from 'util';
 						list[i].roleName = this.roleList[j].roleName;
 					}
 				}
-				for(let z in this.schoolList.list){
-				
-					if(list[i].facultyId == this.schoolList.list[z].id){
-					
-						list[i].facultyName = this.schoolList.list[z].facultyName;
+				for(let z in this.schoolList){
+					if(list[i].facultyId == this.schoolList[z].id){
+						list[i].facultyName = this.schoolList[z].facultyName;
 					}
 				}
 				
