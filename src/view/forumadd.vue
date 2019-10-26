@@ -35,11 +35,16 @@
 				</el-form-item>
 				 <el-form-item label="举办时间">
 					 <el-date-picker
-						v-model="startTime"
-						type="daterange"
-						range-separator="至"
-						start-placeholder="开始日期"
-						end-placeholder="结束日期">
+					v-model="startTime"
+					type="daterange"
+					align="right"
+					unlink-panels
+					:editable='false'
+					range-separator="至"
+					start-placeholder="开始日期"
+					end-placeholder="结束日期"
+					value-format="yyyy-MM-dd"
+					format="yyyy 年 MM 月 dd 日">
 						</el-date-picker>
 				</el-form-item>
 		<el-form-item label="评分标准">
@@ -61,13 +66,13 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 	export default {
 		data() {
 			return {
 				venue:"",
 				venueEn:"",
-				startTime:[],
+				startTime:"",
 				form: {
 					name: '',
 					people: '',
@@ -148,11 +153,11 @@
 				form.append("venueEn",this.venueEn)
 				form.append("forumOpenTime",this.startTime[0])
 				form.append("forumCloseTime",this.startTime[1])
-				form.append("titleEn",this.formEnglish.people)
+				//form.append("titleEn",this.formEnglish.people)
 				form.append("sponsorEn",this.formEnglish.reson)
 				form.append("applyReasonEn",this.formEnglish.reson)
 				form.append("image",this.file[0])
-				let data = await this.$api.post("forum",form)
+				let data = await axios.post("http://39.106.77.121:8086/forum/apply",form)
 				if(data.data.code){
 					this.$message({
 						message: '申请成功',
