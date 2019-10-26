@@ -228,11 +228,7 @@
 					</el-form-item>
 				</div>
 				
-				<div class="item">
-					 <el-form-item label="院系名称">
-							<el-input v-model="major" ></el-input>
-					</el-form-item>
-				</div>
+				
 				<div class="item">
 					 <el-form-item label="所属院系">
 						
@@ -400,6 +396,7 @@ import { debug, debuglog } from 'util';
 				})
 				if(data.code=="01"){
 					this.changeUsers = false
+					this.getRList();
 				}else{
 					 this.$message.error(data.msg);
 				}
