@@ -19,27 +19,24 @@
 			
 			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="论坛名称" align='center' width="280" >
+			<el-table-column prop="title" label="论坛标题（中文）" align='center' width="280" >
 			</el-table-column>
-			<el-table-column prop="facultyName" label="所属院系" align='center' width="120"  >
+			<el-table-column prop="titleEn" label="论坛标题（英文）" align='center' width="180"  >
 			</el-table-column>
-			<el-table-column prop="sponsor" label="发起人" align='center' width="100" >
+			<el-table-column prop="facultyName" label="所属院系" align='center' width="180"  >
 			</el-table-column>
-			<el-table-column prop="sponsorPhone" label="发起人电话" align='center' width="140" >
+			<el-table-column prop="forumOpenTime" label="举办日期" align='center' width="180"  >
 			</el-table-column>
-			<el-table-column prop="sponsorEmail" label="发起人邮箱" align='center' min-width="200" >
+			<el-table-column prop="venue" label="论坛地点（中文）" align='center' width="180"  >
 			</el-table-column>
-			<el-table-column prop="scaleOfMark" label="评分标准" align='center' min-width="120" >
+			<el-table-column prop="facultyName" label="论坛地点（英文）" align='center' width="180"  >
 			</el-table-column>
-			
-			<el-table-column prop="isClosed" label="状态" align='center' min-width="120" >
+			<el-table-column prop="createTime" label="申请时间" align='center' width="180" >
 			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" align='center' min-width="180" sortable>
-			</el-table-column>
-		
-			<el-table-column label="操作" width="100" align='center' fixed="right">
+			<el-table-column label="操作" width="240" align='center' fixed="right">
 				<template scope="scope">
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
+					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -88,27 +85,46 @@
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
+				 <el-form-item label="论坛标题（中文）">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
+				 <el-form-item label="论坛标题（英文）">
+					<el-input v-model="titleEn" disabled="true"></el-input>
+				</el-form-item>
+			
 				 <el-form-item label="所属院系">
-					<el-input v-model="school" disabled="true"></el-input>
+					<el-input v-model="facultyName" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人">
-					<el-input v-model="people" disabled="true"></el-input>
+				 <el-form-item label="举办日期">
+					<el-input v-model="holdingDate" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人电话">
-					<el-input v-model="phone" disabled="true"></el-input>
+				 <el-form-item label="论坛地点（中文）">
+					<el-input v-model="venue" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人邮箱">
-					<el-input v-model="email" disabled="true"></el-input>
+				 <el-form-item label="论坛地点（英文）">
+					<el-input v-model="venueEn" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="申请时间">
+					<el-input v-model="createTime" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="负责人（中文）">
+					<el-input v-model="sponsor" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="负责人（英文）">
+					<el-input v-model="sponsorEn" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="负责人电话">
+					<el-input v-model="sponsorPhone" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="负责人邮箱">
+					<el-input v-model="sponsorEmail" disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" disabled="true"></el-input>
+			<el-input type="textarea" v-model="applyReason" disabled="true"></el-input>
 		</el-form-item>
-			 <el-form-item label="评分标准">
-					<el-input v-model="biaozhu" disabled="true"></el-input>
-				</el-form-item>
+			<el-form-item label="未通过原因">
+					<el-input type="textarea" v-model="auditResult" disabled="true"></el-input>
+			</el-form-item>
 			
 
 				
@@ -169,6 +185,17 @@ import { debug } from 'util';
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
+				titleEn:"",
+				holdingDate:"",
+				venue:"",
+				createTime:"",
+				sponsor:"",
+				venueEn:"",
+				sponsorEn:"",
+				sponsorPhone:"",
+				sponsorEmail:"",
+				applyReason:"",
+				auditResult:"",
 				//新增界面数据
 				addForm: {
 					name: '',
@@ -189,9 +216,9 @@ import { debug } from 'util';
 				this.page = val;
 				this.getUsers();
 			},
-			handleCurrentChange(){
-				this.getUsers()
-			},
+			//handleCurrentChange(){
+			//	this.getUsers()
+			//},
 			//获取用户列表
 		async getUsers() {
 				let para = {
@@ -214,7 +241,6 @@ import { debug } from 'util';
 				}else{
 					list[i].scaleOfMark = "通过制"
 				}
-				
 				if(list[i].isClosed){
 					
 					list[i].isClosed = "开放"
@@ -224,8 +250,6 @@ import { debug } from 'util';
 			}
 			this.users = data.data.list;
 			this.total = data.data.total;
-			console.log(data)		
-			
 			},
 			//删除
 			async handleDel (index, row) {
@@ -233,11 +257,18 @@ import { debug } from 'util';
 				this.addFormVisible = true;
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
-				this.school = data.data.facultyName;
-				this.people = data.data.sponsor;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
-				this.reson = data.data.applyReason;
+				this.facultyName = data.data.facultyName;
+				this.titleEn = data.data.titleEn;
+				this.holdingDate = data.data.holdingDate;
+				this.venue = data.data.venue;
+				this.venueEn = data.data.venueEn;
+				this.createTime = data.data.createTime;
+				this.sponsorEn = data.data.sponsorEn;
+				this.sponsor = data.data.sponsor;
+				this.sponsorPhone = data.data.sponsorPhone;
+				this.sponsorEmail = data.data.sponsorEmail;
+				this.applyReason = data.data.applyReason;
+				this.auditResult = data.data.auditResult;
 				this.biaozhu =  data.data.scaleOfMarkName;
 				console.log(data)
 			},

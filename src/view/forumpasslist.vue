@@ -19,31 +19,28 @@
 			
 			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="论坛名称" align='center' width="220" >
+			<el-table-column prop="title" label="论坛名称(中文)" align='center' width="220" >
+			</el-table-column>
+			<el-table-column prop="titleEn" label="论坛名称(英文)" align='center' width="160" >
 			</el-table-column>
 			<el-table-column prop="facultyName" label="所属院系" align='center' width="120" >
 			</el-table-column>
-			<el-table-column prop="sponsor" label="发起人" align='center' width="100" >
+			<el-table-column prop="forumOpenTime" label="举办日期" align='center' width="220" >
 			</el-table-column>
-			<el-table-column prop="sponsorPhone" label="发起人电话" align='center' width="140" >
+			<el-table-column prop="venue" label="论坛地点（中文）" align='center' width="140" >
 			</el-table-column>
-			<el-table-column prop="sponsorEmail" label="发起人邮箱" align='center' min-width="200" >
+			<el-table-column prop="venueEn" label="论坛地点（英文）" align='center' min-width="200" >
 			</el-table-column>
-			<el-table-column prop="scaleOfMark" label="评分标准" align='center' min-width="120" >
+			<el-table-column label="是否在线" align='center' min-width="120" >
+				<template scope="scope">
+					<el-button size="small" @click="control(scope.$index, scope.row)">{{scope.row.isClosedName}}</el-button>
+					
+				</template>
 			</el-table-column>
 			
-			<el-table-column prop="isClosed" label="状态" align='center' min-width="120" >
+			<el-table-column prop="contributionTime" label="投稿时段" align='center' min-width="120" >
 			</el-table-column>
-			<el-table-column prop="forumOpenTime" label="开放时间" align='center' min-width="180" >
-			</el-table-column>
-			<el-table-column prop="forumCloseTime" label="关闭时间" align='center' min-width="180" >
-			</el-table-column>
-			<el-table-column prop="paperOpenTime" label="投稿起始时间" align='center' min-width="180" >
-			</el-table-column>
-			<el-table-column prop="paperCloseTime" label="投稿关闭时间" align='center' min-width="180" >
-			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" align='center' min-width="120" sortable>
-			</el-table-column>
+			
 		
 			<el-table-column label="操作" width="150" align='center' fixed="right">
 				<template scope="scope">
@@ -69,7 +66,16 @@
 		<!--编辑界面-->
 		<el-dialog title="论坛设置" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
 			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="论坛开放时间设置" >
+				 <el-form-item label="论坛标题（中文）">
+					<el-input v-model="title"></el-input>
+				</el-form-item>
+				<el-form-item label="论坛标题（英文）">
+					<el-input v-model="titleEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="所属院系">
+					<el-input v-model="school" ></el-input>
+				</el-form-item>
+				<el-form-item label="举办日期" >
 					<el-date-picker
 					v-model="value2"
 					type="daterange"
@@ -83,7 +89,7 @@
 					>
 					</el-date-picker>
 				</el-form-item>
-					<el-form-item label="投稿时间设置" >
+					<el-form-item label="投稿时段" >
 					<el-date-picker
 					v-model="value"
 					type="daterange"
@@ -96,37 +102,78 @@
 					format="yyyy 年 MM 月 dd 日"
 					>
 					</el-date-picker>
+
 				</el-form-item>
+				 <el-form-item label="论坛地点（中文）">
+					<el-input v-model="venue" ></el-input>
+				</el-form-item>
+				 <el-form-item label="论坛地点（英文）">
+					<el-input v-model="venueEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人（中文）">
+					<el-input v-model="sponsor" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人（英文）">
+					<el-input v-model="sponsorEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人邮箱">
+					<el-input v-model="email" ></el-input>
+				</el-form-item>
+				
+				
+				<el-form-item label="申请原因">
+                    <el-input type="textarea" v-model="reson" ></el-input>
+		        </el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click.native="editFormVisible = false">取消</el-button>
-				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+				
+				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">更新</el-button>
 			</div>
 		</el-dialog>
 
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
+				 <el-form-item label="论坛标题（中文）">
 					<el-input v-model="title" disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="论坛标题（英文）">
+					<el-input v-model="titleEn" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="所属院系">
 					<el-input v-model="school" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人">
-					<el-input v-model="people" disabled="true"></el-input>
+				 <el-form-item label="举办日期">
+					<el-input v-model="holdingDate" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人电话">
-					<el-input v-model="phone" disabled="true"></el-input>
+				 <el-form-item label="投稿时段">
+					<el-input v-model="contributionTime" disabled="true"></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人邮箱">
+				 <el-form-item label="论坛地点（中文）">
+					<el-input v-model="venue" disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="论坛地点（英文）">
+					<el-input v-model="venueEn" disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人（中文）">
+					<el-input v-model="sponsor" disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人（英文）">
+					<el-input v-model="sponsorEn" disabled="true"></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人邮箱">
 					<el-input v-model="email" disabled="true"></el-input>
 				</el-form-item>
+				
+				
 				<el-form-item label="申请原因">
                     <el-input type="textarea" v-model="reson" disabled="true"></el-input>
 		        </el-form-item>
-			    <el-form-item label="评分标准">
-                    <el-input v-model="biaozhu" disabled="true"></el-input>
+				<el-form-item label="申请时间">
+                    <el-input  v-model="createTime" disabled="true"></el-input>
+		        </el-form-item>
+			    <el-form-item label="是否在线">
+                    <el-input v-model="isClosedName" disabled="true"></el-input>
                 </el-form-item>
 			</el-form>
 		</el-dialog>
@@ -150,12 +197,21 @@
 				total: 0,
 				page: 1,
 				title:"",
+				titleEn:"",
+				forumOpenTime:"",
+				sponsor:"",
+				sponsorEn:"",
+				venue:"",
+				holdingDate:"",
+				contributionTime:"",
 				school:"",
 				people:"",
 				phone:"",
 				email:"",
 				value2:"",
 				value:"",
+				createTime:"",
+				isClosedName:"",
 				reson:"",
 				biaozhu:"",
 				editId:1,
@@ -198,6 +254,9 @@
 			}
 		},
 		methods: {
+			control(){
+
+			},
 			//性别显示转换
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
@@ -249,8 +308,17 @@
 				
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
+				this.titleEn = data.data.titleEn;
+				this.forumOpenTime = data.data.forumOpenTime;
+				this.contributionTime = data.data.contributionTime;
+				this.venue = data.data.venue;
+				this.venueEn = data.data.venueEn;
+				this.holdingDate = data.data.holdingDate;
 				this.school = data.data.facultyName;
-				this.people = data.data.sponsor;
+				this.sponsor = this.people = data.data.sponsor;
+				this.sponsorEn = data.data.sponsorEn;
+				this.createTime = data.data.createTime;
+				this.isClosedName = data.data.isClosedName;
 				this.phone = data.data.sponsorPhone;
 				this.email = data.data.sponsorEmail;
 				this.reson = data.data.applyReason;

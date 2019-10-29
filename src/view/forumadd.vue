@@ -55,6 +55,7 @@
 		</el-form-item>
 		<el-form-item label="论坛背景图片">
 			<el-button type="primary" @click.native="upload" style="margin-left:0px;">图片上传</el-button>
+			<img v-show="src!=''" :src="src" alt="" style="width:300px;height:200px;border:1px solid #ccc;">
 				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
 				{{file[0].name}}
 		</el-form-item>
@@ -73,6 +74,7 @@ import axios from 'axios'
 				venue:"",
 				venueEn:"",
 				startTime:"",
+				src:"",
 				form: {
 					name: '',
 					people: '',
@@ -102,6 +104,7 @@ import axios from 'axios'
 			changFile(e){
 				this.file = []
 				this.file = e.target.files;
+				this.src = window.URL.createObjectURL(this.file[0])
 				console.log(this.file[0])
 				
 			},
