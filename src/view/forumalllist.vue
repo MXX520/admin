@@ -300,6 +300,8 @@
 			},
 		//删除
 			async handleDel (index, row) {
+				this.startTime = [];
+				this.tgsj = [];
 				console.log("看看这个",index,row)
 				this.addFormVisible = true;
 				this.editId = row.id;
