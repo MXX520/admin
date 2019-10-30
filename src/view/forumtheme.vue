@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <el-row class="forumList-box" ref="echartsWrapper">
-            <el-col :span="4" class="forumList">
+            <!--<el-col :span="4" class="forumList">
                 <el-tree :data="data"
                 ref="tree"
                 accordion
@@ -13,7 +13,7 @@
                 @node-click="handleNodeClick"
                 :expand-on-click-node="false"
                 ></el-tree>
-            </el-col>
+            </el-col>-->
             <el-col :span="18" class="forumTab">
                 <el-row>
                     <el-col :span="10">
@@ -138,7 +138,11 @@ export default {
     },
     methods: {
         init(){
-            this.getList();
+            // this.getList();
+            this.$eventHub.$on(this.$consts.Event.FORUMEDIT, (item)=>{
+                this.id = item
+                this.getRecordList();
+            });
         },
         changeClick(row){
             console.log(row)
@@ -174,10 +178,11 @@ export default {
             })
         },
 
+
         //列表树单击事件
         handleNodeClick(ev){
             if(ev.id){
-                this.id = ev.id;
+                this.id = ev.id
                 this.getRecordList();
             }
         },

@@ -13,8 +13,14 @@
             </el-col>
             <el-col :span="18" class="forumTab">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="基础设置" name="basis">
+                        <infrastructure></infrastructure>
+                    </el-tab-pane>
                     <el-tab-pane label="院系首页" name="first">
                         <departmentHomepage></departmentHomepage>
+                    </el-tab-pane>
+                    <el-tab-pane label="论坛主题" name="theme">
+                        <forumtheme></forumtheme>
                     </el-tab-pane>
                     <el-tab-pane label="会议快讯" name="second">
                         <conferenceAlerts></conferenceAlerts>
@@ -48,7 +54,10 @@
 </template>
 
 <script>
+
+import infrastructure from '../components/infrastructure'
 import departmentHomepage from '../components/departmentHomepage'
+import forumtheme from './forumtheme'
 import conferenceAlerts from '../components/conferenceAlerts'
 import essayNotice from '../components/essayNotice'
 import contactUs from '../components/contactUs'
@@ -64,7 +73,7 @@ export default {
           label: 'label'
         },
         showMask: false,
-        activeName:'first',//默认tab页
+        activeName:'basis',//默认tab页
         showType:'',//判断弹窗显示哪个页面内容
         showContent:''//弹窗的内容
       };
@@ -100,6 +109,7 @@ export default {
             console.log(ev.id);
             console.log(this.$consts.Event.FORUMEDIT);
             if(ev.id){
+                // this.$eventHub.$off(this.$consts.Event.FORUMEDIT)
                 this.$eventHub.$emit(this.$consts.Event.FORUMEDIT, ev.id)
             }
         },
@@ -134,7 +144,9 @@ export default {
         essayNotice,
         contactUs,
         showHome,
-        submissionGuidelines
+        submissionGuidelines,
+        forumtheme,
+        infrastructure
     }
 }
 </script>
