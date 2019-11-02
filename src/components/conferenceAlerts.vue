@@ -72,19 +72,37 @@
                 :total="total">
             </el-pagination>
         </el-row>
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+        <el-dialog :title="titleName" :visible.sync="dialogFormVisible">
             <el-form label-width="80px">
-                <el-form-item label="会议标题">
+                <el-form-item label="主标题（中文）">
                     <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议简介">
-                    <el-input v-model="form.briefIntroduction" autocomplete="off"></el-input>
+                <el-form-item label="主标题（英文）">
+                    <el-input v-model="form.titleEn" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议内容">
-                    <el-input v-model="form.content" autocomplete="off"></el-input>
+                <el-form-item label="副标题（中文）">
+                    <el-input v-model="form.subtitle" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="会议来源">
-                    <el-input v-model="form.source" autocomplete="off"></el-input>
+                <el-form-item label="副标题（英文）">
+                    <el-input v-model="form.subtitleEn" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="内容（中文）">
+                    <VueUeditorWrap id="hy1"
+                        v-model="form.content"
+                        ref="aboutUs">
+                    </VueUeditorWrap>
+                </el-form-item>
+                <el-form-item label="内容（英文）">
+                    <VueUeditorWrap id="hy2"
+                        v-model="form.contentEn"
+                        ref="aboutUs">
+                    </VueUeditorWrap>
+                </el-form-item>
+                <el-form-item label="发布时间">
+                    <el-input v-model="form.createTime" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="浏览次数">
+                    <el-input v-model="form.viewCount" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form> 
             <div slot="footer" class="dialog-footer" v-if="isBtn">
@@ -98,6 +116,7 @@
 </template>
 
 <script>
+import VueUeditorWrap from 'vue-ueditor-wrap'
 import util from '@/api/utils'
 export default {
     name: 'conferenceAlerts',
@@ -105,7 +124,8 @@ export default {
         return {
             msg: '会议快讯333',
             input:'',
-            id:'6',
+            id:'',
+            upDateId:'',
             isSave:false,//是否显示报错按钮或者更新按钮
             isBtn:false,//是否显示弹出窗操作按钮
             dialogFormVisible:false,
@@ -116,6 +136,7 @@ export default {
             size:1,//当前页面
             isPagin:false,
             query:'',//查询字段
+            titleName: '',
             form: {
                 forumId: '',
                 id: '',
@@ -163,6 +184,7 @@ export default {
         
         //详情
         async detailClick(row) {
+            this.titleName = '详情';
             console.log(row);
             let {data}  = await this.$api.get("/forum/express/"+row.id);
             console.log("会议快讯详情-",data);
@@ -173,6 +195,8 @@ export default {
 
         //编辑
         async editorClick(row){
+            this.titleName = '编辑';
+            this.upDateId = row.id;
             console.log(row);
             let {data}  = await this.$api.get("/forum/express/"+row.id);
             this.form = data.data;
@@ -184,15 +208,20 @@ export default {
         //修改
         async modifyClick(){
             let params = {
-                title:this.form.title,
-                briefIntroduction:this.form.briefIntroduction,
-                content:this.form.briefIntroduction,
-                source:this.form.briefIntroduction
+                "forumId":this.id,
+                "title":this.form.title,//主标题（中文）
+                "titleEn":this.form.titleEn,//主标题（英文）
+                "subtitle":this.form.subtitle,//副标题（中文）
+                "subtitleEn":this.form.subtitleEn,//副标题（英文）
+                "content":this.form.content,//内容（中文）
+                "contentEn":this.form.contentEn,//内容（英文）
+                "createTime":this.form.createTime,//发布时间
+                "viewCount":this.form.viewCount//浏览次数
             }
 
             console.log("修改1",params);
             console.log("修改1",this.id);
-            let data = await this.$api.put("forum/express/"+this.id,params)
+            let data = await this.$api.put("forum/express/"+this.upDateId,params)
             this.dialogFormVisible = false;
             this.getList();
             if(data.data.code){
@@ -268,12 +297,15 @@ export default {
 
     },
     components: {
-
+        VueUeditorWrap
     }
 }
 </script>
 
 <style scoped lang="less">
+    /deep/ .edui-editor{
+        width: auto !important;
+    }
     /deep/ .el-table__row{
         height: 25px !important;
     }
