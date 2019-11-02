@@ -36,7 +36,7 @@
 			<el-table-column label="操作" width="240" align='center' fixed="right">
 				<template scope="scope">
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
-					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">修改</el-button>
+					<el-button  size="small" @click="handleChange(scope.$index, scope.row)">修改</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -84,7 +84,7 @@
 
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="论坛标题（中文）">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
@@ -131,6 +131,65 @@
 			</el-form>
 			
 		</el-dialog>
+			<!--新增界面-->
+		<el-dialog title="论坛修改" :visible.sync="changeFormVisible" :close-on-click-modal="false">
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
+				 <el-form-item label="论坛标题（中文）">
+					<el-input v-model="title" ></el-input>
+				</el-form-item>
+				 <el-form-item label="论坛标题（英文）">
+					<el-input v-model="titleEn" ></el-input>
+				</el-form-item>
+			
+				 <el-form-item label="所属院系">
+					<el-input v-model="facultyName" ></el-input>
+				</el-form-item>
+				 <el-form-item label="举办日期">
+					<el-input v-model="holdingDate" ></el-input>
+					<el-date-picker
+						v-model="holdingDate"
+						type="daterange"
+						range-separator="至"
+						start-placeholder="开始日期"
+						end-placeholder="结束日期">
+						</el-date-picker>
+				</el-form-item>
+				 <el-form-item label="论坛地点（中文）">
+					<el-input v-model="venue" ></el-input>
+				</el-form-item>
+				 <el-form-item label="论坛地点（英文）">
+					<el-input v-model="venueEn" ></el-input>
+				</el-form-item>
+				<el-form-item label="申请时间">
+					<el-input v-model="createTime" ></el-input>
+				</el-form-item>
+				<el-form-item label="负责人（中文）">
+					<el-input v-model="sponsor" ></el-input>
+				</el-form-item>
+				<el-form-item label="负责人（英文）">
+					<el-input v-model="sponsorEn" ></el-input>
+				</el-form-item>
+				<el-form-item label="负责人电话">
+					<el-input v-model="sponsorPhone" ></el-input>
+				</el-form-item>
+				<el-form-item label="负责人邮箱">
+					<el-input v-model="sponsorEmail" ></el-input>
+				</el-form-item>
+				<el-form-item label="申请原因">
+			<el-input type="textarea" v-model="applyReason" ></el-input>
+		</el-form-item>
+			<el-form-item label="未通过原因">
+					<el-input type="textarea" v-model="auditResult" ></el-input>
+			</el-form-item>
+				<div slot="footer" class="dialog-footer" style="text-align:center">
+        <el-button type="primary" @click.native="change()" :loading="editLoading">更新</el-button>
+			
+			</div>
+
+				
+			</el-form>
+			
+		</el-dialog>
 	</section>
 </template>
 
@@ -154,6 +213,7 @@ import { debug } from 'util';
 				reson:"",
 				biaozhu:"",
 				total:10,
+				changeFormVisible:false,
 				currentPage:1,
 				users: [],
 				total: 0,
@@ -208,6 +268,29 @@ import { debug } from 'util';
 			}
 		},
 		methods: {
+		async	change(){
+		//	let data = await 
+			},
+		async	handleChange(index, row){
+				console.log(index,row)
+				this.changeFormVisible = true;
+				let {data} = await this.$api.get("forum/"+row.id)
+				this.title = data.data.title;
+				this.facultyName = data.data.facultyName;
+				this.titleEn = data.data.titleEn;
+				this.holdingDate = data.data.holdingDate;
+				this.venue = data.data.venue;
+				this.venueEn = data.data.venueEn;
+				this.createTime = data.data.createTime;
+				this.sponsorEn = data.data.sponsorEn;
+				this.sponsor = data.data.sponsor;
+				this.sponsorPhone = data.data.sponsorPhone;
+				this.sponsorEmail = data.data.sponsorEmail;
+				this.applyReason = data.data.applyReason;
+				this.auditResult = data.data.auditResult;
+				this.biaozhu =  data.data.scaleOfMarkName;
+				console.log(data)
+			},
 			//性别显示转换
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';

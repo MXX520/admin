@@ -202,6 +202,7 @@
 				sponsor:"",
 				sponsorEn:"",
 				venue:"",
+				venueEn:"",
 				holdingDate:"",
 				contributionTime:"",
 				school:"",
@@ -254,8 +255,12 @@
 			}
 		},
 		methods: {
-			control(){
-
+		async	control(index,row){
+			let {data} = await this.$api.put("forum/status/"+row.id,{
+				isClosed:row.isClosedName=="上线"?0:1,
+			})
+			console.log(data)
+			this.getUsers()
 			},
 			//性别显示转换
 			formatSex: function (row, column) {

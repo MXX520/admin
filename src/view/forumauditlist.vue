@@ -20,22 +20,20 @@
 			
 			<el-table-column type="index" label="序号" align='center' width="80">
 			</el-table-column>
-			<el-table-column prop="title" label="论坛名称" align='center' width="280" >
+			<el-table-column prop="title" label="论坛标题（中文）" align='center' width="220" >
+			</el-table-column>
+			<el-table-column prop="titleEn" label="论坛标题（英文）" align='center' width="220" >
 			</el-table-column>
 			<el-table-column prop="facultyName" label="所属院系" align='center' width="120"  >
 			</el-table-column>
-			<el-table-column prop="sponsor" label="发起人" align='center' width="100" >
+			<el-table-column prop="forumOpenTime" label="举办日期" align='center' width="220" >
 			</el-table-column>
-			<el-table-column prop="sponsorPhone" label="发起人电话" align='center' width="140" >
+			<el-table-column prop="venue" label="论坛地点（中文）" align='center' width="220" >
 			</el-table-column>
-			<el-table-column prop="sponsorEmail" label="发起人邮箱" align='center' min-width="200" >
-			</el-table-column>
-			<el-table-column prop="scaleOfMark" label="评分标准" align='center' min-width="120" >
+			<el-table-column prop="venueEn" label="论坛地点（英文）" align='center' width="220" >
 			</el-table-column>
 			
-			<el-table-column prop="isClosed" label="状态" align='center' min-width="120" >
-			</el-table-column>
-			<el-table-column prop="createTime" label="创建时间" align='center' min-width="180" sortable>
+			<el-table-column prop="createTime" label="申请时间" align='center' min-width="180" sortable>
 			</el-table-column>
 		
 			<el-table-column label="操作" width="100" align='center' fixed="right">
@@ -59,31 +57,47 @@
 		</el-col>
 
 	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
-				 <el-form-item label="活动名称">
-					<el-input v-model="title" disabled="true"></el-input>
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
+				<el-form-item label="论坛标题（中文）">
+					<el-input v-model="title" ></el-input>
+				</el-form-item>
+				<el-form-item label="论坛标题（英文）">
+					<el-input v-model="titleEn" ></el-input>
 				</el-form-item>
 				 <el-form-item label="所属院系">
-					<el-input v-model="school" disabled="true"></el-input>
+					<el-input v-model="facultyName" ></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人">
-					<el-input v-model="people" disabled="true"></el-input>
+				 <el-form-item label="举办日期">
+					<el-input v-model="holdingDate" ></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人电话">
-					<el-input v-model="phone" disabled="true"></el-input>
+				 <el-form-item label="论坛地点（中文）">
+					<el-input v-model="venue" ></el-input>
 				</el-form-item>
-				 <el-form-item label="发起人邮箱">
-					<el-input v-model="email" disabled="true"></el-input>
+				 <el-form-item label="论坛地点（英文）">
+					<el-input v-model="venueEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="申请时间">
+					<el-input v-model="createTime" ></el-input>
+				</el-form-item>
+
+				 <el-form-item label="负责人（中文）">
+					<el-input v-model="sponsor" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人（英文）">
+					<el-input v-model="sponsorEn" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人电话">
+					<el-input v-model="sponsorPhone" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人邮箱">
+					<el-input v-model="sponsorEmail" ></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" disabled="true"></el-input>
+			<el-input type="textarea" v-model="reson" ></el-input>
 		</el-form-item>
-			 <el-form-item label="评分标准">
-					<el-input v-model="biaozhu" disabled="true"></el-input>
+			 <el-form-item label="审核意见">
+					<el-input type="textarea" v-model="auditResult" ></el-input>
 				</el-form-item>
-			
-
-				
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button type="primary" @click.native="editSubmit(1)" :loading="editLoading">审核通过</el-button>
@@ -111,8 +125,10 @@
 				total:10,
 				currentPage:1,
 				users: [],
-        total: 0,
-        title:"",
+				total: 0,
+				title:"",
+				facultyName:"",
+				titleEn:"",
 				school:"",
 				people:"",
 				phone:"",
@@ -212,7 +228,10 @@
 				this.addFormVisible = true;
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
-				this.school = data.data.facultyName;
+				this.titleEn = data.data.titleEn;
+				this.facultyName = data.data.facultyName;
+				this.forumOpenTime = data.data.forumOpenTime;
+
 				this.people = data.data.sponsor;
 				this.phone = data.data.sponsorPhone;
 				this.email = data.data.sponsorEmail;
