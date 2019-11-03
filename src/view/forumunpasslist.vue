@@ -148,7 +148,7 @@
 					<el-input v-model="facultyName" ></el-input>
 				</el-form-item>
 				 <el-form-item label="举办日期">
-					<el-input v-model="holdingDate" ></el-input>
+					
 					<el-date-picker
 						v-model="holdingDate"
 						type="daterange"
@@ -184,14 +184,13 @@
 			<el-form-item label="未通过原因">
 					<el-input type="textarea" v-model="auditResult" ></el-input>
 			</el-form-item>
-				<div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button type="primary" @click.native="change()" :loading="editLoading">更新</el-button>
 			
-			</div>
-
 				
 			</el-form>
-			
+			<div slot="footer" class="dialog-footer" style="text-align:center">
+				<el-button type="primary" @click.native="change()" :loading="editLoading">更新</el-button>
+				<el-button type="primary" @click.native="submit()" :loading="editLoading">提交</el-button>
+			</div>
 		</el-dialog>
 	</section>
 </template>
@@ -213,8 +212,10 @@ import { debug } from 'util';
 				people:"",
 				phone:"",
 				email:"",
+				id:"",
 				reson:"",
 				biaozhu:"",
+				facultyName:"",
 				total:10,
 				changeFormVisible:false,
 				currentPage:1,
@@ -272,11 +273,47 @@ import { debug } from 'util';
 		},
 		methods: {
 		async	change(){
-		//	let data = await 
+			let data = await this.$api.put("/forum"+this.id,{
+				 title:this.title,
+				titleEn:this.titleEn,
+				sponsor:this.sponsor,
+				sponsorEn:this.sponsorEn,
+				sponsorPhone:this.sponsorPhone,
+				sponsorEmail:this.sponsorEmail,
+				applyReason:this.applyReason,
+				applyReasonEn:this.applyReasonEn,
+				forumOpenTime:this.forumOpenTime,
+				forumCloseTime:this.forumCloseTime,
+				venue:this.venue,
+				venueEn:this.venueEn,
+				facultyId:this.facultyId
+			})
+			this.changeFormVisible = false;
+
+
 			},
+		async submit(){
+			let data = await this.$api.put("/forum/resubmit/"+this.id,{
+				 title:this.title,
+				titleEn:this.titleEn,
+				sponsor:this.sponsor,
+				sponsorEn:this.sponsorEn,
+				sponsorPhone:this.sponsorPhone,
+				sponsorEmail:this.sponsorEmail,
+				applyReason:this.applyReason,
+				applyReasonEn:this.applyReasonEn,
+				forumOpenTime:this.forumOpenTime,
+				forumCloseTime:this.forumCloseTime,
+				venue:this.venue,
+				venueEn:this.venueEn,
+				facultyId:this.facultyId
+			})
+			this.changeFormVisible = false;
+		},
 		async	handleChange(index, row){
 				console.log(index,row)
 				this.changeFormVisible = true;
+				this.id = row.id;
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
 				this.facultyName = data.data.facultyName;

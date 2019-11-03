@@ -47,7 +47,7 @@
 		
 			<el-table-column label="操作" width="150" align='center' fixed="right">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">设置</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
 				</template>
 			</el-table-column>
@@ -55,6 +55,7 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="text-align:center;">
+
 			 <el-pagination
 		
 			@current-change="handleCurrentChange"
@@ -68,7 +69,7 @@
 
 		<!--编辑界面-->
 		<el-dialog title="论坛设置" :visible.sync="editFormVisible" :close-on-click-modal="false"  class="time">
-			<el-form :model="editForm" label-width="160px" :rules="editFormRules" ref="editForm">
+			<el-form :model="editForm" label-width="180px" :rules="editFormRules" ref="editForm">
 				 <el-form-item label="论坛标题（中文）">
 					<el-input v-model="title"></el-input>
 				</el-form-item>
@@ -76,14 +77,23 @@
 					<el-input v-model="titleEn" ></el-input>
 				</el-form-item>
 				 <el-form-item label="所属院系">
-					<el-input v-model="school" ></el-input>
+					 <el-select v-model="facultyId" placeholder="请选择">
+                        <el-option
+                            v-for="item in schoolList"
+                            :key="item.id"
+                            :label="item.facultyName"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
 				</el-form-item>
 				<el-form-item label="举办日期" >
 					<el-date-picker
 					v-model="value2"
 					type="daterange"
+					ref="data"
 					align="right"
 					unlink-panels
+					
 					:editable='false'
 					range-separator="至"
 					start-placeholder="开始日期"
@@ -94,6 +104,7 @@
 				</el-form-item>
 					<el-form-item label="投稿时段" >
 					<el-date-picker
+					ref="data1"
 					v-model="value"
 					type="daterange"
 					align="right"
@@ -128,7 +139,7 @@
                     <el-input type="textarea" v-model="reson" ></el-input>
 		        </el-form-item>
 			</el-form>
-			<div slot="footer" class="dialog-footer">
+			<div slot="footer" class="dialog-footer" style="text-align:center">
 				
 				<el-button type="primary" @click.native="editSubmit" :loading="editLoading">更新</el-button>
 			</div>
@@ -136,7 +147,7 @@
 
 		<!--新增界面-->
 		<el-dialog title="论坛详情" :visible.sync="addFormVisible" :close-on-click-modal="false">
-			<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm">
+			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
 				 <el-form-item label="论坛标题（中文）">
 					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
@@ -197,6 +208,7 @@
 				total:10,
 				currentPage:1,
 				users: [],
+				facultyId:"",
 				total: 0,
 				page: 1,
 				title:"",
@@ -212,8 +224,8 @@
 				people:"",
 				phone:"",
 				email:"",
-				value2:"",
-				value:"",
+				value2:[],
+				value:[],
 				createTime:"",
 				isClosedName:"",
 				reson:"",
@@ -229,6 +241,7 @@
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
+				schoolList:[],
 				//编辑界面数据
 				editForm: {
 					id: 0,
@@ -277,6 +290,11 @@
 				this.getUsers()
 			},
 			//获取用户列表
+		 async getSList(){
+            let {data} = await this.$api.get("faculty/list/all",{
+            })
+            this.schoolList = data.data;
+        },
 		async getUsers() {
 				let para = {
 					page: this.page,
@@ -320,6 +338,7 @@
 				this.forumOpenTime = data.data.forumOpenTime;
 				this.contributionTime = data.data.contributionTime;
 				this.venue = data.data.venue;
+				this.facultyId = data.data.facultyId
 				this.venueEn = data.data.venueEn;
 				this.holdingDate = data.data.holdingDate;
 				this.school = data.data.facultyName;
@@ -334,9 +353,35 @@
 				console.log(data)
 			},
 			//显示编辑界面
-			handleEdit: function (index, row) {
+			async	handleEdit(index, row) {
 				this.editFormVisible = true;
-               
+               	console.log("看看这个",index,row)
+			
+				
+				let {data} = await this.$api.get("forum/"+row.id)
+				this.title = data.data.title;
+				this.titleEn = data.data.titleEn;
+				this.forumOpenTime = data.data.forumOpenTime;
+				this.contributionTime = data.data.contributionTime;
+				this.venue = data.data.venue;
+				this.venueEn = data.data.venueEn;
+				this.facultyId = data.data.facultyId
+				//this.holdingDate = data.data.holdingDate;
+				this.value2.push(data.data.forumOpenTime)
+				this.value2.push(data.data.forumCloseTime)
+				this.value.push(data.data.paperOpenTime)
+				this.value.push(data.data.paperCloseTime)
+				this.$refs.data.$forceUpdate()
+				this.$refs.data1.$forceUpdate()
+				this.school = data.data.facultyName;
+				this.sponsor = this.people = data.data.sponsor;
+				this.sponsorEn = data.data.sponsorEn;
+				this.createTime = data.data.createTime;
+				this.isClosedName = data.data.isClosedName;
+				this.phone = data.data.sponsorPhone;
+				this.email = data.data.sponsorEmail;
+				this.reson = data.data.applyReason;
+				this.biaozhu =  data.data.scaleOfMarkName;
 				this.editId = row.id;
 				this.editForm = Object.assign({}, row);
 			},
@@ -354,10 +399,21 @@
 			//编辑
 			async editSubmit () {
 				let data = await this.$api.put("forum/"+this.editId,{
+					 title:this.title,
+					titleEn:this.titleEn,
+					sponsor:this.sponsor,
+					sponsorEn:this.sponsorEn,
+					sponsorPhone:this.sponsorPhone,
+					sponsorEmail:this.sponsorEmail,
+					applyReason:this.applyReason,
+					applyReasonEn:this.applyReasonEn,
 					forumOpenTime:this.value2[0],
 					forumCloseTime:this.value2[1],
 					paperOpenTime:this.value[0],
-					paperCloseTime:this.value[1]
+					paperCloseTime:this.value[1],
+					venue:this.venue,
+					venueEn:this.venueEn,
+					facultyId:this.facultyId
 				})
 				console.log(data)
 				this.editFormVisible = false;
@@ -414,6 +470,7 @@
 		},
 		mounted() {
 			this.getUsers();
+			this.getSList();
 		}
 	}
 
