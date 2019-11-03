@@ -1,6 +1,6 @@
 <template>
     <el-row class="forumList-box" ref="echartsWrapper">
-        <el-col :span="18" class="forumTab">
+        <el-col :span="24" class="forumTab">
             <el-row>
                 <el-col :span="10">
                     <el-input v-model="query" placeholder="请输入内容"></el-input>
