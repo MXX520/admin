@@ -19,7 +19,10 @@
 
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-			<el-table-column type="index" label="序号" align='center' width="80">
+			<el-table-column  label="序号" align='center' width="80">
+				<template scope="scope">
+					<span>{{scope.$index+(currentPage-1)*10+1}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column prop="facultyName" label="院系名称(中文)" align='center' width="160" >
 			</el-table-column>
