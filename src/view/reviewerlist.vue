@@ -31,7 +31,7 @@
                 <el-table-column
                     prop="email"
                     align='center'
-                    width="auto"
+                    width="250px"
                     label="邮箱"
                     height="20px">
                 </el-table-column>
@@ -59,7 +59,7 @@
                 <el-table-column
                     prop="createTime"
                     align='center'
-                    width="auto"
+                    width="200px"
                     label="创建时间"
                     height="20px">
                 </el-table-column>

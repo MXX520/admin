@@ -41,7 +41,7 @@
 				</template>
 			</el-table-column>
 			
-			<el-table-column prop="contributionTime" label="投稿时段" align='center' min-width="120" >
+			<el-table-column prop="contributionTime" label="投稿时段" align='center' min-width="200">
 			</el-table-column>
 			
 		
