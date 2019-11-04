@@ -93,7 +93,7 @@
 					ref="data"
 					align="right"
 					unlink-panels
-					
+					:default-value="defaultTime2"
 					:editable='false'
 					range-separator="至"
 					start-placeholder="开始日期"
@@ -106,6 +106,7 @@
 					<el-date-picker
 					ref="data1"
 					v-model="value"
+					:default-value="defaultTime"
 					type="daterange"
 					align="right"
 					unlink-panels
@@ -211,6 +212,8 @@
 				facultyId:"",
 				total: 0,
 				page: 1,
+				defaultTime:[],
+				defaultTime2:[],
 				title:"",
 				titleEn:"",
 				forumOpenTime:"",
@@ -350,7 +353,8 @@
 				this.email = data.data.sponsorEmail;
 				this.reson = data.data.applyReason;
 				this.biaozhu =  data.data.scaleOfMarkName;
-				console.log(data)
+				
+				this,getUsers()
 			},
 			//显示编辑界面
 			async	handleEdit(index, row) {
@@ -367,10 +371,14 @@
 				this.venueEn = data.data.venueEn;
 				this.facultyId = data.data.facultyId
 				//this.holdingDate = data.data.holdingDate;
-				this.value2.push(data.data.forumOpenTime)
-				this.value2.push(data.data.forumCloseTime)
-				this.value.push(data.data.paperOpenTime)
-				this.value.push(data.data.paperCloseTime)
+				this.defaultTime.push(new Date(data.data.paperOpenTime))
+				this.defaultTime.push(new Date(data.data.paperCloseTime))
+				this.defaultTime2.push(new Date(data.data.forumOpenTime))
+				this.defaultTime2.push(new Date(data.data.forumCloseTime))
+				this.value2.push(new Date(data.data.forumOpenTime))
+				this.value2.push(new Date(data.data.forumCloseTime))
+				this.value.push(new Date(data.data.paperOpenTime))
+				this.value.push(new Date(data.data.paperCloseTime))
 				this.$refs.data.$forceUpdate()
 				this.$refs.data1.$forceUpdate()
 				this.school = data.data.facultyName;
@@ -384,6 +392,7 @@
 				this.biaozhu =  data.data.scaleOfMarkName;
 				this.editId = row.id;
 				this.editForm = Object.assign({}, row);
+				this.getUsers()
 			},
 			//显示新增界面
 			handleAdd: function () {

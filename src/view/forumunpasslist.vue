@@ -145,12 +145,20 @@
 				</el-form-item>
 			
 				 <el-form-item label="所属院系">
-					<el-input v-model="facultyName" ></el-input>
+					<el-select v-model="facultyId" placeholder="请选择">
+                        <el-option
+                            v-for="item in schoolList"
+                            :key="item.id"
+                            :label="item.facultyName"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
 				</el-form-item>
 				 <el-form-item label="举办日期">
 					
 					<el-date-picker
 						v-model="holdingDate"
+						ref="picker"
 						type="daterange"
 						range-separator="至"
 						start-placeholder="开始日期"
@@ -163,9 +171,7 @@
 				 <el-form-item label="论坛地点（英文）">
 					<el-input v-model="venueEn" ></el-input>
 				</el-form-item>
-				<el-form-item label="申请时间">
-					<el-input v-model="createTime" ></el-input>
-				</el-form-item>
+			
 				<el-form-item label="负责人（中文）">
 					<el-input v-model="sponsor" ></el-input>
 				</el-form-item>
@@ -250,9 +256,10 @@ import { debug } from 'util';
 					]
 				},
 				titleEn:"",
-				holdingDate:"",
+				holdingDate:[],
 				venue:"",
 				createTime:"",
+				schoolList:[],
 				sponsor:"",
 				venueEn:"",
 				sponsorEn:"",
@@ -292,6 +299,11 @@ import { debug } from 'util';
 
 
 			},
+			async getSList(){
+            let {data} = await this.$api.get("faculty/list/all",{
+            })
+            this.schoolList = data.data;
+        },
 		async submit(){
 			let data = await this.$api.put("/forum/resubmit/"+this.id,{
 				 title:this.title,
@@ -318,7 +330,11 @@ import { debug } from 'util';
 				this.title = data.data.title;
 				this.facultyName = data.data.facultyName;
 				this.titleEn = data.data.titleEn;
-				this.holdingDate = data.data.holdingDate;
+				
+				//this.holdingDate = data.data.holdingDate;
+				this.holdingDate.push(new Date(data.data.forumOpenTime))
+				this.holdingDate.push(new Date(data.data.forumCloseTime))
+				this.$refs.picker.$forceUpdate();
 				this.venue = data.data.venue;
 				this.venueEn = data.data.venueEn;
 				this.createTime = data.data.createTime;
