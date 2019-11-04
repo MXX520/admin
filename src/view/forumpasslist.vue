@@ -37,14 +37,10 @@
 			<el-table-column label="是否在线" align='center' min-width="120" >
 				<template scope="scope">
 					<el-button size="small" @click="control(scope.$index, scope.row)">{{scope.row.isClosedName}}</el-button>
-					
 				</template>
 			</el-table-column>
-			
 			<el-table-column prop="contributionTime" label="投稿时段" align='center' min-width="200">
 			</el-table-column>
-			
-		
 			<el-table-column label="操作" width="150" align='center' fixed="right">
 				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
@@ -134,8 +130,6 @@
 				 <el-form-item label="负责人邮箱">
 					<el-input v-model="email" ></el-input>
 				</el-form-item>
-				
-				
 				<el-form-item label="申请原因">
                     <el-input type="textarea" v-model="reson" ></el-input>
 		        </el-form-item>
