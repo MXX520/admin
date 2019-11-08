@@ -47,12 +47,7 @@
 					format="yyyy 年 MM 月 dd 日">
 						</el-date-picker>
 				</el-form-item>
-		<el-form-item label="评分标准">
-			<el-radio-group v-model="form.desc">
-				<el-radio label="0">通过制</el-radio>
-				<el-radio label="1">评分制</el-radio>
-			</el-radio-group>
-		</el-form-item>
+	
 		<el-form-item label="论坛背景图片">
 			<el-button type="primary" @click.native="upload" style="margin-left:0px;">图片上传</el-button>
 			<img v-show="src!=''" :src="src" alt="" style="width:300px;height:200px;border:1px solid #ccc;">

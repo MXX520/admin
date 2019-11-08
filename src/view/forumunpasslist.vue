@@ -187,9 +187,7 @@
 				<el-form-item label="申请原因">
 			<el-input type="textarea" v-model="applyReason" ></el-input>
 		</el-form-item>
-			<el-form-item label="未通过原因">
-					<el-input type="textarea" v-model="auditResult" ></el-input>
-			</el-form-item>
+			
 			
 				
 			</el-form>
@@ -208,6 +206,9 @@ import { debug } from 'util';
 	
 
 	export default {
+		mounted(){
+			this.getSList()
+		},
 		data() {
 			return {
 				filters: {
@@ -265,6 +266,7 @@ import { debug } from 'util';
 				sponsorEn:"",
 				sponsorPhone:"",
 				sponsorEmail:"",
+				facultyId:"",
 				applyReason:"",
 				auditResult:"",
 				//新增界面数据
@@ -280,7 +282,7 @@ import { debug } from 'util';
 		},
 		methods: {
 		async	change(){
-			let data = await this.$api.put("/forum"+this.id,{
+			let data = await this.$api.put("/forum/"+this.id,{
 				 title:this.title,
 				titleEn:this.titleEn,
 				sponsor:this.sponsor,
@@ -289,8 +291,8 @@ import { debug } from 'util';
 				sponsorEmail:this.sponsorEmail,
 				applyReason:this.applyReason,
 				applyReasonEn:this.applyReasonEn,
-				forumOpenTime:this.forumOpenTime,
-				forumCloseTime:this.forumCloseTime,
+				forumOpenTime:this.holdingDate[0],
+				forumCloseTime:this.holdingDate[1],
 				venue:this.venue,
 				venueEn:this.venueEn,
 				facultyId:this.facultyId
@@ -302,7 +304,8 @@ import { debug } from 'util';
 			async getSList(){
             let {data} = await this.$api.get("faculty/list/all",{
             })
-            this.schoolList = data.data;
+			this.schoolList = data.data;
+			console.log('----list',this.schoolList)
         },
 		async submit(){
 			let data = await this.$api.put("/forum/resubmit/"+this.id,{
@@ -332,6 +335,7 @@ import { debug } from 'util';
 				this.titleEn = data.data.titleEn;
 				
 				//this.holdingDate = data.data.holdingDate;
+				this.holdingDate = []
 				this.holdingDate.push(new Date(data.data.forumOpenTime))
 				this.holdingDate.push(new Date(data.data.forumCloseTime))
 				this.$refs.picker.$forceUpdate();
@@ -339,6 +343,7 @@ import { debug } from 'util';
 				this.venueEn = data.data.venueEn;
 				this.createTime = data.data.createTime;
 				this.sponsorEn = data.data.sponsorEn;
+				this.facultyId = data.data.facultyId;
 				this.sponsor = data.data.sponsor;
 				this.sponsorPhone = data.data.sponsorPhone;
 				this.sponsorEmail = data.data.sponsorEmail;
@@ -503,6 +508,7 @@ import { debug } from 'util';
 		},
 		mounted() {
 			this.getUsers();
+			this.getSList()
 		}
 	}
 

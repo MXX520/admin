@@ -128,7 +128,10 @@
 					<el-input v-model="sponsorEn" ></el-input>
 				</el-form-item>
 				 <el-form-item label="负责人邮箱">
-					<el-input v-model="email" ></el-input>
+					<el-input v-model="sponsorEmail" ></el-input>
+				</el-form-item>
+				 <el-form-item label="负责人电话">
+					<el-input v-model="sponsorPhone" ></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
                     <el-input type="textarea" v-model="reson" ></el-input>
@@ -171,7 +174,7 @@
 					<el-input v-model="sponsorEn" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="负责人邮箱">
-					<el-input v-model="email" disabled="true"></el-input>
+					<el-input v-model="sponsorEmail" disabled="true"></el-input>
 				</el-form-item>
 				
 				
@@ -263,7 +266,9 @@
 					age: 0,
 					birth: '',
 					addr: ''
-				}
+				},sponsorEmail:"",
+				sponsorPhone:""
+
 
 			}
 		},
@@ -343,8 +348,8 @@
 				this.sponsorEn = data.data.sponsorEn;
 				this.createTime = data.data.createTime;
 				this.isClosedName = data.data.isClosedName;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
+				this.sponsorPhone = data.data.sponsorPhone;
+				this.sponsorEmail = data.data.sponsorEmail;
 				this.reson = data.data.applyReason;
 				this.biaozhu =  data.data.scaleOfMarkName;
 				
@@ -365,6 +370,8 @@
 				this.venueEn = data.data.venueEn;
 				this.facultyId = data.data.facultyId
 				//this.holdingDate = data.data.holdingDate;
+				this.value2 = []
+				this.value = []
 				this.defaultTime.push(new Date(data.data.paperOpenTime))
 				this.defaultTime.push(new Date(data.data.paperCloseTime))
 				this.defaultTime2.push(new Date(data.data.forumOpenTime))
@@ -380,8 +387,8 @@
 				this.sponsorEn = data.data.sponsorEn;
 				this.createTime = data.data.createTime;
 				this.isClosedName = data.data.isClosedName;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
+				this.sponsorPhone = data.data.sponsorPhone;
+				this.sponsorEmail = data.data.sponsorEmail;
 				this.reson = data.data.applyReason;
 				this.biaozhu =  data.data.scaleOfMarkName;
 				this.editId = row.id;
@@ -416,10 +423,12 @@
 					paperCloseTime:this.value[1],
 					venue:this.venue,
 					venueEn:this.venueEn,
-					facultyId:this.facultyId
+					facultyId:this.facultyId,
+					
 				})
 				console.log(data)
 				this.editFormVisible = false;
+				this.getUsers()
 			},
 			//新增
 			addSubmit: function () {
