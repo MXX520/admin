@@ -73,7 +73,7 @@
             </el-pagination>
         </el-row>
         <el-dialog :title="titleName" :visible.sync="dialogFormVisible">
-            <el-form label-width="80px">
+            <el-form label-width="120px">
                 <el-form-item label="主标题（中文）">
                     <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
@@ -97,12 +97,6 @@
                         v-model="form.contentEn"
                         ref="aboutUs">
                     </VueUeditorWrap>
-                </el-form-item>
-                <el-form-item label="发布时间">
-                    <el-input v-model="form.createTime" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="浏览次数">
-                    <el-input v-model="form.viewCount" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form> 
             <div slot="footer" class="dialog-footer" v-if="isBtn">
@@ -234,6 +228,7 @@ export default {
 
         //新增
         addClick(){
+            this.titleName = '新增会议快讯';
             this.dialogFormVisible = true;
             this.isBtn = true;
             this.isSave = false;
