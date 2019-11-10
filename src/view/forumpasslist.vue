@@ -72,7 +72,7 @@
 				<el-form-item label="论坛标题（英文）">
 					<el-input v-model="titleEn" ></el-input>
 				</el-form-item>
-				 <el-form-item label="所属院系">
+				 <el-form-item label="所属院系" v-show="isEdit">
 					 <el-select v-model="facultyId" placeholder="请选择">
                         <el-option
                             v-for="item in schoolList"
@@ -222,6 +222,7 @@
 				contributionTime:"",
 				school:"",
 				people:"",
+				isEdit:"",
 				phone:"",
 				email:"",
 				value2:[],
@@ -340,6 +341,7 @@
 				this.forumOpenTime = data.data.forumOpenTime;
 				this.contributionTime = data.data.contributionTime;
 				this.venue = data.data.venue;
+				this.isEdit = data.data.isEdit;
 				this.facultyId = data.data.facultyId
 				this.venueEn = data.data.venueEn;
 				this.holdingDate = data.data.holdingDate;

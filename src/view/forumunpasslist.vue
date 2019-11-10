@@ -144,7 +144,7 @@
 					<el-input v-model="titleEn" ></el-input>
 				</el-form-item>
 			
-				 <el-form-item label="所属院系">
+				 <el-form-item label="所属院系" v-show="isEdit">
 					<el-select v-model="facultyId" placeholder="请选择">
                         <el-option
                             v-for="item in schoolList"
@@ -221,6 +221,7 @@ import { debug } from 'util';
 				email:"",
 				id:"",
 				reson:"",
+				isEdit:0,
 				biaozhu:"",
 				facultyName:"",
 				total:10,
@@ -332,6 +333,7 @@ import { debug } from 'util';
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
 				this.facultyName = data.data.facultyName;
+				this.isEdit = data.data.isEdit;
 				this.titleEn = data.data.titleEn;
 				
 				//this.holdingDate = data.data.holdingDate;
