@@ -4,6 +4,15 @@
 		<div class="title" style="float:right;margin-top:-36px;margin-right: 20px;">
 			 <el-button type="primary" @click="goOut">导出</el-button>
 		</div>
+		<div class="search">
+			<el-cascader
+    placeholder=""
+	v-model="arr"
+    :options="options"
+    :props="{ multiple: true }"
+    filterable></el-cascader>
+	  <el-button type="primary" @click="tongji">统计</el-button>
+		</div>
 		 <el-table
 			:data="forumCount"
 			style="width: 100%">
@@ -83,15 +92,21 @@
 				submitTypeCount: [],
 				forumThemeCount:[],
 				userSchoolCount:[],
-				forumCount:[]
+				forumCount:[],
+				options:[],
+				ids:"",
+				arr:[]
 			}
 		},
 		methods: {
 			async goOut(){
-				window.location.href = this.$api.httpPath+"export?token="+localStorage.getItem('token')+"&refreshToken="+localStorage.getItem('refreshToken')
+				let str = this.ids;
+				window.location.href = this.$api.httpPath+"export?token="+localStorage.getItem('token')+"&refreshToken="+localStorage.getItem('refreshToken')+"&ids="+str;
 			},
 			async init(){
-                let {data} =await this.$api.get("/statistic")
+                let {data} =await this.$api.get("/statistic",{
+					ids:this.ids
+				})
                 console.log(data)
 				let submitTypeCount = data.data.submitTypeCount;
 				let {forumThemeCount} = data.data;
@@ -104,10 +119,30 @@
                 this.forumCount = forumCount;
 
 
+			},
+			async treeList(){
+				let {data} = await this.$api.get("forum/faculty/tree/list")
+				console.log(data)
+				this.options = data.data;
+			},
+			tongji(){
+				console.log(this.arr);
+				let str = ""
+				for(let i in this.arr){
+					if(i!=this.arr.length-1){
+							this.ids+=this.arr[i][1]+","
+					}else{
+						this.ids+=this.arr[i][1]
+					}
+				
+				}
+				console.log(this.ids);
+				this.init()
 			}
 		},
 		mounted() {
 			this.init();
+			this.treeList()
 		}
 	}
 
