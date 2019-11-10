@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div id="app" v-if='id'>
         <el-row style="marginTop:20px">
             <el-form ref="form" :model="tableData" label-width="180px">
                 <el-form-item label="评分标准">
@@ -36,8 +36,8 @@
             </el-form>
         </el-row>
         <el-row :gutter="20" type="flex" align="center" justify="center">
-            <el-button type="primary" @click="isUpdate = false" v-if="isUpdate">修改</el-button>
-            <el-button type="primary" @click="saveClick" v-else>保存</el-button>
+            <!--<el-button type="primary" @click="isUpdate = false" v-if="isUpdate">修改</el-button>-->
+            <el-button type="primary" @click="saveClick">保存</el-button>
         </el-row>
     </div>  
 </template>
@@ -51,7 +51,7 @@ export default {
             id:'',
             tableData: [],
             checkList: {id:[],list:[]},
-            isUpdate:true,
+            isUpdate:false,
             value: true,
             value2 : true
         }
@@ -110,7 +110,7 @@ export default {
                     type: 'success'
                 });
                 this.getList();
-                this.isUpdate = true;
+                // this.isUpdate = true;
             }
         },
 

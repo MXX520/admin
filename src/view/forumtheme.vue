@@ -14,7 +14,7 @@
                 :expand-on-click-node="false"
                 ></el-tree>
             </el-col>-->
-            <el-col :span="18" class="forumTab">
+            <el-col :span="24" class="forumTab">
                 <el-row>
                     <el-col :span="10">
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
@@ -33,7 +33,7 @@
                             prop="num"
                             label="序号"
                             align='center'
-                            width="80"
+                            width="50"
                             height="10">
                         </el-table-column>
                         <el-table-column
@@ -54,6 +54,7 @@
                         <el-table-column
                         fixed="right"
                         align='center'
+                        width="150px"
                         label="操作">
                         <template slot-scope="scope">
                             <el-button @click="changeClick(scope.row)" type="text" size="small">修改</el-button>
