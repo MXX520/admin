@@ -1,19 +1,23 @@
 <template>
 	<section>
-		<div class="title">各院论坛总数</div>
-		<div class="title" style="float:right;margin-top:-36px;margin-right: 20px;">
-			 <el-button type="primary" @click="goOut">导出</el-button>
-		</div>
 		<div class="search">
 			<el-cascader
+			style="width:400px"
     placeholder=""
 	v-model="arr"
     :options="options"
     :props="{ multiple: true }"
     filterable></el-cascader>
 	  <el-button type="primary" @click="tongji">统计</el-button>
+	 
+			 <el-button type="primary" @click="goOut">导出</el-button>
+		
 		</div>
+		<div class="title" v-show="ids!=''">各院论坛总数</div>
+		
+		
 		 <el-table
+		 	v-show="ids!=''"
 			:data="forumCount"
 			style="width: 100%">
 			<el-table-column
@@ -28,8 +32,9 @@
 			</el-table-column>
 			
 		</el-table>
-		<div class="title">各交流类型投稿数量</div>
+		<div class="title" v-show="ids!=''">各交流类型投稿数量</div>
 		 <el-table
+		 	v-show="ids!=''"
 			:data="submitTypeCount"
 			style="width: 100%">
 			<el-table-column
@@ -44,9 +49,10 @@
 			</el-table-column>
 			
 		</el-table>
-		<div class="title">投稿人学校分布</div>
+		<div class="title" v-show="ids!=''">投稿人学校分布</div>
 		 <el-table
 			:data="userSchoolCount"
+			v-show="ids!=''"
 			style="width: 100%">
 			<el-table-column
 				prop="label"
@@ -59,8 +65,9 @@
 				width="180">
 			</el-table-column>
 		</el-table>
-		<div class="title">各主题投稿数量</div>
+		<div class="title" v-show="ids!=''">各主题投稿数量</div>
 		 <el-table
+		 	v-show="ids!=''"
 			:data="forumThemeCount"
 			style="width: 100%">
 			<el-table-column
@@ -128,7 +135,13 @@
 			tongji(){
 				console.log(this.arr);
 				let str = ""
-				for(let i in this.arr){
+				if(this.arr[0].length==1){
+					
+				}else{
+					for(let i in this.arr){
+						if(this.arr[i].indexOf(this.ids)){
+							this.ids+=this.arr[i];
+						}
 					if(i!=this.arr.length-1){
 							this.ids+=this.arr[i][1]+","
 					}else{
@@ -136,6 +149,8 @@
 					}
 				
 				}
+				}
+				
 				console.log(this.ids);
 				this.init()
 			}
