@@ -20,7 +20,10 @@
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			
-			<el-table-column type="index" label="序号" align='center' width="80">
+			<el-table-column  label="序号" align='center' width="80">
+				<template scope="scope">
+					<span>{{scope.$index+(currentPage-1)*10+1}}</span>
+				</template>
 			</el-table-column>
 			<el-table-column prop="userName" label="用户名称" align='center' width="100" >
 			</el-table-column>
@@ -447,7 +450,8 @@ import { debug, debuglog } from 'util';
 					facultyId:this.email
 				})
 				if(data.code=="01"){
-					this.addUsers = false
+					this.addUsers = false;
+					this.getUsers()
 				}else{
 					 this.$message.error(data.msg);
 				}

@@ -96,7 +96,7 @@
 					<el-input v-model="sponsorEmail" ></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="reson" ></el-input>
+			<el-input type="textarea" v-model="applyReason" ></el-input>
 		</el-form-item>
 			 <el-form-item label="审核意见">
 					<el-input type="textarea" v-model="auditResult" ></el-input>
@@ -130,9 +130,19 @@
 				users: [],
 				total: 0,
 				title:"",
+				venue:"",
+				venueEn:"",
+				sponsor:"",
+				sponsorEn:"",
+				sponsorPhone:"",
+				sponsorEmail:"",
+				auditResult:"",
+				applyReason:"",
 				facultyName:"",
+				createTime:"",
 				titleEn:"",
 				school:"",
+				holdingDate:"",
 				people:"",
 				phone:"",
 				email:"",
@@ -232,14 +242,19 @@
 				let {data} = await this.$api.get("forum/"+row.id)
 				this.title = data.data.title;
 				this.titleEn = data.data.titleEn;
+				this.holdingDate = data.data.holdingDate;
 				this.facultyName = data.data.facultyName;
 				this.forumOpenTime = data.data.forumOpenTime;
-
-				this.people = data.data.sponsor;
-				this.phone = data.data.sponsorPhone;
-				this.email = data.data.sponsorEmail;
-				this.reson = data.data.applyReason;
-				this.biaozhu =  data.data.scaleOfMarkName;
+				this.createTime = data.data.createTime;
+				this.venue = data.data.venue;
+				this.venueEn = data.data.venueEn;
+				this.sponsor = data.data.sponsor;
+				this.sponsorEn = data.data.sponsorEn;
+				this.sponsorPhone = data.data.sponsorPhone;
+				this.sponsorEmail = data.data.sponsorEmail;
+				this.applyReason = data.data.applyReason;
+				this.auditResult = data.data.auditResult;
+				this.scaleOfMarkName =  data.data.scaleOfMarkName;
 				console.log(data)
 			},
 			//显示编辑界面

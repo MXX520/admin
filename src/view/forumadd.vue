@@ -6,18 +6,18 @@
 		<el-form-item label="论坛标题(英文)">
 			<el-input v-model="formEnglish.name"></el-input>
 		</el-form-item>
-		<el-form-item label="发起人(中文)">
+		<el-form-item label="负责人(中文)">
 			<el-input v-model="form.people"></el-input>
 		</el-form-item>
-		<el-form-item label="发起人(英文)">
+		<el-form-item label="负责人(英文)">
 			<el-input v-model="formEnglish.people"></el-input>
 		</el-form-item>
-		<el-form-item label="发起人电话">
+		<el-form-item label="负责人电话">
 			<el-input v-model="form.phone"></el-input>
 		</el-form-item>
 		
 		
-		<el-form-item label="发起人邮箱">
+		<el-form-item label="负责人邮箱">
 			<el-input v-model="form.email"></el-input>
 		</el-form-item>
 		
@@ -27,13 +27,13 @@
 		<el-form-item label="申请原因(英文)">
 			<el-input type="textarea" v-model="formEnglish.reson"></el-input>
 		</el-form-item>
-		<el-form-item label="举办地点（中文）">
+		<el-form-item label="论坛地点（中文）">
 					<el-input v-model="venue" ></el-input>
 				</el-form-item>
-				 <el-form-item label="举办地点（英文）">
+				 <el-form-item label="论坛地点（英文）">
 					<el-input v-model="venueEn" ></el-input>
 				</el-form-item>
-				 <el-form-item label="举办时间">
+				 <el-form-item label="举办日期">
 					 <el-date-picker
 					v-model="startTime"
 					type="daterange"
@@ -48,12 +48,15 @@
 						</el-date-picker>
 				</el-form-item>
 	
-		<el-form-item label="论坛背景图片">
+		<el-form-item label="博论展示图">
 			<el-button type="primary" @click.native="upload" style="margin-left:0px;">图片上传</el-button>
 			<img v-show="src!=''" :src="src" alt="" style="width:300px;height:200px;border:1px solid #ccc;">
 				<input type="file"  style="display:none;" ref="file" @change="changFile" accept="image/x-png,image/gif,image/jpeg,image/bmp" >
 				{{file[0].name}}
 		</el-form-item>
+		<div style="margin-left:60px;margin-bottom:20px">
+			图片大小不超过5M，图片高度宽度比例为2:3
+		</div>
 		<el-form-item>
 			<el-button type="primary" @click="sub">申请</el-button>
 			
