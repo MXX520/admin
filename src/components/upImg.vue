@@ -140,7 +140,7 @@ export default {
 .upload {
   position: relative;
   width: 200px;
-  height: 300px;  // 图片展示
+  height: auto;  // 图片展示
   .cha {
     position: absolute;
     top: 0;
