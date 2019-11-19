@@ -23,20 +23,33 @@
                 </el-table-column>
                 <el-table-column
                     prop="title"
-                    label="会议标题"
+                    label="主标题（中文）"
                     height="20px"
                     align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="briefIntroduction"
-                    label="会议简介"
+                    prop="titleEn"
+                    label="主标题（英文）"
+                    height="20px"
                     align='center'
                     width="120">
                 </el-table-column>
                 <el-table-column
-                    prop="source"
-                    label="会议来源"
+                    prop="subtitle"
+                    label="副标题（中文）"
+                    align='center'
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="subtitleEn"
+                    label="副标题（英文）"
+                    align='center'
+                    width="120">
+                </el-table-column>
+                <el-table-column
+                    prop="createTime"
+                    label="发表时间"
                     align='center'
                     width="120">
                 </el-table-column>
@@ -45,12 +58,6 @@
                     align='center'
                     label="浏览次数"
                     width="100">
-                </el-table-column>
-                <el-table-column
-                    prop="createTime"
-                    label="创建时间"
-                    align='center'
-                    width="120">
                 </el-table-column>
                 <el-table-column
                 fixed="right"
@@ -238,10 +245,15 @@ export default {
         //保存
         async saveClick(){
             let postData = {
-                forumId: this.id,
-                title: this.form.title,
-                briefIntroduction: this.form.briefIntroduction,
-                source: this.form.source,
+                "forumId": this.id,
+                "title":this.form.title,//主标题（中文）
+                "titleEn":this.form.titleEn,//主标题（英文）
+                "subtitle":this.form.subtitle,//副标题（中文）
+                "subtitleEn":this.form.subtitleEn,//副标题（英文）
+                "content":this.form.content,//内容（中文）
+                "contentEn":this.form.contentEn,//内容（英文）
+                "briefIntroduction": this.form.briefIntroduction,
+                "source": this.form.source,
             };
             console.log(postData);
             let data = await this.$api.post("/forum/express",postData);
@@ -298,9 +310,23 @@ export default {
 </script>
 
 <style scoped lang="less">
+    /deep/ .essayNoticeBox, /deep/ .mce-edit-area iframe{
+        min-height:400px;
+        margin-bottom:20px;
+    }
+    /deep/ .ql-container{
+        min-height:200px;
+    }
     /deep/ .edui-editor{
         width: auto !important;
     }
+    /deep/ .edui-editor-iframeholder{
+        height: 300px;
+    }
+    /deep/ .edui-box{
+        height:25px;
+    }
+
     /deep/ .el-table__row{
         height: 25px !important;
     }
