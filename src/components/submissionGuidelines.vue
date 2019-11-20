@@ -105,4 +105,7 @@ export default {
 /deep/ .edui-box{
     height:25px;
 }
+/deep/ .edui-combox-body {
+    height: 20px !important;
+}
 </style>

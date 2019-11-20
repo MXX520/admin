@@ -333,6 +333,9 @@ export default {
     /deep/ .cell{
         height: 25px !important;
     }
+    /deep/ .edui-combox-body {
+         height: 20px !important;
+    }
     .pagin{
         margin-top:20px;
     }
