@@ -23,7 +23,7 @@
 					<span>{{scope.$index+(currentPage-1)*10+1}}</span>
 				</template>
 			</el-table-column>
-			<el-table-column prop="title" label="论坛标题（中文）" align='center' width="220" >
+			<el-table-column prop="title" label="论坛标题（中文）"  align='center' width="220" >
 			</el-table-column>
 			<el-table-column prop="titleEn" label="论坛标题（英文）" align='center' width="220" >
 			</el-table-column>
@@ -62,41 +62,41 @@
 	<el-dialog title="论坛审核" :visible.sync="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="180px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="论坛标题（中文）">
-					<el-input v-model="title" ></el-input>
+					<el-input v-model="title" disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="论坛标题（英文）">
-					<el-input v-model="titleEn" ></el-input>
+					<el-input v-model="titleEn" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="所属院系">
-					<el-input v-model="facultyName" ></el-input>
+					<el-input v-model="facultyName" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="举办日期">
-					<el-input v-model="holdingDate" ></el-input>
+					<el-input v-model="holdingDate" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="论坛地点（中文）">
-					<el-input v-model="venue" ></el-input>
+					<el-input v-model="venue" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="论坛地点（英文）">
-					<el-input v-model="venueEn" ></el-input>
+					<el-input v-model="venueEn" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="申请时间">
-					<el-input v-model="createTime" ></el-input>
+					<el-input v-model="createTime" disabled="true"></el-input>
 				</el-form-item>
 
 				 <el-form-item label="负责人（中文）">
-					<el-input v-model="sponsor" ></el-input>
+					<el-input v-model="sponsor" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="负责人（英文）">
-					<el-input v-model="sponsorEn" ></el-input>
+					<el-input v-model="sponsorEn" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="负责人电话">
-					<el-input v-model="sponsorPhone" ></el-input>
+					<el-input v-model="sponsorPhone" disabled="true"></el-input>
 				</el-form-item>
 				 <el-form-item label="负责人邮箱">
-					<el-input v-model="sponsorEmail" ></el-input>
+					<el-input v-model="sponsorEmail" disabled="true"></el-input>
 				</el-form-item>
 				<el-form-item label="申请原因">
-			<el-input type="textarea" v-model="applyReason" ></el-input>
+			<el-input type="textarea" v-model="applyReason" disabled="true"></el-input>
 		</el-form-item>
 			 <el-form-item label="审核意见">
 					<el-input type="textarea" v-model="auditResult" ></el-input>
