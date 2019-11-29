@@ -36,10 +36,11 @@
 			</el-table-column>
 			<el-table-column prop="createTime" label="申请时间" align='center' width="180" >
 			</el-table-column>
-			<el-table-column label="操作" width="240" align='center' fixed="right">
+			<el-table-column label="操作" width="330" align='center' fixed="right">
 				<template scope="scope">
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">详情</el-button>
 					<el-button  size="small" @click="handleChange(scope.$index, scope.row)">修改</el-button>
+					<el-button v-show="scope.row.isDelete"  size="small" @click="del(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -193,7 +194,7 @@
 			</el-form>
 			<div slot="footer" class="dialog-footer" style="text-align:center">
 				<el-button type="primary" @click.native="change()" :loading="editLoading">更新</el-button>
-				<el-button type="primary" @click.native="submit()" :loading="editLoading">提交</el-button>
+				<el-button  type="primary" @click.native="submit()" :loading="editLoading">提交</el-button>
 			</div>
 		</el-dialog>
 	</section>
@@ -417,6 +418,13 @@ import { debug } from 'util';
 				this.auditResult = data.data.auditResult;
 				this.biaozhu =  data.data.scaleOfMarkName;
 				console.log(data)
+			},
+			async del(index, row){
+				this.$confirm('确认删除？', '提示', {}).then(async () => {
+						let {data} = await this.$api.delete("forum/"+row.id)
+						this.getUsers()
+						});
+				
 			},
 			//显示编辑界面
 			handleEdit: function (index, row) {

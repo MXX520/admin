@@ -2,7 +2,7 @@
 	<section>
 		<div class="search">
 			<el-cascader
-			style="width:400px"
+			style="width:600px"
     placeholder=""
 	v-model="arr"
     :options="options"
