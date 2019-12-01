@@ -39,7 +39,7 @@
 			<el-table-column prop="createTime" label="申请时间" align='center' min-width="180" sortable>
 			</el-table-column>
 		
-			<el-table-column label="操作" width="100" align='center' fixed="right">
+			<el-table-column label="操作" width="260" align='center' fixed="right">
 				<template scope="scope">
 					<el-button  size="small" @click="handleDel(scope.$index, scope.row)">审核</el-button>
 					<el-button v-show="scope.row.isDelete"  size="small" @click="del(scope.$index, scope.row)">删除</el-button>
