@@ -8,7 +8,8 @@ const Event = {
 const ManuscriptListStyle = {
     0: '未审核',
     1: '审核中',
-    2: '通过审核'
+    2: '通过审核',
+    3: '查看结果'
 }
 
 module.exports = {
