@@ -284,7 +284,9 @@
 			//编辑
 		async	editSubmit (id) {
        let {data} = await this.$api.put("forum/audit/"+this.editId,{
-         is_pass:id,
+		 is_pass:id,
+		 audit_result:this.auditResult
+
        })
        this.addFormVisible = false;
        this.getUsers()
