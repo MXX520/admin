@@ -158,7 +158,7 @@ import axios from 'axios'
 				form.append("sponsorEn",this.formEnglish.reson)
 				form.append("applyReasonEn",this.formEnglish.reson)
 				form.append("image",this.file[0])
-				let data = await axios.post("http://39.106.77.121:8086/forum/apply",form)
+				let data = await axios.post(this.$api.httpPath+"forum/apply",form)
 				if(data.data.code){
 					this.$message({
 						message: '申请成功',

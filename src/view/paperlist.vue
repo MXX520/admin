@@ -111,6 +111,7 @@
                                 width="100">
                                 <template slot-scope="scope">
                                     <el-button @click="detailClick(scope.row)" type="text" size="small">详情</el-button>
+                                    <el-button @click="finalClick(scope.row)" type="text" size="small">终审</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -182,6 +183,21 @@
                 </el-form-item>
 			</el-form>
 		</el-dialog>
+
+
+        <el-dialog title="最终审稿" :visible.sync="dialogFormVisible">
+            <el-form>
+                <el-form-item label="结果" :label-width="formLabelWidth">
+                <el-select v-model="finalVal" placeholder="">
+                    <el-option label="通过" value="通过"></el-option>
+                    <el-option label="不通过" value="不通过"></el-option>
+                </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="finalOkClick">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -237,11 +253,14 @@ import util from '@/api/utils'
                 "viewCount":''//浏览次数
             },//详情数据
             dtailFormVisible:false ,//详情控制
+            dialogFormVisible: false, //控制终审
             addFormRules: {
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' }
                 ]
             },
+            finalVal:'',
+            finalId: '',
             consts: this.$consts
         };
     },
@@ -351,6 +370,37 @@ import util from '@/api/utils'
                 this.dtailForm = data.data;
             }else {
                 this.$message.error(data.msg);
+            }
+        },
+
+
+        //终审
+        finalClick(row){
+            this.dialogFormVisible = true;
+            this.finalId = row.id;
+        },
+
+        //终审确定
+        async finalOkClick(){
+            if(this.finalVal != '') {
+                let params = {
+                    "reviewResult":this.finalVal,
+                }
+
+                console.log(params);
+                console.log(this.finalId);
+
+                let data = await this.$api.put("paper/result/"+this.finalId,params)
+                this.dialogFormVisible = false;
+                this.loadListRight();
+                if(data.data.code){
+                    this.$message({
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                }
+            } else {
+                this.$message.error("请选择审稿状态");
             }
         },
 
