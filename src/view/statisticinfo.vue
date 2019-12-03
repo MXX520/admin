@@ -139,14 +139,11 @@
 					
 				}else{
 					for(let i in this.arr){
-						if(this.arr[i].indexOf(this.ids)){
-							this.ids+=this.arr[i];
+						if(i!=this.arr.length-1){
+								this.ids+=this.arr[i][1]+","
+						}else{
+							this.ids+=this.arr[i][1]
 						}
-					if(i!=this.arr.length-1){
-							this.ids+=this.arr[i][1]+","
-					}else{
-						this.ids+=this.arr[i][1]
-					}
 				
 				}
 				}
