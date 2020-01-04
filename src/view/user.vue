@@ -38,9 +38,9 @@
 			<el-table-column prop="createTime" label="创建时间" align='center' min-width="170" >
 			</el-table-column>
 		
-			<el-table-column label="操作" width="260" align='center' fixed="right">
+			<el-table-column label="操作" width="360" align='center' fixed="right">
 				<template scope="scope">
-				
+					<el-button  size="small" @click="resetD(scope.$index, scope.row)">重置</el-button>
 					<el-button  size="small" @click="handleD(scope.$index, scope.row)">详情</el-button>
           <el-button   size="small" @click="changeUser(scope.$index, scope.row)">修改</el-button>
           <el-button v-show="scope.row.roleId!=1" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -402,6 +402,16 @@ import { debug, debuglog } from 'util';
 					this.getRList();
 				}else{
 					 this.$message.error(data.msg);
+				}
+			},
+			async resetD(index,row){
+				this.editId = row.id;
+				let {data} = await this.$api.post("reset/"+this.editId)
+				if(data.code=='01'){
+					this.$message({
+					type: 'success',
+					message: "重置成功"
+				});  
 				}
 			},
 			async handleDel(index,row){
