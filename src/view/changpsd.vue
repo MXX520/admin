@@ -8,10 +8,10 @@
                     <el-input v-model="oldPassword" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="新密码" >
-                    <el-input v-model="newPassword" autocomplete="off"></el-input>
+                    <el-input v-model="newPassword" autocomplete="off" placeholder="必须包含字母和数字,区分大小写 8-15位"></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" >
-                    <el-input v-model="confirmPassword" autocomplete="off"></el-input>
+                    <el-input v-model="confirmPassword" autocomplete="off" placeholder="必须包含字母和数字,区分大小写 8-15位"></el-input>
                 </el-form-item>
          </el-form>
          <div class="btn" @click="init">
@@ -50,6 +50,14 @@ export default {
                newPassword:this.newPassword,
                confirmPassword:this.confirmPassword
            })
+           if(data.code=="01"){
+               this.$message({
+									message: data.msg,
+									type: 'success'
+								});
+           }else{
+              this.$message.error(data.msg); 
+           }
         },
         back(){
             this.$router.go(-1)
