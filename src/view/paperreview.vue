@@ -47,19 +47,11 @@
                             height="20px">
                         </el-table-column>
                         <el-table-column
-                            prop="score"
-                            label="得分"
+                            prop="reviewResult"
+                            label="审稿结果"
                             align='center'
                             width="auto"
                             height="20px">
-                            <template slot-scope="scope">{{ scope.row.score == -1 ? '':scope.row.score }}</template>
-                        </el-table-column>
-                        <el-table-column
-                            label="是否通过"
-                            align='center'
-                            width="auto"
-                            height="20px">
-                            <template v-if="scope.row.result != -1" slot-scope="scope">{{ scope.row.result == 1 ? '通过' : '未通过' }}</template>
                         </el-table-column>
                         <el-table-column
                             prop="createTime"
