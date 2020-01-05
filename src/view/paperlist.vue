@@ -105,6 +105,12 @@
                                 </template>
                             </el-table-column>
                             <el-table-column
+                                prop="reviewResult"
+                                align='center'
+                                label="终审结果"
+                                width="100">
+                            </el-table-column>
+                            <el-table-column
                                 fixed="right"
                                 label="操作"
                                 align='center'
@@ -355,7 +361,7 @@ import util from '@/api/utils'
             this.$util.log(row.paperName);
             this.isImg = false;
             this.dialogVisible = true;
-            // let mm = 'http://file.dakawengu.com/file/2018-05-29/20180527-tianfeng.pdf'
+            // this.pdfPath = 'http://file.dakawengu.com/file/2018-05-29/20180527-tianfeng.pdf'
             this.pdfPath = row.paperName;
         },
 
@@ -463,7 +469,7 @@ import util from '@/api/utils'
 
 }
 .pdf-show{
-    width:700px;
+    width:1000px;
     height:600px;
 }
 

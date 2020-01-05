@@ -210,7 +210,7 @@ export default {
 
         //删除
         delClick(row){
-            this.$confirm('确定删除该审稿分组？')
+            this.$confirm('确定删除该审稿人？')
             .then(item => {
                 console.log(item);
                 this.delClickOk(row);

@@ -29,7 +29,7 @@
       <el-col :span="1"></el-col>
       <div class="showPdfBox">
           <el-col :span="14">
-              <pdf 
+              <pdf
                   class="showPdf"
                   ref="pdf"
                   :src="msgFather"
@@ -125,7 +125,8 @@ export default {
         overflow:scroll;
     }
     .showPdf{
-        width:500px;
+        width:900px;
         height:600px;
+        display:block;
     }
 </style>
