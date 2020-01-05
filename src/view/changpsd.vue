@@ -45,7 +45,7 @@ export default {
            if(this.confirmPassword==""){
                return 
            }
-           let {data} = this.$api.post("user/password",{
+           let {data} =await this.$api.post("user/password",{
                oldPassword:this.oldPassword,
                newPassword:this.newPassword,
                confirmPassword:this.confirmPassword
