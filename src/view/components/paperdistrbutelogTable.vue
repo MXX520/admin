@@ -34,9 +34,15 @@
                         height="20px">
                     </el-table-column>
                     <el-table-column
-                        prop="reviewer"
+                        prop="reviewName"
                         align='center'
                         label="审核人员"
+                        height="20px">
+                    </el-table-column>
+                    <el-table-column
+                        prop="review"
+                        align='center'
+                        label="审核人邮箱"
                         height="20px">
                     </el-table-column>
                     <el-table-column

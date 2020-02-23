@@ -20,8 +20,8 @@
                         <el-input v-model="query" placeholder="请输入内容"></el-input>
                     </el-col>
                     <el-col :span="10" style="marginLeft:20px">
-                        <el-button v-if="id" type="primary" @click="queryClick">查询</el-button>
-                        <el-button type="primary" v-if="id" @click="addClick">添加审稿人</el-button>
+                        <el-button type="primary" @click="queryClick">查询</el-button>
+                        <el-button type="primary" @click="addClick">添加审稿人</el-button>
                     </el-col>
                 </el-row>
                 <el-row style="marginTop:20px">

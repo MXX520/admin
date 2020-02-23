@@ -47,6 +47,13 @@
                             height="20px">
                         </el-table-column>
                         <el-table-column
+                            prop="email"
+                            align='center'
+                            width="auto"
+                            label="审稿人邮箱"
+                            height="20px">
+                        </el-table-column>
+                        <el-table-column
                             prop="reviewResult"
                             label="审稿结果"
                             align='center'

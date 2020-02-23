@@ -34,8 +34,8 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        // , serverUrl: 'http://39.100.65.236:8093/mh/ueditor/config' //测试
-       , serverUrl: 'http://39.106.77.121:8086/mh/ueditor/config'//正式
+        , serverUrl: 'http://39.100.65.236:8093/mh/ueditor/config' //测试
+    //    , serverUrl: 'ttp://101.6.5.249:8086/mh/ueditor/config'//正式
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的重新定义
         , toolbars: [[
