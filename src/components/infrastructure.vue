@@ -102,8 +102,9 @@ export default {
                 noticeIsView: this.value2 ? true : false,
                 submitTypeIds: arr,
             };
+
+            console.log(postData);
             let data = await this.$api.put("forum/config/"+this.id,postData);
-            this.getList();
             if(data.data.code){
                 this.$message({
                     message: '保存成功',

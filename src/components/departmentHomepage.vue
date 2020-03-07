@@ -51,25 +51,28 @@
             <el-form-item label="背景图一" class="fileImg">
                 <el-image
                     v-if="postDate.image1"
-                    style="width: 100px; height: 100px"
+                    style="width: 800px; height: 300px"
                     :src="postDate.image1">
                 </el-image>
                 <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
                 <upImg  @fileImg="getImgFile"></upImg>
+                <p style="color:red;">注: 背景图片宽高比例设置为3：8，高度不要超过300px</p>
             </el-form-item>
             <el-form-item label="背景图二" class="fileImg">
                 <el-image
                     v-if="postDate.image1"
-                    style="width: 100px; height: 100px"
+                    style="width: 800px; height: 300px"
                     :src="postDate.image2">
                 </el-image>
                     <el-dialog :visible.sync="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
                 <upImg @fileImgs="getImgFiles"></upImg>
+                <p style="color:red;">注: 背景图片宽高比例设置为3：8，高度不要超过300px</p>
             </el-form-item>
+            
             <el-form-item label="板式选择">
                 <el-radio-group v-model="type">
                     <el-radio :label="1">首页版式一</el-radio>

@@ -325,11 +325,12 @@ export default {
 				.catch(_ => {});
 		},
 
-		async deleteImgs(){
+		async deleteImgs(index,row){
 			let data = this.$api.delete("carousel/"+row.id)
-			if(data.code=="01"){
+			console.log("------data---",data);
+			setTimeout(()=>{
 				this.getUsers()
-			}
+			},500)
 		},
 		upload(){
 			this.$refs.file.click()
@@ -359,6 +360,7 @@ export default {
 
 		//获取用户列表
 	async getUsers() {
+		this.users = [];
 			let para = {
 				page: this.page,
 				name: this.filters.name
